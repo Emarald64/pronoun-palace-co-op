@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ck1fx1po2qamu"]
+
+[ext_resource type="Script" uid="uid://cs4t50ctngjss" path="res://mods/co-op/mod.gd" id="1_36buc"]
+
+[node name="Mod" type="Node" unique_id=60825319]
+script = ExtResource("1_36buc")

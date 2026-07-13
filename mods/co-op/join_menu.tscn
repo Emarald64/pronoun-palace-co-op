@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://benomodipcosy"]
+
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_vpni1"]
+[ext_resource type="Script" uid="uid://2rpgq65ubnhu" path="res://mods/co-op/join_menu.gd" id="2_7a7fu"]
+[ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="3_fj880"]
+[ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="4_10pla"]
+
+[sub_resource type="Resource" id="Resource_ooua1"]
+script = ExtResource("4_10pla")
+groups = PackedStringArray("UI")
+sound = "UI/CHAR_SELECT"
+metadata/_custom_type_script = "uid://c17dcnicbtc1a"
+
+[node name="Join Menu" unique_id=1499490309 instance=ExtResource("1_vpni1")]
+script = ExtResource("2_7a7fu")
+full_screen_menu = false
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1484971715]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1894563190]
+layout_mode = 2
+
+[node name="IconSelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=1130161940 instance=ExtResource("3_fj880")]
+unique_name_in_owner = true
+layout_mode = 2
+selection_sound = SubResource("Resource_ooua1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1698835746]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=124992295]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "IP:"
+
+[node name="IP" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=2024482678]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "127.0.0.1"
+select_all_on_focus = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=7557173]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=788607249]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Port:"
+
+[node name="Port" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=606998335]
+unique_name_in_owner = true
+layout_mode = 2
+text = "7000"
+placeholder_text = "7000"
+max_length = 5
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=226221271]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1816822929]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1641579130]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client"
+max_length = 16
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+
+[node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="4" unique_id=990898958]
+layout_mode = 2
+text = "Connect"
+
+[node name="Status" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="5" unique_id=509349693]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/IconSelector" to="." method="_on_icon_selector_selected"]
+[connection signal="text_changed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="_on_name_changed"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="connect_to_server"]

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bvocafatgbh30"]
+
+[ext_resource type="PackedScene" uid="uid://i7n4jleuy6ix" path="res://source/ui/menu/buttons/menu_button_tall.tscn" id="1_46mup"]
+
+[node name="JoinButton" unique_id=929244007 instance=ExtResource("1_46mup")]
+
+[node name="Title" type="Label" parent="HoverOffset/Panel/MarginContainer" parent_id_path=PackedInt32Array(948667601) index="0" unique_id=1273921904]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"MainMenuLabel"
+text = "Join"
+horizontal_alignment = 1
+vertical_alignment = 1

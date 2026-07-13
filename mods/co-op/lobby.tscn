@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://cbyfe8xina7d"]
+
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_heodt"]
+[ext_resource type="Script" uid="uid://fn8op17sv5bv" path="res://mods/co-op/multiplayer_lobby.gd" id="2_mb6rq"]
+[ext_resource type="PackedScene" uid="uid://7yaxnry66h85" path="res://mods/co-op/lobby_player.tscn" id="3_mb6rq"]
+
+[node name="Lobby" unique_id=1499490309 instance=ExtResource("1_heodt")]
+script = ExtResource("2_mb6rq")
+lobby_player_scene = ExtResource("3_mb6rq")
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=2087106647]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 7.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1179551543]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=1656486453]
+layout_mode = 2
+theme_type_variation = &"MenuDescriptionLabel"
+theme_override_font_sizes/font_size = 16
+text = "Players"
+horizontal_alignment = 1
+
+[node name="Players" type="GridContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=436813728]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 2
+
+[node name="Start" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1731870589]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Start"
+
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Start" to="." method="start_game"]

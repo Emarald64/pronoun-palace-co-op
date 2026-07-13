@@ -1,0 +1,84 @@
+class_name CoOp
+extends Mod
+
+var character_select
+var host_name:LineEdit
+
+static func change_script_and_copy_properties(object:Object,script:Script):
+	var properties:Dictionary[String,Variant]={}
+	for property in object.get_property_list():
+		if property.name!="script":
+			properties[property.name]=object.get(property.name)
+	object.set_script(script)
+	for property in properties:
+		object.set(property,properties[property])
+
+func _on_scene_changed()->void:
+	var current_scene=get_tree().current_scene
+	#if current_scene is Main:
+		#main_aditions(current_scene)
+	if current_scene is MainMenu:
+		main_menu_additions(current_scene)
+
+func _ready()->void:
+	var scene_tree=get_tree()
+	scene_tree.scene_changed.connect(_on_scene_changed)
+	var current_scene=scene_tree.current_scene
+	if current_scene is MainMenu:
+		main_menu_additions(current_scene)
+	
+	# replace game script
+	await get_tree().create_timer(.5).timeout
+	change_script_and_copy_properties(Game,preload("res://mods/co-op/overrides/game.gd"))
+
+func main_menu_additions(main_menu:MainMenu)->void:
+	var hud=main_menu.get_node("HUD")
+	var play_menu=hud.get_node("PlayMenu")
+	play_menu.get_node("ContinueButton").queue_free()
+	var join_button=preload("res://mods/co-op/join_button.tscn").instantiate()
+	play_menu.add_child(join_button)
+	play_menu.move_child(join_button,1)
+	
+	var join_menu=preload("res://mods/co-op/join_menu.tscn").instantiate()
+	hud.add_child(join_menu)
+	join_menu.position.y=1000
+	join_button.opens_menu=join_menu
+	
+	var lobby=preload("res://mods/co-op/lobby.tscn").instantiate()
+	hud.add_child(lobby)
+	lobby.position.y=1000
+	join_menu.opens_menu=lobby
+	
+	character_select=hud.get_node("CharacterSelect")
+	var start_button=character_select.get_node("StartButton")
+	start_button.pressed.disconnect(character_select._on_start_button_pressed)
+	start_button.pressed.connect(create_server)
+	start_button.opens_menu=lobby
+	
+	host_name=LineEdit.new()
+	host_name.placeholder_text="Name"
+	character_select.add_child(host_name)
+
+#func main_aditions(main:Main)->void:
+	#var damage_indecator_holder=HBoxContainer.new()
+	#damage_indecator_holder.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	#damage_indecator_holder.grow_horizontal=Control.GROW_DIRECTION_BEGIN
+	#main.get_node("HUDLayer").add_child(damage_indecator_holder)
+	
+	#var word_builder=main.get_node("GameUILayer/WordBuilder")
+	#word_builder.set_script(preload("res://mods/co-op/overrides/word_builder.gd"))
+	#word_builder._ready()
+	#word_builder.damage_indecator_holder=damage_indecator_holder
+
+func create_server(port:=7000,max_players:=16)->void:
+	var peer:=ENetMultiplayerPeer.new()
+	peer.create_server(port,max_players)
+	multiplayer.multiplayer_peer=peer
+	Game.difficulty=character_select.difficulty
+	if host_name.text.is_empty():
+		Game.player_info.name="Host"
+	else:
+		Game.player_info.name=host_name.text
+	Game.player_info.character=character_select.character
+	Game.players[1]=Game.player_info
+	Game.player_connected.emit(1,Game.player_info)

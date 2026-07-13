@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://43fyxeyg1vj4"]
+
+[ext_resource type="PackedScene" uid="uid://dt2be1wikfttk" path="res://source/main.tscn" id="1_n0165"]
+[ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/overrides/main.gd" id="2_8s84c"]
+[ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/overrides/word_builder.gd" id="2_rhwav"]
+
+[node name="Main" unique_id=180122661 instance=ExtResource("1_n0165")]
+script = ExtResource("2_8s84c")
+
+[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder")]
+script = ExtResource("2_rhwav")
+damage_indecator_holder = NodePath("../../HUDLayer/Damage Indecator Holder")
+
+[node name="Damage Indecator Holder" type="HBoxContainer" parent="HUDLayer" parent_id_path=PackedInt32Array(1601018930) index="7" unique_id=1666666728]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+alignment = 2
+
+[editable path="GameUILayer/TileBoard"]
+[editable path="MenuLayer/PauseMenu/ResumeButton"]

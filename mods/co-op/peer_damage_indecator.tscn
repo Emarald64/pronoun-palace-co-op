@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bovxkumucy48u"]
+
+[ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="1_3fxkt"]
+[ext_resource type="Script" uid="uid://ca0e1cjsuwpar" path="res://mods/co-op/peer_damage_indecator.gd" id="1_dlp5p"]
+[ext_resource type="PackedScene" uid="uid://mfou86kmoucf" path="res://source/ui/intents/intent.tscn" id="2_dlp5p"]
+[ext_resource type="Texture2D" uid="uid://cs8ytfghib4ng" path="res://arte/ui/stamps.png" id="4_hufly"]
+
+[node name="PeerDamageIndecator" type="VBoxContainer" unique_id=270528368]
+offset_right = 32.0
+offset_bottom = 104.0
+script = ExtResource("1_dlp5p")
+
+[node name="Control" type="Control" parent="." unique_id=997821479]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="CharacterIcon" parent="Control" unique_id=1930440730 instance=ExtResource("1_3fxkt")]
+unique_name_in_owner = true
+
+[node name="Control2" type="Control" parent="." unique_id=1687000102]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="Intent" parent="Control2" unique_id=132339065 instance=ExtResource("2_dlp5p")]
+unique_name_in_owner = true
+position = Vector2(16, 8)
+
+[node name="ShadowCloner" parent="Control2/Intent/Sprite" parent_id_path=PackedInt32Array(132339065, 1567302257) index="0" unique_id=1669118774]
+visible = false
+
+[node name="AnimPlayer" parent="Control2/Intent" index="4" unique_id=862696523]
+autoplay = &""
+
+[node name="Submitted" type="TextureRect" parent="." unique_id=1330085675]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("4_hufly")
+expand_mode = 2
+stretch_mode = 1
+
+[editable path="Control2/Intent"]
