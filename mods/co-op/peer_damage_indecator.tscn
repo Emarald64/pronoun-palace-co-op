@@ -3,7 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="1_3fxkt"]
 [ext_resource type="Script" uid="uid://ca0e1cjsuwpar" path="res://mods/co-op/peer_damage_indecator.gd" id="1_dlp5p"]
 [ext_resource type="PackedScene" uid="uid://mfou86kmoucf" path="res://source/ui/intents/intent.tscn" id="2_dlp5p"]
+[ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="4_e47e5"]
 [ext_resource type="Texture2D" uid="uid://cs8ytfghib4ng" path="res://arte/ui/stamps.png" id="4_hufly"]
+[ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="5_1o5fg"]
 
 [node name="PeerDamageIndecator" type="VBoxContainer" unique_id=270528368]
 offset_right = 32.0
@@ -30,6 +32,33 @@ visible = false
 
 [node name="AnimPlayer" parent="Control2/Intent" index="4" unique_id=862696523]
 autoplay = &""
+
+[node name="Control3" type="Control" parent="." unique_id=1414337802]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="Node2D" type="Node2D" parent="Control3" unique_id=885970893]
+position = Vector2(16, 8)
+
+[node name="Sprite" type="Sprite2D" parent="Control3/Node2D" unique_id=1710173576]
+texture = ExtResource("4_e47e5")
+hframes = 8
+vframes = 9
+frame = 42
+
+[node name="DefendLabel" type="Label" parent="Control3/Node2D" unique_id=504464195]
+unique_name_in_owner = true
+offset_left = -25.0
+offset_top = -1.0
+offset_right = -6.0
+offset_bottom = 14.000021
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("5_1o5fg")
+theme_override_font_sizes/font_size = 8
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="Submitted" type="TextureRect" parent="." unique_id=1330085675]
 visible = false

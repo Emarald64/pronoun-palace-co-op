@@ -14,16 +14,14 @@ func _ready() -> void:
 
 func update_stats() -> void:
 	super()
-	if main.enemy.id==Enemies.HOUSEBROKEN && main.enemy.passcode in get_words():
-		peer_attack_updated.rpc(99,can_submit(),false)
-	else:
-		peer_attack_updated.rpc(damage,can_submit(),false)
+	peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false)
 
 @rpc("any_peer","call_remote")
-func peer_attack_updated(peer_damage:int,valid:bool,submitted:bool):
+func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool):
 	var id=multiplayer.get_remote_sender_id()
 	var attack_info={
 		damage=peer_damage,
+		defense=peer_defense,
 		valid=valid,
 		submitted=submitted,
 		}
@@ -44,10 +42,9 @@ func peer_attack_updated(peer_damage:int,valid:bool,submitted:bool):
 		if submitted_count==len(Game.players)-1:
 			all_peers_submitted.emit()
 
-func submit_word() -> void :
-	is_submitting = true
-	await main.start_ending_player_turn(true)
-	peer_attack_updated.rpc(damage,true,true)
+func send_attack_and_wait(reroll:bool=false)->void:
+	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true)
+	var enemy=main.enemy
 	if submitted_count<len(Game.players)-1:
 		var verses_label=$"../VersusLabel"
 		verses_label.text="Waiting for other players"
@@ -55,18 +52,37 @@ func submit_word() -> void :
 		await all_peers_submitted
 		verses_label.hide()
 	for id in peer_attacks:
-		await player.deal_damage(main.enemy,peer_attacks[id].damage,true,true)
+		var peer_attack=peer_attacks[id]
+		await player.deal_damage(enemy,peer_attack.damage,Globals.DamageType.DIRECT,true,true)
+		if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
+			enemy.heal(enemy.moves.bite.damage-peer_attack.defense)
 		damage_indecators[id].hide()
 	peer_attacks.clear()
 	submitted_count=0
+
+func submit_word() -> void :
+	is_submitting = true
+	await main.start_ending_player_turn(true)
+	await send_attack_and_wait(false)
 	await confirm_word()
+	
+func end_turn(reroll = false):
+	if reroll:
+		send_attack_and_wait(true)
+	super(reroll)
 
 func player_disconnected(id:int)->void:
-	var attack=peer_attacks[id]
-	if attack.submitted:
-		submitted_count-=1
-	elif submitted_count>=len(Game.players)-1:
+	if id in peer_attacks:
+		var attack=peer_attacks[id]
+		if attack.submitted:
+			submitted_count-=1
+		peer_attacks.erase(id)
+		damage_indecators[id].queue_free()
+		damage_indecators.erase(id)
+	if submitted_count>=len(Game.players)-1:
 		all_peers_submitted.emit()
-	peer_attacks.erase(id)
-	damage_indecators[id].queue_free()
-	damage_indecators.erase(id)
+
+func get_attack_value()->int:
+	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words():
+		return 99
+	return damage
