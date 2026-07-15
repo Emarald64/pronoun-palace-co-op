@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cxfr60uy0ncyr"]
+
+[ext_resource type="PackedScene" uid="uid://bjxidue8cu3k" path="res://source/enemies/nobody.tscn" id="1_pnwh5"]
+[ext_resource type="Script" uid="uid://cueqdosvw3yyr" path="res://mods/co-op/overrides/coop_nobody.gd" id="2_mb3m2"]
+
+[node name="Nobody" unique_id=2073064273 instance=ExtResource("1_pnwh5")]
+script = ExtResource("2_mb3m2")

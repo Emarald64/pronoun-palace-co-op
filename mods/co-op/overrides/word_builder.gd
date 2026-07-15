@@ -25,7 +25,7 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 		valid=valid,
 		submitted=submitted,
 		}
-	print("attack: ",id,attack_info)
+	#print("attack: ",id,attack_info)
 	peer_attacks[id]=attack_info
 	var damage_indecator
 	if id in damage_indecators:
@@ -53,7 +53,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 		verses_label.hide()
 	for id in peer_attacks:
 		var peer_attack=peer_attacks[id]
-		await player.deal_damage(enemy,peer_attack.damage,Globals.DamageType.DIRECT,true,true)
+		await player.deal_damage(enemy,peer_attack.damage,Globals.DamageType.DIRECT)
 		if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
 			enemy.heal(enemy.moves.bite.damage-peer_attack.defense)
 		damage_indecators[id].hide()
@@ -68,8 +68,8 @@ func submit_word() -> void :
 	
 func end_turn(reroll = false):
 	if reroll:
-		send_attack_and_wait(true)
-	super(reroll)
+		await send_attack_and_wait(true)
+	await super(reroll)
 
 func player_disconnected(id:int)->void:
 	if id in peer_attacks:
