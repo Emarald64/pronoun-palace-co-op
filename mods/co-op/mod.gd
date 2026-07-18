@@ -27,12 +27,6 @@ func _ready()->void:
 	if current_scene is MainMenu:
 		main_menu_additions(current_scene)
 	
-	await get_tree().process_frame
-	Globals.set_script(preload("res://mods/co-op/overrides/custom_globals.gd"))
-	
-	# replace game script
-	await get_tree().create_timer(.5).timeout
-	change_script_and_copy_properties(Game,preload("res://mods/co-op/overrides/game.gd"))
 	
 	CustomIntent.custom_intent_icons["phone_a_friend_send"]=preload("res://mods/co-op/intents/pronounpalace-sendtilesx-px.png")
 	CustomIntent.custom_intent_icons["phone_a_friend_recive"]=preload("res://mods/co-op/intents/pronounpalace-receivetiles-px.png")
@@ -45,6 +39,14 @@ func _ready()->void:
 	SpellLoader.spell_pool.erase("mba")
 	SpellLoader.spell_pool.erase("panic_button")
 	SpellLoader.spell_pool.erase("red_tape")
+	SpellLoader.add_spell("party_telephone",1.0,Globals.SPELL_CATEGORY.SUPPORT)
+	
+	await get_tree().process_frame
+	Globals.set_script(preload("res://mods/co-op/overrides/custom_globals.gd"))
+	
+	# replace game script
+	await get_tree().create_timer(.5).timeout
+	change_script_and_copy_properties(Game,preload("res://mods/co-op/overrides/game.gd"))
 	
 func main_menu_additions(main_menu:MainMenu)->void:
 	var hud=main_menu.get_node("HUD")

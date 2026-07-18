@@ -6,6 +6,7 @@ var players_compleated_floor:Array[int]=[]
 signal all_players_compleated_floor
 signal stop_dieing
 signal player_died(id:int)
+
 var reviving:=false
 var candy_round:=false
 
@@ -101,12 +102,14 @@ func increment_floor():
 	## wait for all players to finish floor before continuing
 	log_compleated_floor.rpc()
 	if players_compleated_floor.size()<Game.players.size()-1:
+		print("waiting for other players to compleate floor")
 		await all_players_compleated_floor
 	for id in dead_players:
 		word_builder.damage_indecators[id].set_dead(false)
 	player.sprite.show()
 	dead_players.clear()
 	players_compleated_floor.clear()
+	print("incrementing floor")
 	await super()
 
 func spawn_enemy(enemy_name):
@@ -122,4 +125,9 @@ func recive_word(tiles:Array)->void:
 	for i in height*width:
 		var tile=tile_board.get_tile_at(Vector2i(i%width,height-(i/width)-1))
 		if not tile.in_word():
-			tile.load_save_data(tiles.pop_front())
+			var tile_data =tiles.pop_front()
+			if tile_data==null:
+				break
+			tile.load_save_data(tile_data)
+			tile.add_poofcloud(tile.get_poof_color())
+			await get_tree().create_timer(0.16).timeout

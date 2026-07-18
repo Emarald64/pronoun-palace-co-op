@@ -16,11 +16,13 @@ func _ready() -> void:
 	Game.player_disconnected.connect(player_disconnected)
 
 func update_stats() -> void:
-	if main.candy_round and can_submit():
-		heighest_candy_round_value=maxi(heighest_candy_round_value,self_heal)
 	super()
-	peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false)
-	update_total_damage_counter()
+	if main.candy_round:
+		if can_submit():
+			heighest_candy_round_value=maxi(heighest_candy_round_value,self_heal)
+	else:
+		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false)
+		update_total_damage_counter()
 
 @rpc("any_peer","call_remote")
 func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool):

@@ -16,7 +16,7 @@ func _ready()->void:
 
 func _on_start_appearing()->void:
 	if icons.is_empty():
-		for id in Globals.CHARACTER_ORDER:
+		for id in Globals.CHARACTER_ORDER.filter(func (character:String)->bool:return character!=Globals.CHARACTERS.ADDICT):
 			var icon: CharacterSelectorIcon = ICON_SCENE.instantiate()
 			icon.set_character(id, true)
 			icons.append(icon)

@@ -2,7 +2,7 @@
 	Party Telephone
 
 :description:
-	Send the spelled word to another player.
+	Send a spelled word to another player.
 
 :label:
 	Send word
@@ -12,3 +12,6 @@
 
 :max_charge:
 	2
+
+:banner:
+	Select a player to send the word to

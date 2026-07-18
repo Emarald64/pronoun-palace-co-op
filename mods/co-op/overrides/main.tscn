@@ -43,6 +43,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GameUILayer/VBoxContainer" index="1" unique_id=1571923227]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="GameUILayer/VBoxContainer/HBoxContainer" index="0" unique_id=946364225]
