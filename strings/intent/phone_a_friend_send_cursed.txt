@@ -1,0 +1,5 @@
+:name:
+	Curse Sent Tiles
+
+:description:
+	{count} of the tiles you send to {partner} will be cursed

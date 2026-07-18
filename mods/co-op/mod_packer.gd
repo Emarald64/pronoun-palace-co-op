@@ -2,11 +2,18 @@
 extends EditorScript
 
 var mod_id="co-op"
-var zip_pack:=true
+var zip_pack:=false
 
 var additional_files: PackedStringArray = [
+	"res://strings/intent/echo.txt",
+	"res://strings/intent/echo_cursed.txt",
+	"res://strings/intent/phone_a_friend_recive.txt",
+	"res://strings/intent/phone_a_friend_recive_cursed.txt",
+	"res://strings/intent/phone_a_friend_send.txt",
+	"res://strings/intent/phone_a_friend_send_cursed.txt",
+	"res://strings/spell/party_telephone.txt",
 	"res://.godot/uid_cache.bin", # saves uids so you dont get warning for every file you load
-	#"res://.godot/global_script_class_cache.cfg" # saves global classes
+	"res://.godot/global_script_class_cache.cfg", # saves global classes
 ]
 
 var excluded:PackedStringArray=[

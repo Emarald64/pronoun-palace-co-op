@@ -13,6 +13,7 @@ func _init()->void:
 	multiplayer.peer_connected.connect(_on_other_connected)
 	multiplayer.connected_to_server.connect(_on_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	
 @rpc("call_local")
 func start_game(run_seed:int, _difficulty:int):
 	difficulty=_difficulty
@@ -34,11 +35,13 @@ func _on_connected()->void:
 	player_connected.emit(peer_id,player_info)
 
 func _on_other_connected(id:int)->void:
-	register_player.rpc_id(id,player_info)
+	if main==null:
+		register_player.rpc_id(id,player_info)
 
 func _on_peer_disconnected(id:int)->void:
-	players.erase(id)
-	player_disconnected.emit(id)
+	if id in players:
+		players.erase(id)
+		player_disconnected.emit(id)
 
 @rpc("any_peer")
 func register_player(other_player_info)->void:

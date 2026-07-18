@@ -1,0 +1,5 @@
+:name:
+	Phone A Friend
+
+:description:
+	All played tiles will be sent to {partner}'s board

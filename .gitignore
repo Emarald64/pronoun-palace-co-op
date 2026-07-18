@@ -1,9 +1,9 @@
 /*
 
-!mods
+!mods/co-op
 
 !mod_packs
-
 mod_packs/*
-
 !mod_packs/*/mod.json
+
+!strings/*/*

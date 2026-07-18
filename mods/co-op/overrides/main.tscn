@@ -3,22 +3,31 @@
 [ext_resource type="PackedScene" uid="uid://dt2be1wikfttk" path="res://source/main.tscn" id="1_n0165"]
 [ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/overrides/main.gd" id="2_8s84c"]
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/overrides/word_builder.gd" id="2_rhwav"]
+[ext_resource type="Script" uid="uid://07lliasr5hq0" path="res://mods/co-op/intents/intent_container.gd" id="4_2q8ta"]
 
 [node name="Main" unique_id=180122661 instance=ExtResource("1_n0165")]
 script = ExtResource("2_8s84c")
 
+[node name="BattleTimer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="0" unique_id=2106493120]
+offset_left = 100.0
+offset_right = 146.0
+
 [node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder")]
 script = ExtResource("2_rhwav")
-damage_indecator_holder = NodePath("../../HUDLayer/Damage Indecator Holder")
+damage_indecator_holder = NodePath("../ScrollContainer/Damage Indecator Holder")
 
-[node name="Damage Indecator Holder" type="HBoxContainer" parent="HUDLayer" parent_id_path=PackedInt32Array(1601018930) index="7" unique_id=1666666728]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-alignment = 2
+[node name="EnemyIntentContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="6" unique_id=112413146]
+script = ExtResource("4_2q8ta")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="15" unique_id=28968631]
+offset_right = 90.0
+offset_bottom = 119.0
+horizontal_scroll_mode = 0
+
+[node name="Damage Indecator Holder" type="VBoxContainer" parent="GameUILayer/ScrollContainer" index="0" unique_id=1099706273]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [editable path="GameUILayer/TileBoard"]
 [editable path="MenuLayer/PauseMenu/ResumeButton"]

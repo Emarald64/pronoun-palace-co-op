@@ -1,0 +1,5 @@
+:name:
+	Phone A Friend
+
+:description:
+	{partner}'s played tiles will be sent to the top of your board

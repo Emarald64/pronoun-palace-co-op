@@ -3,7 +3,7 @@
 	"packs":[
         {
             "path":"co-op.pck",
-            "override":false
+            "override":true
         }
     ]
 }

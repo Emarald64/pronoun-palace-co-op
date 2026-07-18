@@ -1,21 +1,27 @@
-extends VBoxContainer
+extends Control
 
-@onready var intent=%Intent
-@onready var intent_sprite=%Intent.get_node("Sprite")
+func setup(id:int)->void:
+	set_character(Game.players[id].character)
+	%Name.text=Game.players[id].name
 
 func update(damage_info:Dictionary):
-	if damage_info.valid:
-		intent.intent=Globals.Intent.DAMAGE
-		intent_sprite.flip_h=false
-	else:
-		intent.intent=Globals.Intent.HARMLESS_ATTACK
-		intent_sprite.flip_h=true
+	#if damage_info.valid:
+		#intent.intent=Globals.Intent.DAMAGE
+		#intent_sprite.flip_h=false
+	#else:
+		#intent.intent=Globals.Intent.HARMLESS_ATTACK
+		#intent_sprite.flip_h=true
+	#
+	#intent.context={damage=damage_info.damage}
+	#intent.update_sprite()
+	%AttackLabel.text=str(damage_info.damage)
 	
-	intent.context={damage=damage_info.damage}
-	intent.update_sprite()
-	intent.update_label()
+	%DefendLabel.text=str(damage_info.defense)
 	
-	$Submitted.visible=damage_info.submitted
+	self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
 
 func set_character(character:String)->void:
 	%CharacterIcon.set_character(character,true)
+
+func set_dead(dead:bool):
+	%Dead.visible=dead

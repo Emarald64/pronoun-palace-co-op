@@ -1,0 +1,14 @@
+:name:
+	Party Telephone
+
+:description:
+	Send the spelled word to another player.
+
+:label:
+	Send word
+
+:charge_category:
+	uncommon
+
+:max_charge:
+	2
