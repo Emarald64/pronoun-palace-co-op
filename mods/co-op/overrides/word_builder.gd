@@ -3,10 +3,12 @@ extends WordBuilder
 var peer_attacks:Dictionary[int,Dictionary]={}
 var damage_indecators:Dictionary[int,Control]={}
 @export var damage_indecator_holder:Control
+@export var total_attack_label:Label
 var submitted_count:=0
 var heighest_candy_round_value:=0
 
 signal all_peers_submitted
+signal peer_attack_updated(id:int)
 
 func _ready() -> void:
 	super()
@@ -18,6 +20,7 @@ func update_stats() -> void:
 		heighest_candy_round_value=maxi(heighest_candy_round_value,self_heal)
 	super()
 	peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false)
+	update_total_damage_counter()
 
 @rpc("any_peer","call_remote")
 func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool):
@@ -44,6 +47,15 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 		submitted_count+=1
 		if submitted_count==len(Game.players)-1:
 			all_peers_submitted.emit()
+	update_total_damage_counter()
+	peer_attack_updated.emit(id)
+
+func update_total_damage_counter():
+	total_attack_label.get_node("../..").show()
+	total_attack_label.text=str(peer_attacks.values().reduce(
+		func (accum:int,peer_attack)->int:
+			return accum+peer_attack.damage
+	,damage))
 
 func send_attack_and_wait(reroll:bool=false)->void:
 	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true)
@@ -61,6 +73,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 			enemy.heal(enemy.moves.bite.damage-peer_attack.defense)
 		damage_indecators[id].hide()
 	peer_attacks.clear()
+	total_attack_label.get_node("../..").hide()
 	submitted_count=0
 	if reroll:
 		player.attack(enemy,damage)

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dt3y3fvl4x3i6"]
+
+[ext_resource type="PackedScene" uid="uid://mfou86kmoucf" path="res://source/ui/intents/intent.tscn" id="1_5mqmk"]
+[ext_resource type="Script" uid="uid://cotiyut2kc78e" path="res://mods/co-op/intents/custom_intent.gd" id="2_5mqmk"]
+
+[node name="Intent" unique_id=132339065 instance=ExtResource("1_5mqmk")]
+script = ExtResource("2_5mqmk")

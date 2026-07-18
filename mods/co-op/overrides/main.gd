@@ -89,7 +89,7 @@ func peer_died():
 
 @rpc("any_peer")
 func log_compleated_floor():
-	print("player compleated floor")
+	print(multiplayer.get_remote_sender_id()," compleated floor: ",act_events[0])
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
 	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
 		reviving=true

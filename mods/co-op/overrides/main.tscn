@@ -4,30 +4,71 @@
 [ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/overrides/main.gd" id="2_8s84c"]
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/overrides/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Script" uid="uid://07lliasr5hq0" path="res://mods/co-op/intents/intent_container.gd" id="4_2q8ta"]
+[ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
+[ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="6_tcbgc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
+atlas = ExtResource("5_1hx8r")
+region = Rect2(73, 91, 16, 16)
 
 [node name="Main" unique_id=180122661 instance=ExtResource("1_n0165")]
 script = ExtResource("2_8s84c")
 
 [node name="BattleTimer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="0" unique_id=2106493120]
-offset_left = 100.0
-offset_right = 146.0
+offset_left = 94.0
+offset_right = 140.0
 
-[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder")]
+[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder", "total_attack_label")]
 script = ExtResource("2_rhwav")
-damage_indecator_holder = NodePath("../ScrollContainer/Damage Indecator Holder")
+damage_indecator_holder = NodePath("../VBoxContainer/ScrollContainer/Damage Indecator Holder")
+total_attack_label = NodePath("../VBoxContainer/HBoxContainer/TextureRect/TotalAttackLabel")
 
 [node name="EnemyIntentContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="6" unique_id=112413146]
 script = ExtResource("4_2q8ta")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="15" unique_id=28968631]
-offset_right = 90.0
-offset_bottom = 119.0
-horizontal_scroll_mode = 0
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="15" unique_id=2129176583]
+offset_right = 42.0
+offset_bottom = 20.0
 
-[node name="Damage Indecator Holder" type="VBoxContainer" parent="GameUILayer/ScrollContainer" index="0" unique_id=1099706273]
+[node name="ScrollContainer" type="ScrollContainer" parent="GameUILayer/VBoxContainer" index="0" unique_id=28968631]
+custom_maximum_size = Vector2(-1, 168)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 5
+
+[node name="Damage Indecator Holder" type="VBoxContainer" parent="GameUILayer/VBoxContainer/ScrollContainer" index="0" unique_id=1099706273]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameUILayer/VBoxContainer" index="1" unique_id=1571923227]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameUILayer/VBoxContainer/HBoxContainer" index="0" unique_id=946364225]
+layout_mode = 2
+theme_type_variation = &"BoldOutlineLabel"
+text = "Total:"
+
+[node name="TextureRect" type="TextureRect" parent="GameUILayer/VBoxContainer/HBoxContainer" index="1" unique_id=1909720952]
+layout_mode = 2
+texture = SubResource("AtlasTexture_xp132")
+flip_h = true
+
+[node name="TotalAttackLabel" type="Label" parent="GameUILayer/VBoxContainer/HBoxContainer/TextureRect" index="0" unique_id=1334195988]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -17.0
+offset_top = 7.0
+offset_right = 2.0
+offset_bottom = 22.000021
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("6_tcbgc")
+theme_override_font_sizes/font_size = 8
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [editable path="GameUILayer/TileBoard"]
 [editable path="MenuLayer/PauseMenu/ResumeButton"]

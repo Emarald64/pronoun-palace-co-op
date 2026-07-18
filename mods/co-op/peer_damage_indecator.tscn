@@ -8,7 +8,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a6585"]
 atlas = ExtResource("4_e47e5")
-region = Rect2(73, 91, 16, 16)
+region = Rect2(90, 145, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e47e5"]
 atlas = ExtResource("4_e47e5")
@@ -59,12 +59,13 @@ theme_override_constants/separation = 2
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
+[node name="AttackSprite" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
+unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("AtlasTexture_a6585")
 flip_h = true
 
-[node name="AttackLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect" unique_id=895210913]
+[node name="AttackLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite" unique_id=895210913]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -17.0
