@@ -49,7 +49,7 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 	damage_indecator.update(attack_info)
 	if submitted:
 		submitted_count+=1
-		if submitted_count==len(Game.players)-1:
+		if submitted_count+main.dead_players.size()>=len(Game.players)-1:
 			all_peers_submitted.emit()
 	update_total_damage_counter()
 	peer_attack_updated.emit(id)
@@ -65,24 +65,26 @@ func send_attack_and_wait(reroll:bool=false)->void:
 	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
-		var verses_label=$"../VersusLabel"
-		verses_label.text="Waiting for other players"
-		verses_label.show()
+		#var verses_label=$"../VersusLabel"
+		#verses_label.text="Waiting for other players"
+		#verses_label.show()
+		print("waiting for other players to submit")
 		await all_peers_submitted
-		verses_label.hide()
+		print("other players submited")
+		#verses_label.hide()
 	for id in peer_attacks:
 		if id not in main.dead_players:
 			var peer_attack=peer_attacks[id]
 			damage+=peer_attack.damage
 			if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
 				enemy.heal(enemy.moves.bite.damage-peer_attack.defense)
-		damage_indecators[id].hide()
+			damage_indecators[id].hide()
 	print("attacking for ",damage)
 	peer_attacks.clear()
 	total_attack_label.get_node("../..").hide()
 	submitted_count=0
 	if reroll:
-		player.attack(enemy,damage)
+		await player.attack(enemy,damage)
 
 func submit_word() -> void :
 	if not main.candy_round:
@@ -104,7 +106,7 @@ func player_disconnected(id:int)->void:
 		peer_attacks.erase(id)
 		damage_indecators[id].queue_free()
 		damage_indecators.erase(id)
-	if submitted_count>=len(Game.players)-1:
+	if submitted_count+main.dead_players.size()>=len(Game.players)-1:
 		all_peers_submitted.emit()
 
 func get_attack_value()->int:

@@ -18,7 +18,7 @@ func _use():
 	main.recive_word.rpc_id(target_id,tile_save_datas)
 	_post_use()
 	await word_builder.word_holder.clear_tiles(Callable(),false)
-	
+	word_builder.update()
 	await tile_board.settle_board()
 	tile_board.fill_board()
 	

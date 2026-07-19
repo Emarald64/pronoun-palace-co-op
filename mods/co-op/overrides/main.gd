@@ -119,6 +119,7 @@ func increment_floor():
 		await all_players_compleated_floor
 	for id in dead_players:
 		word_builder.damage_indecators[id].set_dead(false)
+		word_builder.damage_indecators[id].hide()
 	player.sprite.show()
 	dead_players.clear()
 	players_compleated_floor.clear()
