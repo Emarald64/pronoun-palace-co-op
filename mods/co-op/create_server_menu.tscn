@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://d1xbhbxo8rq8k"]
+
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_y0u7g"]
+[ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/create_server_menu.gd" id="2_i4ivu"]
+
+[node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_y0u7g")]
+script = ExtResource("2_i4ivu")
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1193323887]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 6.0
+offset_right = -3.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1695579042]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=515589435]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=891331376]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Header" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0" unique_id=870093584]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Host"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1" unique_id=1595444729]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=19490545]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1586746348]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2" unique_id=294778016]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1326533942]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Max Players"
+
+[node name="MaxPlayers" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=625778567]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/up_icon_modulate = Color(0.18, 0.18, 0.18, 1)
+theme_override_colors/up_hover_icon_modulate = Color(0.05, 0.05, 0.05, 1)
+theme_override_colors/down_icon_modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
+theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393, 0.050980393, 1)
+min_value = 1.0
+value = 16.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1978642974]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5" index="0" unique_id=2117073776]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Port"
+
+[node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5" index="1" unique_id=678295482]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/up_icon_modulate = Color(0.18, 0.18, 0.18, 1)
+theme_override_colors/up_hover_icon_modulate = Color(0.05, 0.05, 0.05, 1)
+theme_override_colors/down_icon_modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
+theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393, 0.050980393, 1)
+min_value = 1024.0
+max_value = 49151.0
+value = 7000.0
+
+[node name="UPnP Option" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4" unique_id=1769431622]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option" index="0" unique_id=241829582]
+layout_mode = 2
+theme_type_variation = &"OptionsLabel"
+theme_override_font_sizes/font_size = 13
+text = "Enable UPnP:"
+
+[node name="CheckBox" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option" index="1" unique_id=1376439678]
+layout_mode = 2
+
+[node name="UPnP Stuff" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5" unique_id=1783118323]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff" index="0" unique_id=1143341906]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="0" unique_id=1979019667]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "IP: "
+
+[node name="ShowIPButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="1" unique_id=155111474]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Show"
+
+[node name="IP" type="TextEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="2" unique_id=1928515433]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_readonly_color = Color(0.88, 0.88, 0.88, 1)
+theme_override_colors/background_color = Color(0, 0, 0, 0.39215687)
+theme_override_font_sizes/font_size = 13
+text = "Couldn't get IP"
+editable = false
+
+[node name="UPnP Port Forward" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff" index="1" unique_id=1435588992]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/UPnP Port Forward" index="0" unique_id=1662641242]
+layout_mode = 2
+theme_type_variation = &"OptionsLabel"
+theme_override_font_sizes/font_size = 13
+text = "UPnP Port Forward:"
+
+[node name="ForwardPort" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/UPnP Port Forward" index="1" unique_id=398108800]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1806416797]
+layout_mode = 2
+text = "Host"
+
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option/CheckBox" to="." method="enable_upnp"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer/ShowIPButton" to="." method="show_ip"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="host_pressed"]

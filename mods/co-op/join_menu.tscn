@@ -17,8 +17,8 @@ full_screen_menu = false
 
 [node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1484971715]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 217.0
+offset_bottom = 252.0
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 8
 
@@ -30,7 +30,24 @@ unique_name_in_owner = true
 layout_mode = 2
 selection_sound = SubResource("Resource_ooua1")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1698835746]
+[node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=226221271]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1816822929]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1641579130]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client"
+max_length = 16
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1698835746]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=124992295]
@@ -45,7 +62,7 @@ size_flags_horizontal = 3
 placeholder_text = "127.0.0.1"
 select_all_on_focus = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=7557173]
+[node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=7557173]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=788607249]
@@ -59,23 +76,6 @@ layout_mode = 2
 text = "7000"
 placeholder_text = "7000"
 max_length = 5
-emoji_menu_enabled = false
-virtual_keyboard_type = 2
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=226221271]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1816822929]
-layout_mode = 2
-theme_type_variation = &"MainMenuLabel"
-text = "Name:"
-
-[node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1641579130]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Client"
-max_length = 16
 emoji_menu_enabled = false
 virtual_keyboard_type = 2
 

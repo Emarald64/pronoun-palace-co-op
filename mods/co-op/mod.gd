@@ -39,7 +39,7 @@ func _ready()->void:
 	SpellLoader.spell_pool.erase("mba")
 	SpellLoader.spell_pool.erase("panic_button")
 	SpellLoader.spell_pool.erase("red_tape")
-	SpellLoader.add_spell("party_telephone",1.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.add_spell("party_telephone",10.0,Globals.SPELL_CATEGORY.SUPPORT)
 	
 	await get_tree().process_frame
 	Globals.set_script(preload("res://mods/co-op/overrides/custom_globals.gd"))
@@ -66,15 +66,20 @@ func main_menu_additions(main_menu:MainMenu)->void:
 	lobby.position.y=1000
 	join_menu.opens_menu=lobby
 	
+	var create_server_menu=preload("res://mods/co-op/create_server_menu.tscn").instantiate()
+	hud.add_child(create_server_menu)
+	create_server_menu.position.y=1000
+	create_server_menu.lobby=lobby
+	
 	character_select=hud.get_node("CharacterSelect")
 	var start_button=character_select.get_node("StartButton")
 	start_button.pressed.disconnect(character_select._on_start_button_pressed)
-	start_button.pressed.connect(create_server)
-	start_button.opens_menu=lobby
+	start_button.pressed.connect(save_character_selector_info)
+	start_button.opens_menu=create_server_menu
 	
-	host_name=LineEdit.new()
-	host_name.placeholder_text="Name"
-	character_select.add_child(host_name)
+	#host_name=LineEdit.new()
+	#host_name.placeholder_text="Name"
+	#character_select.add_child(host_name)
 
 #func main_aditions(main:Main)->void:
 	#var damage_indecator_holder=HBoxContainer.new()
@@ -87,15 +92,6 @@ func main_menu_additions(main_menu:MainMenu)->void:
 	#word_builder._ready()
 	#word_builder.damage_indecator_holder=damage_indecator_holder
 
-func create_server(port:=7000,max_players:=16)->void:
-	var peer:=ENetMultiplayerPeer.new()
-	peer.create_server(port,max_players)
-	multiplayer.multiplayer_peer=peer
+func save_character_selector_info()->void:
 	Game.difficulty=character_select.difficulty
-	if host_name.text.is_empty():
-		Game.player_info.name="Host"
-	else:
-		Game.player_info.name=host_name.text
 	Game.player_info.character=character_select.character
-	Game.players[1]=Game.player_info
-	Game.player_connected.emit(1,Game.player_info)

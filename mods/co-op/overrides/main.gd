@@ -14,6 +14,14 @@ func _ready():
 	super()
 	Game.player_disconnected.connect(_on_peer_disconnected)
 
+func _process(delta: float) -> void:
+	if Input.is_key_pressed(KEY_R):
+		reviving=true
+		stop_dieing.emit()
+	
+	if Input.is_key_pressed(KEY_P):
+		all_players_compleated_floor.emit()
+
 func start_battle(skipping_transition = false):
 	super(skipping_transition)
 	enemy.max_health*=Game.players.size()
@@ -35,6 +43,7 @@ func _on_peer_disconnected(id:int):
 
 func save_and_exit():
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	Game.players.clear()
 	super()
 
 func player_death():
@@ -45,6 +54,7 @@ func player_death():
 	#player.is_dead=false
 	#player.hide_sprite_on_death=false
 	peer_died.rpc()
+	print("I died")
 	if dead_players.size()+players_compleated_floor.size()>=Game.players.size()-1:
 		reviving=true
 	elif dead_players.size()<=Game.players.size()-1 and enemy.id!=Enemies.NOBODY:
@@ -82,6 +92,7 @@ func start_enemy_turn():
 @rpc("any_peer")
 func peer_died():
 	var id=multiplayer.get_remote_sender_id()
+	print(id, "died")
 	dead_players.append(id)
 	player_died.emit(id)
 	if dead_players.size()==Game.players.size()-1:
@@ -93,9 +104,11 @@ func log_compleated_floor():
 	print(multiplayer.get_remote_sender_id()," compleated floor: ",act_events[0])
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
 	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
+		print("reviving")
 		reviving=true
 		stop_dieing.emit()
 	if players_compleated_floor.size()>=Game.players.size()-1:
+		print("all players compleated floor")
 		all_players_compleated_floor.emit()
 
 func increment_floor():
@@ -120,6 +133,7 @@ func spawn_enemy(enemy_name):
 
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
+	print(tiles)
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
 	for i in height*width:
