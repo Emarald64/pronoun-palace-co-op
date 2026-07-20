@@ -16,6 +16,7 @@ func _init()->void:
 	
 @rpc("call_local")
 func start_game(run_seed:int, _difficulty:int):
+	print("starting game")
 	difficulty=_difficulty
 	DailyManager.set_process(false)
 	AudioManager.fade_music()
@@ -35,10 +36,12 @@ func _on_connected()->void:
 	player_connected.emit(peer_id,player_info)
 
 func _on_other_connected(id:int)->void:
+	print(id, " connected")
 	if main==null:
 		register_player.rpc_id(id,player_info)
 
 func _on_peer_disconnected(id:int)->void:
+	print(id, " disconnected")
 	if id in players:
 		players.erase(id)
 		player_disconnected.emit(id)
