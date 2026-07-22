@@ -2,6 +2,8 @@
 extends EditorScript
 
 var mod_id="co-op"
+var make_global_script_cache:=true
+var make_uid_cache:=true
 var zip_pack:=false
 
 var additional_files: PackedStringArray = [
@@ -17,8 +19,6 @@ var additional_files: PackedStringArray = [
 	"res://source/enemies/bottom_feeder.gd",
 	"res://source/enemies/npcs.gd",
 	"res://source/spells/fishing_rod.gd",
-	"res://.godot/uid_cache.bin", # saves uids so you dont get warning for every file you load
-	"res://.godot/global_script_class_cache.cfg", # saves global classes
 ]
 
 var excluded:PackedStringArray=[
@@ -35,10 +35,16 @@ func _run() -> void :
 		packer.pck_start("res://mod_packs/"+mod_id+"/"+mod_id+".pck")
 	# automaticcly includes files in your mod's folder
 	var mod_files=FileUtil.get_file_paths_recursive("res://mods/"+mod_id)
-	#var global_scripts:Array[Dictionary]=[]
+	var global_scripts=[]
+	var uids:Array[Array]=[]
 	for file in mod_files+additional_files:
 		if file not in excluded and not file.ends_with(".uid"): 
 			if ResourceLoader.exists(file):
+				
+				var uid=ResourceLoader.get_resource_uid(file)
+				if uid>=0:
+					uids.append([uid,file])
+				
 				var loaded: Resource = ResourceLoader.load(file)
 				if loaded is CompressedTexture2D:
 					if zip_pack:
@@ -57,18 +63,21 @@ func _run() -> void :
 					else:
 						packer.add_file(file + ".import", file + ".import")
 						packer.add_file(imported_path, imported_path)
-				#elif loaded is GDScript:
-					#var name=loaded.get_global_name()
-					#if not name.is_empty():
-						#global_scripts.append({
-							#"class":StringName(name),
-							#"base":loaded.get_instance_base_type(),
-							#"language":&"GDScript",
-							#"path":file,
-							#"is_abstact":loaded.is_abstract(),
-							#"is_tool":loaded.is_tool()
-						#})
-					#packer.add_file(file, file)
+				elif make_global_script_cache and loaded is GDScript:
+					var name=loaded.get_global_name()
+					if not name.is_empty():
+						global_scripts.append({
+							"class":StringName(name),
+							"base":loaded.get_instance_base_type(),
+							"language":&"GDScript",
+							"path":file,
+							"is_abstract":loaded.is_abstract(),
+							"is_tool":loaded.is_tool()
+						})
+					if zip_pack:
+						add_file_to_zip(packer,file)
+					else:
+						packer.add_file(file, file)
 				else:
 					if zip_pack:
 						add_file_to_zip(packer,file)
@@ -79,6 +88,34 @@ func _run() -> void :
 					add_file_to_zip(packer,file)
 				else:
 					packer.add_file(file, file)
+	
+	if make_global_script_cache:
+		var cf=ConfigFile.new()
+		cf.set_value("","list",global_scripts)
+		var buffer=cf.encode_to_text().to_utf8_buffer()
+		if zip_pack:
+			packer.start_file("res://.godot/global_script_class_cache.cfg")
+			packer.write_file(buffer)
+			packer.close_file()
+		else:
+			packer.add_file_from_buffer("res://.godot/global_script_class_cache.cfg",buffer)
+	
+	if make_uid_cache:
+		var buffer=StreamPeerBuffer.new()
+		#buffer.resize(4+(12*uids.size())+uids.reduce(func (accum:int,uid_pair:Array):return accum+uid_pair[1].length(),0))
+		buffer.put_u32(uids.size())
+		for entry in uids:
+			buffer.put_u64(entry[0])
+			buffer.put_u32(entry[1].length())
+			buffer.put_data(entry[1].to_utf8_buffer())
+		
+		if zip_pack:
+			packer.start_file("res://.godot/uid_cache.bin")
+			packer.write_file(buffer.data_array)
+			packer.close_file()
+		else:
+			packer.add_file_from_buffer("res://.godot/uid_cache.bin",buffer.data_array)
+		
 	
 	if zip_pack:
 		packer.close()
