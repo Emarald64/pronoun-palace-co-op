@@ -14,6 +14,8 @@ var additional_files: PackedStringArray = [
 	"res://strings/spell/party_telephone.txt",
 	"res://source/spells/party_telephone.gd",
 	"res://arte/spells/party_telephone.png",
+	"res://source/enemies/bottom_feeder.gd",
+	"res://source/enemies/npcs.gd",
 	"res://.godot/uid_cache.bin", # saves uids so you dont get warning for every file you load
 	"res://.godot/global_script_class_cache.cfg", # saves global classes
 ]

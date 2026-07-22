@@ -6,9 +6,11 @@ var damage_indecators:Dictionary[int,Control]={}
 @export var total_attack_label:Label
 var submitted_count:=0
 var heighest_candy_round_value:=0
+var waiting_for_peers_to_submit:=false
+var log_all_damage_updates:=true
 
 signal all_peers_submitted
-signal peer_attack_updated(id:int)
+signal peer_attack_updated(id:int,submit:bool)
 
 func _ready() -> void:
 	super()
@@ -21,20 +23,23 @@ func update_stats() -> void:
 		if can_submit():
 			heighest_candy_round_value=maxi(heighest_candy_round_value,self_heal)
 	else:
-		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false)
+		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()
 
 @rpc("any_peer","call_remote")
-func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool):
+func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool,health:int):
 	var id=multiplayer.get_remote_sender_id()
 	var attack_info={
 		damage=peer_damage,
 		defense=peer_defense,
 		valid=valid,
 		submitted=submitted,
+		health=health,
 		}
-	if submitted:
+	if submitted or log_all_damage_updates:
 		print("attack: ",id,attack_info)
+	else:
+		print_verbose("attack: ",id,attack_info)
 	peer_attacks[id]=attack_info
 	var damage_indecator
 	if id in damage_indecators:
@@ -52,7 +57,7 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 		if submitted_count+main.dead_players.size()>=len(Game.players)-1:
 			all_peers_submitted.emit()
 	update_total_damage_counter()
-	peer_attack_updated.emit(id)
+	peer_attack_updated.emit(id,submitted)
 
 func update_total_damage_counter():
 	total_attack_label.get_node("../..").show()
@@ -62,15 +67,17 @@ func update_total_damage_counter():
 	,damage))
 
 func send_attack_and_wait(reroll:bool=false)->void:
-	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true)
+	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true,player.health)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
 		#verses_label.text="Waiting for other players"
 		#verses_label.show()
+		waiting_for_peers_to_submit=true
 		print("waiting for other players to submit")
 		await all_peers_submitted
 		print("other players submited")
+		waiting_for_peers_to_submit=false
 		#verses_label.hide()
 	for id in peer_attacks:
 		if id not in main.dead_players:

@@ -29,7 +29,10 @@ func _ready():
 
 	if not launching_from_enemy_scene:
 		Game.player.pre_turn_ended.connect(_on_pre_player_turn_end)
-	word_builder.peer_attack_updated.connect(update_intents.unbind(1))
+	word_builder.peer_attack_updated.connect(func (_id:int,submitted:bool):
+		if not submitted:
+			update_intents()
+	)
 
 
 func _difficulty_changed() -> void :
@@ -106,10 +109,10 @@ func pathfind():
 
 func get_damage_taken():
 	var taken = damage_taken
-	if not word_builder.is_submitting and main.is_player_turn:
+	if main.is_player_turn or word_builder.waiting_for_peers_to_submit:
 		taken += word_builder.damage
-		for attack in word_builder.peer_attacks.values():
-			taken+=attack.damage
+	for attack in word_builder.peer_attacks.values():
+		taken+=attack.damage
 	
 	return taken
 

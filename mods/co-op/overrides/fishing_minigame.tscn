@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://6tpynjscmxhd"]
+
+[ext_resource type="PackedScene" uid="uid://cuksnb0yvyc07" path="res://source/minigames/fishing_minigame.tscn" id="1_dlfia"]
+[ext_resource type="Script" uid="uid://d0pjc4atdkf2f" path="res://mods/co-op/overrides/fishing_minigame.gd" id="2_jwvhr"]
+
+[node name="FishingMinigame" unique_id=781323587 instance=ExtResource("1_dlfia")]
+script = ExtResource("2_jwvhr")

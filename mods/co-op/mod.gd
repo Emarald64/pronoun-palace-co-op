@@ -3,6 +3,7 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
+const coop_version="alpha 6"
 
 static func change_script_and_copy_properties(object:Object,script:Script):
 	var properties:Dictionary[String,Variant]={}
@@ -21,6 +22,7 @@ func _on_scene_changed()->void:
 		main_menu_additions(current_scene)
 
 func _ready()->void:
+	print("coop mod version:",coop_version)
 	var scene_tree=get_tree()
 	scene_tree.scene_changed.connect(_on_scene_changed)
 	var current_scene=scene_tree.current_scene
@@ -36,10 +38,14 @@ func _ready()->void:
 	CustomIntent.custom_intent_icons["echo"]=preload("res://mods/co-op/intents/pronounpalace-receivetiles-px.png")
 	CustomIntent.custom_intent_icons["echo_cursed"]=preload("res://mods/co-op/intents/pronounpalace-receivetilescursed-px.png")
 	
-	SpellLoader.spell_pool.erase("mba")
-	SpellLoader.spell_pool.erase("panic_button")
-	SpellLoader.spell_pool.erase("red_tape")
-	SpellLoader.add_spell("party_telephone",10.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.spell_pool["mba"]=0.0
+	SpellLoader.spell_pool["panic_button"]=0.0
+	SpellLoader.spell_pool["red_tape"]=0.0
+	SpellLoader.add_spell("party_telephone",3.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.add_spell("blue_box",3.0,Globals.SPELL_CATEGORY.SUPPORT)
+	#SpellLoader.add_spell("joker",0)
+	
+	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
 	
 	await get_tree().process_frame
 	Globals.set_script(preload("res://mods/co-op/overrides/custom_globals.gd"))
@@ -72,10 +78,13 @@ func main_menu_additions(main_menu:MainMenu)->void:
 	create_server_menu.lobby=lobby
 	
 	character_select=hud.get_node("CharacterSelect")
+	lobby.character_select=character_select
+	
 	var start_button=character_select.get_node("StartButton")
 	start_button.pressed.disconnect(character_select._on_start_button_pressed)
 	start_button.pressed.connect(save_character_selector_info)
 	start_button.opens_menu=create_server_menu
+	
 	
 	#host_name=LineEdit.new()
 	#host_name.placeholder_text="Name"

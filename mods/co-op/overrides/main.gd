@@ -14,7 +14,7 @@ func _ready():
 	super()
 	Game.player_disconnected.connect(_on_peer_disconnected)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_R):
 		reviving=true
 		stop_dieing.emit()
@@ -138,11 +138,34 @@ func recive_word(tiles:Array)->void:
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
 	for i in height*width:
-		var tile=tile_board.get_tile_at(Vector2i(i%width,height-(i/width)-1))
-		if not tile.in_word():
+		var cord:=Vector2i(i%width,height-(i/width)-1)
+		var tile=tile_board.get_tile_at(cord)
+		if tile==null:
+			var tile_data =tiles.pop_front()
+			if tile_data==null:
+				break
+			tile=tile_board.create_tile()
+			
+			tile_board.insert_tile(tile,cord)
+			tile.load_save_data(tile_data)
+			tile.add_poofcloud(tile.get_poof_color())
+			await get_tree().create_timer(0.16).timeout
+		elif not tile.in_word():
 			var tile_data =tiles.pop_front()
 			if tile_data==null:
 				break
 			tile.load_save_data(tile_data)
 			tile.add_poofcloud(tile.get_poof_color())
 			await get_tree().create_timer(0.16).timeout
+
+@rpc("any_peer")
+func blue_box_effect(rng_seed:int):
+	var random=RNG.new()
+	random.seed=rng_seed
+	var valid_spells=spell_container.player_spells.filter(
+		func (player_spell:PlayerSpell)->bool:
+			return player_spell.spell.charge<player_spell.spell.max_charge)
+	if not valid_spells.is_empty():
+		var spell:Spell=random.pick_random(valid_spells).spell
+		spell.add_charge(1)
+	

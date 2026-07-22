@@ -3,8 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="1_3fxkt"]
 [ext_resource type="Script" uid="uid://ca0e1cjsuwpar" path="res://mods/co-op/peer_damage_indecator.gd" id="1_dlp5p"]
 [ext_resource type="Texture2D" uid="uid://dkr5ip4pph7of" path="res://mods/co-op/dead.png" id="3_1o5fg"]
+[ext_resource type="Texture2D" uid="uid://riaajkj4lyl5" path="res://arte/ui/hearts.png" id="4_1o5fg"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="4_e47e5"]
 [ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="5_1o5fg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eyvj"]
+atlas = ExtResource("4_1o5fg")
+region = Rect2(1, 3, 21, 17)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a6585"]
 atlas = ExtResource("4_e47e5")
@@ -15,8 +20,8 @@ atlas = ExtResource("4_e47e5")
 region = Rect2(38, 91, 16, 16)
 
 [node name="Panel" type="Panel" unique_id=661252072]
-custom_minimum_size = Vector2(88, 39)
-offset_right = 88.0
+custom_minimum_size = Vector2(103, 39)
+offset_right = 103.0
 offset_bottom = 39.0
 size_flags_horizontal = 3
 theme_type_variation = &"MenuTicketLeft"
@@ -35,11 +40,12 @@ grow_vertical = 2
 
 [node name="PeerDamageIndecator" type="HBoxContainer" parent="MarginContainer" unique_id=2069571735]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 3
 
 [node name="Control" type="Control" parent="MarginContainer/PeerDamageIndecator" unique_id=997821479]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="CharacterIcon" parent="MarginContainer/PeerDamageIndecator/Control" unique_id=1930440730 instance=ExtResource("1_3fxkt")]
 unique_name_in_owner = true
@@ -57,7 +63,26 @@ theme_override_constants/separation = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=1769622003]
 layout_mode = 2
-theme_override_constants/separation = 9
+theme_override_constants/separation = 5
+
+[node name="HeartSprite" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1717586182]
+layout_mode = 2
+texture = SubResource("AtlasTexture_1eyvj")
+
+[node name="HealthLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite" unique_id=237452374]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -17.0
+offset_top = 7.0
+offset_right = 2.0
+offset_bottom = 22.000021
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("5_1o5fg")
+theme_override_font_sizes/font_size = 8
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="AttackSprite" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
 unique_name_in_owner = true
@@ -105,6 +130,7 @@ layout_mode = 2
 theme_type_variation = &"BoldOutlineLabel"
 theme_override_constants/line_spacing = -9
 text = "Xanderath"
+text_overrun_behavior = 5
 
 [node name="Button" type="Button" parent="." unique_id=1607148441]
 unique_name_in_owner = true

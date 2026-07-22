@@ -31,6 +31,7 @@ func enable_upnp():
 	upnp=UPNP.new()
 	var err=upnp.discover()
 	if err==UPNP.UPNP_RESULT_SUCCESS:
+		print("UPnP discovery ok")
 		%"UPnP Option".hide()
 		%"UPnP Stuff".show()
 	else:

@@ -39,6 +39,8 @@ func _on_other_connected(id:int)->void:
 	print(id, " connected")
 	if main==null:
 		register_player.rpc_id(id,player_info)
+	elif multiplayer.is_server() and multiplayer is SceneMultiplayer:
+		multiplayer.disconnect_peer(id)
 
 func _on_peer_disconnected(id:int)->void:
 	print(id, " disconnected")

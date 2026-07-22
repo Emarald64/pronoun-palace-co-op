@@ -1,6 +1,7 @@
 extends MenuPanel
 
 @export var lobby_player_scene:PackedScene
+var character_select:Control
 var player_blocks:Dictionary[int,Control]={}
 #var character:="lexicographer"
 
@@ -27,7 +28,9 @@ func remove_player(id:int)->void:
 	block.queue_free()
 
 func start_game():
-	var run_seed=randi()
+	var run_seed=character_select.seed_button.get_seed()
+	if run_seed==null:
+		run_seed=randi()
 	Game.start_game.rpc(run_seed,Game.difficulty)
 
 func disappear(instant: bool = false)->void:

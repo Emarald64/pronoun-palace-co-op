@@ -24,6 +24,8 @@ func update(damage_info:Dictionary):
 	
 	%DefendLabel.text=str(damage_info.defense)
 	
+	%HealthLabel.text=str(damage_info.health)
+	
 	self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
 
 func set_character(character:String)->void:
