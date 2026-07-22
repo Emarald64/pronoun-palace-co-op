@@ -42,8 +42,7 @@ func _on_peer_disconnected(id:int):
 			all_players_compleated_floor.emit()
 
 func save_and_exit():
-	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	Game.players.clear()
+	kill_peer()
 	super()
 
 func player_death():
@@ -54,7 +53,9 @@ func player_death():
 	#player.is_dead=false
 	#player.hide_sprite_on_death=false
 	peer_died.rpc()
+	word_builder.submitted_count=0
 	print("I died")
+	tile_board.clear_targets()
 	if dead_players.size()+players_compleated_floor.size()>=Game.players.size()-1:
 		reviving=true
 	elif dead_players.size()<=Game.players.size()-1 and enemy.id!=Enemies.NOBODY:
@@ -71,7 +72,9 @@ func player_death():
 		player.is_defeated=false
 		player.is_flinching=false
 		player.is_dying=false
+		tile_board.unlock_restock(true)
 		await word_builder.remove_tiles()
+		word_builder.submitted_count=0
 		word_builder.update()
 		player.heal(maxi(word_builder.heighest_candy_round_value,1))
 		word_builder.heighest_candy_round_value=0
@@ -169,3 +172,13 @@ func blue_box_effect(rng_seed:int):
 		var spell:Spell=random.pick_random(valid_spells).spell
 		spell.add_charge(1)
 	
+
+func kill_peer():
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	if Game.upnp!=null:
+		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
+	Game.players.clear()
+
+func finish_run(is_victory: = false):
+	kill_peer()
+	super(is_victory)

@@ -104,6 +104,12 @@ func _init():
 			},
 			next="solo_b"
 		},
+		fishing = {
+			cursed_odds = {
+				0: 0.25, 
+				1: 0.33, 
+			}
+		}, 
 	}
 
 func _ready():

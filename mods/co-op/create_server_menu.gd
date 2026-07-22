@@ -1,7 +1,7 @@
 extends MenuPanel
 
 @export var lobby:MenuPanel
-var upnp:UPNP
+#var upnp:UPNP
 
 func host_pressed():
 	print("starting enet hosting")
@@ -10,7 +10,7 @@ func host_pressed():
 	if server_error==Error.OK:
 		print("server created ok")
 		if %ForwardPort.button_pressed:
-			var upnp_error=upnp.add_port_mapping(%Port.value,0,"Pronoun Palace coop")
+			var upnp_error=Game.upnp.add_port_mapping(%Port.value,0,"Pronoun Palace coop")
 			if upnp_error!=UPNP.UPNPResult.UPNP_RESULT_SUCCESS:
 				push_error("UPnP port map failure: ",upnp_error)
 			else:
@@ -28,8 +28,8 @@ func host_pressed():
 		%Header.text=error_string(server_error)
 
 func enable_upnp():
-	upnp=UPNP.new()
-	var err=upnp.discover()
+	Game.upnp=UPNP.new()
+	var err=Game.upnp.discover()
 	if err==UPNP.UPNP_RESULT_SUCCESS:
 		print("UPnP discovery ok")
 		%"UPnP Option".hide()
@@ -38,6 +38,6 @@ func enable_upnp():
 		push_error("UPnP discovery error ",err)
 
 func show_ip():
-	%IP.text=upnp.query_external_address()
+	%IP.text=Game.upnp.query_external_address()
 	%ShowIPButton.hide()
 	%IP.show()

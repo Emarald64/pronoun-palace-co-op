@@ -39,6 +39,8 @@ func disappear(instant: bool = false)->void:
 		player_block.queue_free()
 	player_blocks.clear()
 	Game.players.clear()
+	if Game.upnp!=null:
+		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	super(instant)
 
 func leave()->void:

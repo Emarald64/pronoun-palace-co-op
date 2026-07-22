@@ -6,6 +6,7 @@ var player_info = {
 	character="lexicographer",
 	#damage=0,
 }
+var upnp:UPNP
 signal player_connected(peer_id:int,player_info)
 signal player_disconnected(peer_id:int)
 
