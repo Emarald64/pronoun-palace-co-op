@@ -228,9 +228,11 @@ func swap(big_board:bool):
 	
 	#swap spells
 	var spells=main.spell_container.player_spells
+	var spell_to_swap
 	if spells.size()>1:
-		spells.slice(1)
-	var spell_to_swap=spells.pick_random()
+		spell_to_swap=spells.slice(1).pick_random()
+	else:
+		spell_to_swap=spells[0]
 	var swapping_board:bool=tile_board.num_columns==5
 	recive_swap.rpc_id(swap_partner,spell_to_swap.spell.get_save_data(), get_board_part_to_swap() if swapping_board and not big_board else {})
 	if not has_recived_swap_info:
