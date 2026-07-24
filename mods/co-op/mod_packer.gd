@@ -16,6 +16,8 @@ var additional_files: PackedStringArray = [
 	"res://strings/spell/party_telephone.txt",
 	"res://source/spells/party_telephone.gd",
 	"res://arte/spells/party_telephone.png",
+	"res://strings/spell/blue_box.txt",
+	"res://source/spells/blue_box.gd",
 	"res://source/enemies/bottom_feeder.gd",
 	"res://source/enemies/npcs.gd",
 	"res://source/spells/fishing_rod.gd",

@@ -30,10 +30,7 @@ func connect_to_server() -> void:
 	var address:String=%IP.text
 	if address.is_empty():
 		address="127.0.0.1"
-	var port_string:String=%Port.text
-	var port:=7000
-	if port_string.is_valid_int():
-		port=port_string.to_int()
+	var port:=int(%Port.value)
 	var peer:=ENetMultiplayerPeer.new()
 	var error=peer.create_client(address,port)
 	if error:

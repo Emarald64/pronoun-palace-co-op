@@ -70,14 +70,10 @@ layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 text = "Port:"
 
-[node name="Port" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=606998335]
+[node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1056341143]
 unique_name_in_owner = true
 layout_mode = 2
-text = "7000"
-placeholder_text = "7000"
-max_length = 5
-emoji_menu_enabled = false
-virtual_keyboard_type = 2
+max_value = 65535.0
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="4" unique_id=990898958]
 layout_mode = 2

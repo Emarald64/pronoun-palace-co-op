@@ -199,7 +199,7 @@ func display_intent():
 			})
 
 func _get_health_scaling():
-	return Enemies.NOBODY_HEALTH_SCALING[Globals.CHARACTERS.LEXICOGRAPHER]
+	return [60, 70, 80, 90]
 
 @rpc("any_peer")
 func recive_swap(swapped_spell:Dictionary,swapped_board_piece:Dictionary={}):
