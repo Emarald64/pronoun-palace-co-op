@@ -4,6 +4,7 @@ var peer_attacks:Dictionary[int,Dictionary]={}
 var damage_indecators:Dictionary[int,Control]={}
 @export var damage_indecator_holder:Control
 @export var total_attack_label:Label
+@export var total_attack_container:Control
 var submitted_count:=0
 var heighest_candy_round_value:=0
 var waiting_for_peers_to_submit:=false
@@ -60,24 +61,34 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 	peer_attack_updated.emit(id,submitted)
 
 func update_total_damage_counter():
-	total_attack_label.get_node("../..").show()
-	total_attack_label.text=str(peer_attacks.values().reduce(
+	var total_damage=damage
+	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+		var health_scaling=main.enemy._get_health_scaling()
+		total_damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
+	
+	total_damage=peer_attacks.values().reduce(
 		func (accum:int,peer_attack)->int:
 			return accum+peer_attack.damage
-	,damage))
+	,total_damage)
+	
+	if total_damage>0:
+		total_attack_container.show()
+	total_attack_label.text=str(total_damage)
 
 func send_attack_and_wait(reroll:bool=false)->void:
 	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true,player.health)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
-		#verses_label.text="Waiting for other players"
+		word_hint.label.text="Waiting for other players to submit"
+		word_hint.appear()
 		#verses_label.show()
 		waiting_for_peers_to_submit=true
 		print("waiting for other players to submit")
 		await all_peers_submitted
 		print("other players submited")
 		waiting_for_peers_to_submit=false
+		word_hint.disappear()
 		#verses_label.hide()
 	for id in peer_attacks:
 		if id not in main.dead_players:
@@ -88,8 +99,11 @@ func send_attack_and_wait(reroll:bool=false)->void:
 			damage_indecators[id].hide()
 	print("attacking for ",damage)
 	peer_attacks.clear()
-	total_attack_label.get_node("../..").hide()
+	total_attack_container.hide()
 	submitted_count=0
+	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+		var health_scaling=main.enemy._get_health_scaling()
+		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	if reroll:
 		await player.attack(enemy,damage)
 
@@ -117,8 +131,10 @@ func player_disconnected(id:int)->void:
 		all_peers_submitted.emit()
 
 func get_attack_value()->int:
-	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words():
-		return 999
+	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+		#print("housebroken word spelled")
+		var health_scaling=main.enemy._get_health_scaling()
+		return damage+health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	return damage
 
 #func can_submit() -> bool:

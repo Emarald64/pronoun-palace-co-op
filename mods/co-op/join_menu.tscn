@@ -73,7 +73,9 @@ text = "Port:"
 [node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1056341143]
 unique_name_in_owner = true
 layout_mode = 2
+min_value = 1.0
 max_value = 65535.0
+value = 7000.0
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="4" unique_id=990898958]
 layout_mode = 2

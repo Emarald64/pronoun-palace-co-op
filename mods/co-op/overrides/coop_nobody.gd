@@ -35,9 +35,9 @@ func _init():
 		phone_a_friend_recive={
 			cursed_num={
 				0:3,
-				1:5,
+				1:4,
 				2:6,
-				3:8
+				3:10
 			},
 			next="attack_big"
 		},
@@ -132,7 +132,7 @@ func _ready():
 	Game.player_disconnected.connect(_on_player_died_or_dc)
 	
 	word_builder.peer_attack_updated.connect(func (_id:int,submitted:bool):
-		if not submitted:
+		if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and not submitted and next_move=="solo_c":
 			update_intents()
 		)
 
@@ -257,7 +257,7 @@ func swap(big_board:bool):
 			#projectile.impacted.disconnect(projectile.impacted.get_connections()[0].callable)
 			tile.impacted.connect(_on_projectile_impacted)
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-			tile.impacted.connect(tile_board.insert_tile.bind(cord))
+			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			#projectile.impacted.connect(func ():
 				#tile.is_projectile=false
 				#tile_board.insert_tile(tile, cord,false)
@@ -291,6 +291,7 @@ func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> vo
 	elif next_move == "solo_b":
 		echo_tiles=last_move_tiles
 		last_move_tiles=word_builder.tiles.map(func (tile:Tile):return tile.get_save_data())
+
 @rpc("any_peer")
 func recive_phone_a_friend_data(tiles:Array):
 	print("phone a friend data: ",tiles)
@@ -314,8 +315,14 @@ func phone_a_friend_recive():
 		await recived_swap_info
 	var cursed_tiles=recived_phone_a_friend_data.duplicate()
 	rng.move.shuffle(cursed_tiles)
-	cursed_tiles.sort_custom(get_effect_priority.bind(Globals.EFFECT_PRIORITY.ENEMY.STATUS_ONLY))
-	cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num)
+	cursed_tiles.sort_custom(func (a:Dictionary,b:Dictionary)->bool:
+		return get_effect_priority(a.get("statuses"))>get_effect_priority(b.get("Statuses"))
+	)
+	for tile_data in cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num):
+		if "statuses" in tile_data:
+			tile_data.statuses.append(TileStatus.CURSED)
+		else:
+			tile_data.statuses=[TileStatus.CURSED]
 	
 	#hit_player(moves.phone_a_friend_recive.damage)
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
@@ -326,8 +333,8 @@ func phone_a_friend_recive():
 		var tile=tile_board.create_tile()
 		main.add_child(tile)
 		tile.load_save_data(recived_phone_a_friend_data[i])
-		if tile in cursed_tiles:
-			tile.add_status(Globals.TileStatus.CURSED)
+		#if tile in cursed_tiles:
+			#tile.add_status(Globals.TileStatus.CURSED)
 		tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100),cord)
 		tile.impacted.connect(_on_projectile_impacted)
 		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
@@ -336,7 +343,9 @@ func phone_a_friend_recive():
 	await all_projectiles_impacted
 	await wait_for_idle()
 
-func get_effect_priority(tile_effects:Array[String],priority_list: Array) -> int:
+static func get_effect_priority(tile_effects,priority_list: Array=Globals.EFFECT_PRIORITY.ENEMY.STATUS_ONLY) -> int:
+	if tile_effects==null:
+		return 999
 	for priority in range(priority_list.size() - 1, -1, -1):
 		var effect = priority_list[priority]
 		if effect is Array:
@@ -374,10 +383,16 @@ func solo_b():
 				faces=[letter],
 				type=rng.move.randi_range(1,2)
 			})
-	var cursed_tile=recived_phone_a_friend_data.duplicate()
-	rng.move.shuffle(cursed_tile)
-	cursed_tile.sort_custom(get_effect_priority.bind(Globals.EFFECT_PRIORITY.ENEMY.STATUS_ONLY))
-
+	var cursed_tiles=recived_phone_a_friend_data.duplicate()
+	rng.move.shuffle(cursed_tiles)
+	cursed_tiles.sort_custom(func (a,b)->bool:
+		return get_effect_priority(a.statuses)>get_effect_priority(b.statuses)
+	)
+	for tile_data in cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num):
+		if "statuses" in tile_data:
+			tile_data.statuses.append(TileStatus.CURSED)
+		else:
+			tile_data.statuses=[TileStatus.CURSED]
 	
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)

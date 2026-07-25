@@ -18,10 +18,11 @@ script = ExtResource("2_8s84c")
 offset_left = 94.0
 offset_right = 140.0
 
-[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder", "total_attack_label")]
+[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder", "total_attack_label", "total_attack_container")]
 script = ExtResource("2_rhwav")
 damage_indecator_holder = NodePath("../VBoxContainer/ScrollContainer/Damage Indecator Holder")
-total_attack_label = NodePath("../VBoxContainer/HBoxContainer/TextureRect/TotalAttackLabel")
+total_attack_label = NodePath("../VBoxContainer/TotalAttackContainer/TextureRect/TotalAttackLabel")
+total_attack_container = NodePath("../VBoxContainer/TotalAttackContainer")
 
 [node name="EnemyIntentContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="6" unique_id=112413146]
 script = ExtResource("4_2q8ta")
@@ -42,23 +43,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameUILayer/VBoxContainer" index="1" unique_id=1571923227]
+[node name="TotalAttackContainer" type="HBoxContainer" parent="GameUILayer/VBoxContainer" index="1" unique_id=1571923227]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Label" type="Label" parent="GameUILayer/VBoxContainer/HBoxContainer" index="0" unique_id=946364225]
+[node name="Label" type="Label" parent="GameUILayer/VBoxContainer/TotalAttackContainer" index="0" unique_id=946364225]
 layout_mode = 2
 theme_type_variation = &"BoldOutlineLabel"
 text = "Total:"
 
-[node name="TextureRect" type="TextureRect" parent="GameUILayer/VBoxContainer/HBoxContainer" index="1" unique_id=1909720952]
+[node name="TextureRect" type="TextureRect" parent="GameUILayer/VBoxContainer/TotalAttackContainer" index="1" unique_id=1909720952]
 layout_mode = 2
 texture = SubResource("AtlasTexture_xp132")
 flip_h = true
 
-[node name="TotalAttackLabel" type="Label" parent="GameUILayer/VBoxContainer/HBoxContainer/TextureRect" index="0" unique_id=1334195988]
+[node name="TotalAttackLabel" type="Label" parent="GameUILayer/VBoxContainer/TotalAttackContainer/TextureRect" index="0" unique_id=1334195988]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -17.0

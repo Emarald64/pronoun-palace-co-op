@@ -134,7 +134,15 @@ func spawn_enemy(enemy_name):
 		super("res://mods/co-op/overrides/coop_nobody.tscn")
 	else:
 		super(enemy_name)
-
+	
+	if enemy_name==Enemies.HOUSEBROKEN:
+		CoOp.change_script_and_copy_properties(enemy,load("res://mods/co-op/overrides/housebroken.gd"))
+		enemy.sprite.set_script(load("res://mods/co-op/overrides/housebroken_sprite.gd"))
+		enemy.sprite._ready()
+	if enemy_name == Enemies.STRAWMAN:
+		enemy.sprite.set_script(load("res://mods/co-op/overrides/strawman_sprite.gd"))
+		enemy.sprite._ready()
+		
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
 	print(tiles)
