@@ -1,0 +1,17 @@
+:name:
+	Blue Box
+
+:description:
+	Restore 1 charge to a random spell of another player
+
+:label:
+	Send Charge
+
+:charge_category:
+	uncommon
+
+:max_charge:
+	3
+
+:banner:
+	Select a player to send a charge to
