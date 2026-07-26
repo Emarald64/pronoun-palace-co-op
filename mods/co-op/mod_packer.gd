@@ -13,6 +13,7 @@ var additional_files: PackedStringArray = [
 	"res://strings/intent/phone_a_friend_recive_cursed.txt",
 	"res://strings/intent/phone_a_friend_send.txt",
 	"res://strings/intent/phone_a_friend_send_cursed.txt",
+	"res://strings/intent/spell_swap.txt",
 	"res://strings/spell/party_telephone.txt",
 	"res://source/spells/party_telephone.gd",
 	"res://arte/spells/party_telephone.png",

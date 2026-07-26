@@ -29,6 +29,7 @@ func _ready()->void:
 	if current_scene is MainMenu:
 		main_menu_additions(current_scene)
 	
+	CustomIntent.custom_intent_icons["spell_swap"]=preload("res://mods/co-op/intents/spell_swap.png")
 	
 	CustomIntent.custom_intent_icons["phone_a_friend_send"]=preload("res://mods/co-op/intents/pronounpalace-sendtilesx-px.png")
 	CustomIntent.custom_intent_icons["phone_a_friend_recive"]=preload("res://mods/co-op/intents/pronounpalace-receivetiles-px.png")

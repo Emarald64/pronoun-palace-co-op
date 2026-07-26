@@ -1,0 +1,5 @@
+:name:
+	Swap Spells
+
+:description:
+	One of your spells will be swapped with a random spell of another player

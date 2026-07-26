@@ -171,8 +171,10 @@ func display_intent():
 	match next_move:
 		"swap_big":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 4})
+			add_intent("spell_swap")
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 2})
+			add_intent("spell_swap")
 		"phone_a_friend_recive":
 			add_intent("phone_a_friend_recive", {partner=Game.players[swap_partner].name})
 			add_intent("phone_a_friend_recive_cursed", {count=moves.phone_a_friend_recive.cursed_num,partner=Game.players[swap_partner].name})
