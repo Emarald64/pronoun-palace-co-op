@@ -1,0 +1,23 @@
+:name:
+	Postage Stamp
+
+:description:
+	Remove a selected tile and queue it for another player
+
+:label:
+	Send tile
+
+:charge_category:
+	common
+
+:max_charge:
+	3
+
+:banner:
+	{:banner_tile: if selecting_tile}{:banner_player: not selecting_tile}
+
+:banner_player:
+	Select the player to send a tile to
+
+:banner_tile:
+	Select the tile to send

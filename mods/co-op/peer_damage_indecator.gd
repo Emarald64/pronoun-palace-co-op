@@ -5,6 +5,10 @@ var peer_id:=0
 
 func _ready() -> void:
 	%AttackSprite.texture=%AttackSprite.texture.duplicate()
+	$HoverHandler.disabled=true
+	Game.player.selection_started.connect(update_selecting)
+	Game.player.selection_finished.connect(update_selecting)
+	
 
 func setup(id:int)->void:
 	set_character(Game.players[id].character)
@@ -37,3 +41,9 @@ func set_dead(dead:bool):
 func _on_button_pressed() -> void:
 	if Game.main.player.is_selecting(3):
 		Game.main.player.selected.emit(peer_id)
+		AudioManager.play_sound(Sounds.SPELLS.SPELL_CLICK)
+
+func update_selecting()->void:
+	var selecting_player:bool=Game.main.player.is_selecting(3)
+	$Button.disabled=not selecting_player
+	$HoverHandler.disabled=not selecting_player

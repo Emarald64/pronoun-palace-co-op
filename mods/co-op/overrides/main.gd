@@ -6,6 +6,7 @@ var players_compleated_floor:Array[int]=[]
 signal all_players_compleated_floor
 signal stop_dieing
 signal player_died(id:int)
+signal peer_set_spells
 
 var reviving:=false
 var candy_round:=false
@@ -190,3 +191,35 @@ func kill_peer():
 func finish_run(is_victory: = false):
 	kill_peer()
 	super(is_victory)
+
+@rpc("any_peer")
+func request_set_spells():
+	set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
+
+@rpc("any_peer")
+func set_spells(spells:Array):
+	for player_spell in spell_container.player_spells:
+		player_spell.queue_free()
+	spell_container.player_spells.clear()
+	spell_container.position_spells()
+	spell_container.load_save_data(spells)
+	for player_spell in spell_container.player_spells:
+		player_spell.spell_paper.gain()
+	peer_set_spells.emit()
+
+@rpc("any_peer")
+func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index=null):
+	if reply_index!=null:
+		set_spell_and_send_data.rpc_id(multiplayer.get_remote_sender_id(),spell_container.player_spells[recive_index].spell.get_save_data(),reply_index)
+	spell_container.player_spells[recive_index].set_spell(Spell.create_from_save(spell))
+	spell_container.player_spells[recive_index].spell_paper.gain()
+
+@rpc("any_peer")
+func queue_tile(tile_data:Dictionary):
+	var queued_tile:Dictionary=rng.mod.pick_random(tile_board.get_preview_tiles())
+	queued_tile.assign(tile_data)
+	tile_board.update_previews()
+
+func load_save_data(run_save):
+	super(run_save)
+	word_builder.resend_submitted.rpc()

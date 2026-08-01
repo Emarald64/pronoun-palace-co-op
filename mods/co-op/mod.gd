@@ -42,8 +42,10 @@ func _ready()->void:
 	SpellLoader.spell_pool["mba"]=0.0
 	SpellLoader.spell_pool["panic_button"]=0.0
 	SpellLoader.spell_pool["red_tape"]=0.0
-	SpellLoader.add_spell("party_telephone",3.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.add_spell("party_telephone",3.0,Globals.SPELL_CATEGORY.OFFENSIVE)
 	SpellLoader.add_spell("blue_box",3.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.add_spell("remote_object",3.0,Globals.SPELL_CATEGORY.SUPPORT)
+	SpellLoader.add_spell("postage_stamp",3.0,Globals.SPELL_CATEGORY.OFFENSIVE)
 	#SpellLoader.add_spell("joker",0)
 	
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
@@ -85,7 +87,6 @@ func main_menu_additions(main_menu:MainMenu)->void:
 	start_button.pressed.disconnect(character_select._on_start_button_pressed)
 	start_button.pressed.connect(save_character_selector_info)
 	start_button.opens_menu=create_server_menu
-	
 	
 	#host_name=LineEdit.new()
 	#host_name.placeholder_text="Name"

@@ -1,0 +1,35 @@
+:name:
+	Remote Object
+
+:description:
+	{:cancel_description: if selecting_spell}{:normal_description: not selecting_spell}
+
+:normal_description:
+	Choose another player's spell to swap with this one.
+
+:cancel_description:
+	Cancel swapping spells
+
+:label:
+	{:cancel_label: if selecting_spell}{:normal_label: not selecting_spell}
+
+:cancel_label:
+	Cancel
+
+:normal_label:
+	Swap spells
+
+:charge_category:
+	uncommon
+
+:max_charge:
+	3
+
+:banner:
+	{:banner_spell: if selecting_spell}{:banner_player: not selecting_spell}
+
+:banner_player:
+	Select a player to swap spells with
+
+:banner_spell:
+	Select a spell to swap

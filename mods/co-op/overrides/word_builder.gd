@@ -27,7 +27,11 @@ func update_stats() -> void:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()
 
-@rpc("any_peer","call_remote")
+@rpc("any_peer")
+func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int):
+	peer_stats_updated(peer_damage,peer_defense,valid,true,health)
+
+@rpc("any_peer","unreliable_ordered")
 func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool,health:int):
 	var id=multiplayer.get_remote_sender_id()
 	var attack_info={
@@ -76,7 +80,7 @@ func update_total_damage_counter():
 	total_attack_label.text=str(total_damage)
 
 func send_attack_and_wait(reroll:bool=false)->void:
-	peer_stats_updated.rpc(get_attack_value(),defense,not reroll,true,player.health)
+	peer_submitted_word.rpc(get_attack_value(),defense,not reroll,player.health)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
@@ -137,5 +141,7 @@ func get_attack_value()->int:
 		return damage+health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	return damage
 
-#func can_submit() -> bool:
-	#return not main.candy_round and super()
+@rpc("any_peer")
+func resend_submitted():
+	if waiting_for_peers_to_submit:
+		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,true,player.health)

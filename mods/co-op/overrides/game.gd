@@ -31,6 +31,19 @@ func start_game(run_seed:int, _difficulty:int):
 	get_tree().change_scene_to_file("res://mods/co-op/overrides/main.tscn")
 	#start_run(player_info.character,run_seed)
 
+@rpc
+func load_joining_game(save_metadata:Dictionary,enemy_save,act_events)->void:
+	save_metadata.character=player_info.character
+	var save=SaveManager.get_save().get_saved_run()
+	save.metadata=save_metadata
+	save.data.act_events=act_events
+	save.data.enemy=enemy_save
+	DailyManager.set_process(false)
+	AudioManager.fade_music()
+	AudioManager.fade_sounds()
+	loading_run_save = save
+	get_tree().change_scene_to_file("res://mods/co-op/overrides/main.tscn")
+
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()
 	players[peer_id]=player_info
@@ -38,10 +51,14 @@ func _on_connected()->void:
 
 func _on_other_connected(id:int)->void:
 	print(id, " connected")
-	if main==null:
-		register_player.rpc_id(id,player_info)
-	elif multiplayer.is_server() and multiplayer is SceneMultiplayer:
-		multiplayer.disconnect_peer(id)
+	register_player.rpc_id(id,player_info)
+	if main!=null and multiplayer.is_server():
+		if enemy.id=="nobody":
+			multiplayer.disconnect_peer(id)
+		var current_enemy_data
+		if enemy!=null:
+			current_enemy_data={id=enemy.id,save=enemy.get_save_data()}
+		load_joining_game.rpc_id(id,main.get_save_metadata(),current_enemy_data,main.act_events)
 
 func _on_peer_disconnected(id:int)->void:
 	print(id, " disconnected")

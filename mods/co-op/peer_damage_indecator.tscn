@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://riaajkj4lyl5" path="res://arte/ui/hearts.png" id="4_1o5fg"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="4_e47e5"]
 [ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="5_1o5fg"]
+[ext_resource type="Script" uid="uid://7xvadspst3p5" path="res://source/ui/generic/hover_handler.gd" id="7_1o5fg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1eyvj"]
 atlas = ExtResource("4_1o5fg")
@@ -19,57 +20,71 @@ region = Rect2(90, 145, 16, 16)
 atlas = ExtResource("4_e47e5")
 region = Rect2(38, 91, 16, 16)
 
-[node name="Panel" type="Panel" unique_id=661252072]
+[node name="PeerDamageIndecator" type="Control" unique_id=1962059010]
 custom_minimum_size = Vector2(103, 39)
-offset_right = 103.0
-offset_bottom = 39.0
-size_flags_horizontal = 3
-theme_type_variation = &"MenuTicketLeft"
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 script = ExtResource("1_dlp5p")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2118163379]
+[node name="Panel" type="Panel" parent="." unique_id=661252072]
+custom_minimum_size = Vector2(103, 39)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MenuTicketLeft"
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=2118163379]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
 offset_top = 3.0
 offset_right = -5.0
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PeerDamageIndecator" type="HBoxContainer" parent="MarginContainer" unique_id=2069571735]
+[node name="PeerDamageIndecator" type="HBoxContainer" parent="Panel/MarginContainer" unique_id=2069571735]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Control" type="Control" parent="MarginContainer/PeerDamageIndecator" unique_id=997821479]
+[node name="Control" type="Control" parent="Panel/MarginContainer/PeerDamageIndecator" unique_id=997821479]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="CharacterIcon" parent="MarginContainer/PeerDamageIndecator/Control" unique_id=1930440730 instance=ExtResource("1_3fxkt")]
+[node name="CharacterIcon" parent="Panel/MarginContainer/PeerDamageIndecator/Control" unique_id=1930440730 instance=ExtResource("1_3fxkt")]
 unique_name_in_owner = true
 
-[node name="Dead" type="Sprite2D" parent="MarginContainer/PeerDamageIndecator/Control" unique_id=1019964827]
+[node name="Dead" type="Sprite2D" parent="Panel/MarginContainer/PeerDamageIndecator/Control" unique_id=1019964827]
 unique_name_in_owner = true
+editor_description = "(Infinity)"
 visible = false
 texture = ExtResource("3_1o5fg")
 centered = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PeerDamageIndecator" unique_id=1938947579]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/PeerDamageIndecator" unique_id=1938947579]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=1769622003]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=1769622003]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="HeartSprite" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1717586182]
+[node name="HeartSprite" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1717586182]
 layout_mode = 2
 texture = SubResource("AtlasTexture_1eyvj")
 
-[node name="HealthLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite" unique_id=237452374]
+[node name="HealthLabel" type="Label" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite" unique_id=237452374]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -17.0
@@ -84,13 +99,13 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="AttackSprite" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
+[node name="AttackSprite" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
 unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("AtlasTexture_a6585")
 flip_h = true
 
-[node name="AttackLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite" unique_id=895210913]
+[node name="AttackLabel" type="Label" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite" unique_id=895210913]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -17.0
@@ -105,11 +120,11 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1908147609]
+[node name="TextureRect2" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1908147609]
 layout_mode = 2
 texture = SubResource("AtlasTexture_e47e5")
 
-[node name="DefendLabel" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2" unique_id=482729835]
+[node name="DefendLabel" type="Label" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2" unique_id=482729835]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -17.0
@@ -124,7 +139,7 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="Name" type="Label" parent="MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=940881744]
+[node name="Name" type="Label" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=940881744]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"BoldOutlineLabel"
@@ -141,5 +156,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+disabled = true
+
+[node name="HoverHandler" type="Node2D" parent="." unique_id=233296125 node_paths=PackedStringArray("hovering", "source")]
+script = ExtResource("7_1o5fg")
+hovering = NodePath("../Panel")
+source = NodePath("../Button")
+default_position = Vector2(-6, 0)
+hovered_position = Vector2(-4, 0)
+pressed_position = Vector2(-2, 0)
+metadata/_custom_type_script = "uid://7xvadspst3p5"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

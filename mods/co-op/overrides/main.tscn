@@ -33,6 +33,7 @@ offset_bottom = 20.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="GameUILayer/VBoxContainer" index="0" unique_id=28968631]
 custom_maximum_size = Vector2(-1, 168)
+clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
