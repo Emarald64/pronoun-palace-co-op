@@ -11,6 +11,7 @@ var has_recived_swap_info:=false
 
 var last_move_tiles:Array=[]
 var recived_phone_a_friend_data:Array=[]
+var regular_board:=true
 
 var tile_copies=[]
 
@@ -26,10 +27,29 @@ func _init():
 	print("using co-op nobody")
 	
 	moves={
+		swap={
+			first_damage={
+				0:2,
+				1:3,
+				2:4,
+				3:5
+			}
+		},
 		swap_big={
+			second_damage={
+				0:2,
+				2:3,
+				3:4
+			},
 			next="phone_a_friend_recive"
 		},
 		swap_small={
+			second_damage={
+				0:3,
+				1:4,
+				2:5,
+				3:7
+			},
 			next="phone_a_friend_send"
 		},
 		phone_a_friend_recive={
@@ -98,8 +118,7 @@ func _init():
 				3:8
 			},
 			reduce_by_per_player={
-				0:2,
-				1:3,
+				0:3,
 				2:4
 			},
 			next="solo_b"
@@ -159,6 +178,7 @@ func _on_player_died_or_dc(peer_id:int):
 		print("swap partner died")
 		swap_partner=-1
 		add_partnerless_player.rpc()
+		regular_board=true
 		await wait_for_idle()
 		await get_tree().process_frame
 		#if next_move in ["swap_big","swap_small"]:
@@ -171,17 +191,19 @@ func display_intent():
 	match next_move:
 		"swap_big":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 4})
+			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_big.second_damage)})
 			add_intent("spell_swap")
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 2})
+			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
 			add_intent("spell_swap")
 		"phone_a_friend_recive":
 			add_intent("phone_a_friend_recive", {partner=Game.players[swap_partner].name})
-			add_intent("phone_a_friend_recive_cursed", {count=moves.phone_a_friend_recive.cursed_num,partner=Game.players[swap_partner].name})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",discription_override="phone_a_friend_recive_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
 			add_intent(Intent.PREPARING)
 		"phone_a_friend_send":
 			add_intent("phone_a_friend_send", {partner=Game.players[swap_partner].name})
-			add_intent("phone_a_friend_send_cursed", {count=moves.phone_a_friend_recive.cursed_num, partner=Game.players[swap_partner].name})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",discription_override="phone_a_friend_send_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
 			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
@@ -191,7 +213,8 @@ func display_intent():
 			add_intent(Intent.ATTACK, {damage=moves.solo_a.damage})
 		"solo_b":
 			add_intent("echo")
-			add_intent("echo_cursed", {count=moves.solo_b.cursed})
+			#add_intent("echo_cursed", {count=moves.solo_b.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",discription_override="echo_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
 		"solo_c":
 			add_intent(Intent.CONCENTRATION,{
 				damage=get_multitude_attack_damage(),
@@ -243,6 +266,12 @@ func swap(big_board:bool):
 	spell_to_swap.set_spell(Spell.create_from_save(recived_spell))
 	recived_spell=null
 	has_recived_swap_info=false
+	if regular_board:
+		hit_player(moves.swap.first_damage)
+	elif big_board:
+		hit_player(moves.swap_big.second_damage)
+	else:
+		hit_player(moves.swap_small.second_damage)
 	
 	@warning_ignore("incompatible_ternary")
 	await tile_board.set_size(5, 4 if big_board else 2,null,null if recived_board_piece.is_empty() else 2)
@@ -269,6 +298,7 @@ func swap(big_board:bool):
 		await all_projectiles_impacted
 		await tile_board.settle_board()
 		await tile_board.set_size(5, 4 if big_board else 2)
+	regular_board=false
 	await wait_for_idle()
 	
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:

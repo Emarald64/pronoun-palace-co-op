@@ -16,24 +16,28 @@ func update_sprite():
 			sprite.hframes=1
 			sprite.texture=custom_intent_icons[intent]
 	else:
-		super.update_sprite()
-	if "name_override" in context and context.name_override in SpecialIntentFrame:
-		sprite.frame = SpecialIntentFrame[context.name_override]
-	
-	elif intent in IntentFrame:
-		sprite.frame = IntentFrame[intent]
-	elif intent in WORD_CATEGORY_INTENTS:
-		sprite.frame = CategoryFrames[context.word_category]
-	elif intent in CONTEXT_STATUS_INTENTS:
-		for status in get_statuses():
-			if status is String and status in custom_status_intent_icons:
+		if "name_override" in context:
+			if context.name_override in custom_intent_icons:
 				sprite.vframes=1
 				sprite.hframes=1
-				sprite.texture=custom_status_intent_icons[status]
-				break
-			elif status in StatusIntentFrame:
-				sprite.frame = StatusIntentFrame[status]
-				break
+				sprite.texture=custom_intent_icons[context.name_override]
+			if context.name_override in SpecialIntentFrame:
+				sprite.frame = SpecialIntentFrame[context.name_override]
+		
+		elif intent in IntentFrame:
+			sprite.frame = IntentFrame[intent]
+		elif intent in WORD_CATEGORY_INTENTS:
+			sprite.frame = CategoryFrames[context.word_category]
+		elif intent in CONTEXT_STATUS_INTENTS:
+			for status in get_statuses():
+				if status is String and status in custom_status_intent_icons:
+					sprite.vframes=1
+					sprite.hframes=1
+					sprite.texture=custom_status_intent_icons[status]
+					break
+				elif status in StatusIntentFrame:
+					sprite.frame = StatusIntentFrame[status]
+					break
 
 func matches(other_intent, other_context):
 	if typeof(other_intent)!=typeof(intent):

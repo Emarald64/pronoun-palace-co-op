@@ -11,9 +11,15 @@ func _use():
 	if peer_id==null:
 		_end_use()
 		return
-
+	
+	main.allow_set_spells=true
 	main.request_set_spells.rpc_id(peer_id)
-	await main.peer_set_spells
+	var timeout_result=await wait_with_timeout(main.peer_set_spells)
+	main.allow_set_spells=false
+	if not timeout_result:
+		push_warning("remote object request set spells timed out")
+		_end_use()
+		return
 	
 	
 	selecting_spell=true
@@ -41,6 +47,13 @@ func _use():
 	spell_container.load_save_data(old_spells_save_data)
 	_end_use()
 
+func wait_with_timeout(sig:Signal,timeout:=5.0)->bool:
+	var dummy_obj=RefCounted.new()
+	dummy_obj.add_user_signal("result",[{name="result",type=TYPE_BOOL}])
+	var result_signal=Signal(dummy_obj,"result")
+	sig.connect(result_signal.emit.bind(true),CONNECT_ONE_SHOT)
+	main.get_tree().create_timer(timeout).timeout.connect(result_signal.emit.bind(false),CONNECT_ONE_SHOT)
+	return await result_signal
 
 func get_tooltip_context():
 	return {selecting_spell=selecting_spell}

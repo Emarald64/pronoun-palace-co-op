@@ -3,7 +3,19 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
-const coop_version="alpha 6"
+const coop_version="jubilist 8"
+
+const intent_icons:Dictionary[String,String]={
+	"res://mods/co-op/intents/spell_swap.png":"spell_swap",
+	"res://mods/co-op/intents/pronounpalace-sendtilesx-px.png":"phone_a_friend_send",
+	"res://mods/co-op/intents/pronounpalace-receivetiles-px.png":"phone_a_friend_recive",
+	"res://mods/co-op/intents/pronounpalace-sendtilescursed-px.png":"phone_a_friend_send_cursed",
+	"res://mods/co-op/intents/pronounpalace-receivetilescursed-px.png":"phone_a_friend_recive_cursed",
+	"res://mods/co-op/intents/echo.png":"echo",
+	"res://mods/co-op/intents/echo_cursed.png":"echo_cursed"
+}
+
+var unloaded_intents:Array[String]=intent_icons.keys()
 
 static func change_script_and_copy_properties(object:Object,script:Script):
 	var properties:Dictionary[String,Variant]={}
@@ -21,6 +33,16 @@ func _on_scene_changed()->void:
 	if current_scene is MainMenu:
 		main_menu_additions(current_scene)
 
+func _process(delta: float) -> void:
+	for path in unloaded_intents:
+		var status=ResourceLoader.load_threaded_get_status(path)
+		if status==ResourceLoader.THREAD_LOAD_LOADED:
+			CustomIntent.custom_intent_icons[intent_icons[path]]=ResourceLoader.load_threaded_get(path)
+			unloaded_intents.erase(path)
+		elif status!=ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			push_error("Error threaded loading ",path," code: ",status)
+			unloaded_intents.erase(path)
+
 func _ready()->void:
 	print("coop mod version:",coop_version)
 	var scene_tree=get_tree()
@@ -28,16 +50,9 @@ func _ready()->void:
 	var current_scene=scene_tree.current_scene
 	if current_scene is MainMenu:
 		main_menu_additions(current_scene)
-	
-	CustomIntent.custom_intent_icons["spell_swap"]=preload("res://mods/co-op/intents/spell_swap.png")
-	
-	CustomIntent.custom_intent_icons["phone_a_friend_send"]=preload("res://mods/co-op/intents/pronounpalace-sendtilesx-px.png")
-	CustomIntent.custom_intent_icons["phone_a_friend_recive"]=preload("res://mods/co-op/intents/pronounpalace-receivetiles-px.png")
-	CustomIntent.custom_intent_icons["phone_a_friend_send_cursed"]=preload("res://mods/co-op/intents/pronounpalace-sendtilescursed-px.png")
-	CustomIntent.custom_intent_icons["phone_a_friend_recive_cursed"]=preload("res://mods/co-op/intents/pronounpalace-receivetilescursed-px.png")
-	
-	CustomIntent.custom_intent_icons["echo"]=preload("res://mods/co-op/intents/pronounpalace-receivetiles-px.png")
-	CustomIntent.custom_intent_icons["echo_cursed"]=preload("res://mods/co-op/intents/pronounpalace-receivetilescursed-px.png")
+		
+	for icon_path in intent_icons:
+		ResourceLoader.load_threaded_request(icon_path)
 	
 	SpellLoader.spell_pool["mba"]=0.0
 	SpellLoader.spell_pool["panic_button"]=0.0
@@ -50,12 +65,16 @@ func _ready()->void:
 	
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
 	
-	await get_tree().process_frame
-	Globals.set_script(preload("res://mods/co-op/overrides/custom_globals.gd"))
+	get_tree().process_frame.connect(
+		func ():
+			Globals.set_script(load("res://mods/co-op/overrides/custom_globals.gd"))
+	)
 	
 	# replace game script
-	await get_tree().create_timer(.5).timeout
-	change_script_and_copy_properties(Game,preload("res://mods/co-op/overrides/game.gd"))
+	get_tree().create_timer(.5).timeout.connect(
+		func ():
+			change_script_and_copy_properties(Game,load("res://mods/co-op/overrides/game.gd"))
+	)
 	
 func main_menu_additions(main_menu:MainMenu)->void:
 	var hud=main_menu.get_node("HUD")
@@ -88,21 +107,6 @@ func main_menu_additions(main_menu:MainMenu)->void:
 	start_button.pressed.connect(save_character_selector_info)
 	start_button.opens_menu=create_server_menu
 	
-	#host_name=LineEdit.new()
-	#host_name.placeholder_text="Name"
-	#character_select.add_child(host_name)
-
-#func main_aditions(main:Main)->void:
-	#var damage_indecator_holder=HBoxContainer.new()
-	#damage_indecator_holder.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	#damage_indecator_holder.grow_horizontal=Control.GROW_DIRECTION_BEGIN
-	#main.get_node("HUDLayer").add_child(damage_indecator_holder)
-	
-	#var word_builder=main.get_node("GameUILayer/WordBuilder")
-	#word_builder.set_script(preload("res://mods/co-op/overrides/word_builder.gd"))
-	#word_builder._ready()
-	#word_builder.damage_indecator_holder=damage_indecator_holder
-
 func save_character_selector_info()->void:
 	Game.difficulty=character_select.difficulty
 	Game.player_info.character=character_select.character

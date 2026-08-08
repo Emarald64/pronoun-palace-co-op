@@ -7,18 +7,18 @@ var make_uid_cache:=true
 var zip_pack:=false
 
 var additional_files: PackedStringArray = [
-	"res://strings/intent/echo.txt",
-	"res://strings/intent/echo_cursed.txt",
-	"res://strings/intent/phone_a_friend_recive.txt",
-	"res://strings/intent/phone_a_friend_recive_cursed.txt",
-	"res://strings/intent/phone_a_friend_send.txt",
-	"res://strings/intent/phone_a_friend_send_cursed.txt",
-	"res://strings/intent/spell_swap.txt",
-	"res://strings/spell/party_telephone.txt",
-	"res://source/spells/party_telephone.gd",
-	"res://arte/spells/party_telephone.png",
-	"res://strings/spell/blue_box.txt",
-	"res://source/spells/blue_box.gd",
+	#"res://strings/intent/echo.txt",
+	#"res://strings/intent/echo_cursed.txt",
+	#"res://strings/intent/phone_a_friend_recive.txt",
+	#"res://strings/intent/phone_a_friend_recive_cursed.txt",
+	#"res://strings/intent/phone_a_friend_send.txt",
+	#"res://strings/intent/phone_a_friend_send_cursed.txt",
+	#"res://strings/intent/spell_swap.txt",
+	#"res://strings/spell/party_telephone.txt",
+	#"res://source/spells/party_telephone.gd",
+	#"res://arte/spells/party_telephone.png",
+	#"res://strings/spell/blue_box.txt",
+	#"res://source/spells/blue_box.gd",
 	"res://source/enemies/bottom_feeder.gd",
 	"res://source/enemies/npcs.gd",
 	"res://source/spells/fishing_rod.gd",
@@ -37,10 +37,23 @@ func _run() -> void :
 		packer = PCKPacker.new()
 		packer.pck_start("res://mod_packs/"+mod_id+"/"+mod_id+".pck")
 	# automaticcly includes files in your mod's folder
-	var mod_files=FileUtil.get_file_paths_recursive("res://mods/"+mod_id)
+	var mod_files:=FileUtil.get_file_paths_recursive("res://mods/"+mod_id)
+	mod_files.append_array(additional_files)
+	# add spells
+	const spells=["party_telephone","blue_box","remote_object","postage_stamp"]
+	for spell in spells:
+		mod_files.append("res://source/spells/"+spell+".gd")
+		#mod_files.append("res://strings/spells/"+spell+".txt")
+		var sprite_path="res://arte/spells/"+spell+".png"
+		if FileAccess.file_exists(sprite_path):
+			mod_files.append(sprite_path)
+	
+	for strings_folder in DirAccess.get_directories_at("res://strings"):
+		mod_files.append_array(FileUtil.get_file_paths_recursive("res://strings/"+strings_folder))
+	
 	var global_scripts=[]
 	var uids:Array[Array]=[]
-	for file in mod_files+additional_files:
+	for file in mod_files:
 		if file not in excluded and not file.ends_with(".uid"): 
 			if ResourceLoader.exists(file):
 				
@@ -69,9 +82,15 @@ func _run() -> void :
 				elif make_global_script_cache and loaded is GDScript:
 					var name=loaded.get_global_name()
 					if not name.is_empty():
+						var base:Script=loaded.get_base_script()
+						var base_name:StringName=loaded.get_instance_base_type()
+						if base!=null:
+							base_name=base.get_global_name()
+							if base_name.is_empty():
+								base_name='"'+base.resource_path+'"'
 						global_scripts.append({
 							"class":StringName(name),
-							"base":loaded.get_instance_base_type(),
+							"base":base_name,
 							"language":&"GDScript",
 							"path":file,
 							"is_abstract":loaded.is_abstract(),

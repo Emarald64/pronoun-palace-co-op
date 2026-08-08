@@ -2,6 +2,7 @@ extends Main
 
 var dead_players:Array[int]=[]
 var players_compleated_floor:Array[int]=[]
+var allow_set_spells:=false
 #var waiting_to_be_revived:=false
 signal all_players_compleated_floor
 signal stop_dieing
@@ -194,18 +195,20 @@ func finish_run(is_victory: = false):
 
 @rpc("any_peer")
 func request_set_spells():
+	return
 	set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
 
 @rpc("any_peer")
 func set_spells(spells:Array):
-	for player_spell in spell_container.player_spells:
-		player_spell.queue_free()
-	spell_container.player_spells.clear()
-	spell_container.position_spells()
-	spell_container.load_save_data(spells)
-	for player_spell in spell_container.player_spells:
-		player_spell.spell_paper.gain()
-	peer_set_spells.emit()
+	if allow_set_spells:
+		for player_spell in spell_container.player_spells:
+			player_spell.queue_free()
+		spell_container.player_spells.clear()
+		spell_container.position_spells()
+		spell_container.load_save_data(spells)
+		for player_spell in spell_container.player_spells:
+			player_spell.spell_paper.gain()
+		peer_set_spells.emit()
 
 @rpc("any_peer")
 func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index=null):

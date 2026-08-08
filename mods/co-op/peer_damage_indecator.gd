@@ -46,4 +46,4 @@ func _on_button_pressed() -> void:
 func update_selecting()->void:
 	var selecting_player:bool=Game.main.player.is_selecting(3)
 	$Button.disabled=not selecting_player
-	$HoverHandler.disabled=not selecting_player
+	$HoverHandler.set_disabled(not selecting_player)

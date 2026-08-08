@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://csusxcrlmq1q3"]
+
+[ext_resource type="PackedScene" uid="uid://dk31c6wuhiw4h" path="res://source/ui/credits/credits.tscn" id="1_y3yjc"]
+[ext_resource type="PackedScene" uid="uid://gvdlnfp2nyls" path="res://source/ui/credits/credits_header.tscn" id="2_y3yjc"]
+[ext_resource type="PackedScene" uid="uid://bjwq1tyfcolw1" path="res://source/ui/credits/primary_credits.tscn" id="3_enrul"]
+
+[node name="Credits" unique_id=1004670430 instance=ExtResource("1_y3yjc")]
+
+[node name="CreditsContainer" parent="." index="1" unique_id=1490441242]
+offset_bottom = 3778.0
+
+[node name="FeaturingHeader2" parent="CreditsContainer" index="4" unique_id=1882271877 instance=ExtResource("2_y3yjc")]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+text = ""
+key = "Co-Op"
+
+[node name="PrimaryCredits3" parent="CreditsContainer" index="5" unique_id=1246381456 instance=ExtResource("3_enrul")]
+layout_mode = 2
+credit_path = "credits/coop"
+
+[node name="Control6" type="Control" parent="CreditsContainer" index="6" unique_id=1980855208]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="FeaturingHeader" parent="CreditsContainer" index="7" unique_id=1882271877]
+text = ""
+
+[node name="PlaytestersHeader" parent="CreditsContainer" index="10" unique_id=674690052]
+text = ""
+
+[node name="PlaytestingHeader2" parent="CreditsContainer" index="13" unique_id=634008708]
+text = ""

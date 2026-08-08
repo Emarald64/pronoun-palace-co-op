@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_y0u7g"]
 [ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/create_server_menu.gd" id="2_i4ivu"]
+[ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_kvote"]
 
 [node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_y0u7g")]
+theme = ExtResource("2_kvote")
 script = ExtResource("2_i4ivu")
 
 [node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1193323887]

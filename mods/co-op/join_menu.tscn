@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_vpni1"]
 [ext_resource type="Script" uid="uid://2rpgq65ubnhu" path="res://mods/co-op/join_menu.gd" id="2_7a7fu"]
+[ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_uh8xk"]
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="3_fj880"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="4_10pla"]
 
@@ -12,6 +13,7 @@ sound = "UI/CHAR_SELECT"
 metadata/_custom_type_script = "uid://c17dcnicbtc1a"
 
 [node name="Join Menu" unique_id=1499490309 instance=ExtResource("1_vpni1")]
+theme = ExtResource("2_uh8xk")
 script = ExtResource("2_7a7fu")
 full_screen_menu = false
 
@@ -44,8 +46,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Client"
 max_length = 16
-emoji_menu_enabled = false
-virtual_keyboard_type = 2
+virtual_keyboard_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1698835746]
 layout_mode = 2
@@ -60,6 +61,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "127.0.0.1"
+emoji_menu_enabled = false
 select_all_on_focus = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=7557173]
