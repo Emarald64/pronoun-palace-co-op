@@ -1,9 +1,9 @@
 {
 	"id": "co-op",
 	"packs":[
-        {
-            "path":"co-op.pck",
-            "override":true
-        }
-    ]
+		{
+			"path":"co-op.pck",
+			"override":true
+		}
+	]
 }

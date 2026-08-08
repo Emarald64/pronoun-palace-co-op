@@ -33,7 +33,7 @@ static func change_script_and_copy_properties(object:Object,script:Script):
 	#if current_scene is MainMenu:
 		#main_menu_additions(current_scene)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for path in unloaded_intents:
 		var status=ResourceLoader.load_threaded_get_status(path)
 		if status==ResourceLoader.THREAD_LOAD_LOADED:
@@ -69,12 +69,12 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	pool.erase("mba")
 	pool.erase("panic_button")
 	pool.erase("red_tape")
-	pool["coop:joker"]=0.0
+	pool["co-op:joker"]=0.0
 	
 	match category:
 		Globals.SPELL_CATEGORY.OFFENSIVE:
-			pool["coop:party_telephone"]=3.0
-			pool["coop:postage_stamp"]=3.0
+			pool["co-op:party_telephone"]=3.0
+			pool["co-op:postage_stamp"]=3.0
 		Globals.SPELL_CATEGORY.SUPPORT:
-			pool["coop:blue_box"]=1.0
-			pool["coop:remote_object"]=3.0
+			pool["co-op:blue_box"]=1.0
+			pool["co-op:remote_object"]=3.0

@@ -2,8 +2,8 @@
 	Alexander "Xanderath" G.
 	
 	::
-		Multiplayer netcode
-		Coop Nobody fight 
+		Multiplayer code
+		Coop Nobody Fight 
 
 ::
 	dragonslayr15001
