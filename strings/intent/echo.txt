@@ -1,5 +1,0 @@
-:name:
-	Echo
-
-:description:
-	The word you played on the last echo move will be added to the board

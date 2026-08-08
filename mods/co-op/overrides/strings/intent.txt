@@ -1,0 +1,48 @@
+:phone_a_friend_send:
+	:name:
+		Phone A Friend
+
+		:description:
+		All played tiles will be sent to {partner}'s board
+
+:phone_a_friend_send_cursed:
+	:name:
+		Curse Sent Tiles
+
+	:description:
+		{count} of the tiles you send to {partner} will be cursed
+
+:phone_a_friend_recive:
+	:name:
+		Phone A Friend
+
+	:description:
+		{partner}'s played tiles will be sent to the top of your board
+
+:phone_a_friend_recive_cursed:
+	:name:
+		Curse Recived Tiles
+
+	:description:
+		{count} of the tiles sent from {partner} will be cursed
+
+:echo:
+	:name:
+		Echo
+
+	:description:
+		{"A random word" if first_time}{"The word you played on the last echo move" not first_time} will be added to the board
+
+:echo_cursed:
+	:name:
+		Cursed Echo
+
+	:description:
+		The word echoed word will have {count} of its tiles cursed
+
+:spell_swap:
+	:name:
+		Swap Spells
+
+	:description:
+		One of your spells will be swapped with a random spell of another player

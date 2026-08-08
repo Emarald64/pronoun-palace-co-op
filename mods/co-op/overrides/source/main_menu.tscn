@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bshwb4x2kct5w"]
+
+[ext_resource type="PackedScene" uid="uid://dcxoauy8mlpal" path="res://source/main_menu.tscn" id="1_5oid8"]
+[ext_resource type="PackedScene" uid="uid://bvocafatgbh30" path="res://mods/co-op/source/ui/join_button.tscn" id="2_isk42"]
+[ext_resource type="Script" uid="uid://dit6w1p5gk6f8" path="res://mods/co-op/overrides_old/main_menu.gd" id="2_le0k0"]
+[ext_resource type="PackedScene" uid="uid://benomodipcosy" path="res://mods/co-op/source/ui/join_menu.tscn" id="3_le0k0"]
+[ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/lobby.tscn" id="4_sfbee"]
+[ext_resource type="PackedScene" uid="uid://d1xbhbxo8rq8k" path="res://mods/co-op/source/ui/create_server_menu.tscn" id="5_f3mtu"]
+
+[node name="MainMenu" unique_id=1522416414 instance=ExtResource("1_5oid8")]
+script = ExtResource("2_le0k0")
+
+[node name="JoinButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="1" unique_id=929244007 node_paths=PackedStringArray("opens_menu") instance=ExtResource("2_isk42")]
+layout_mode = 0
+opens_menu = NodePath("../../Join Menu")
+
+[node name="ContinueButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="2" unique_id=99016043]
+visible = false
+
+[node name="Join Menu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="15" unique_id=1499490309 node_paths=PackedStringArray("lobby") instance=ExtResource("3_le0k0")]
+offset_top = 1000.0
+offset_bottom = 1000.0
+lobby = NodePath("../Lobby")
+
+[node name="Lobby" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="16" unique_id=1882475272 node_paths=PackedStringArray("character_select") instance=ExtResource("4_sfbee")]
+unique_name_in_owner = true
+offset_top = 1000.0
+offset_bottom = 1000.0
+character_select = NodePath("../CharacterSelect")
+
+[node name="CreateServerMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="17" unique_id=1190851394 node_paths=PackedStringArray("lobby") instance=ExtResource("5_f3mtu")]
+unique_name_in_owner = true
+lobby = NodePath("../Lobby")

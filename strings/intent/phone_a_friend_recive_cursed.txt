@@ -1,5 +1,0 @@
-:name:
-	Curse Recived Tiles
-
-:description:
-	{count} of the tiles sent from {partner} will be cursed

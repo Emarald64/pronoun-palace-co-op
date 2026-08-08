@@ -1,0 +1,3 @@
+:word_waringing:
+	:other_repeated_word:
+		“{word}” has already been submitted by {name} this run

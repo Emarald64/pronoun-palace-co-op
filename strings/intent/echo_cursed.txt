@@ -1,5 +1,0 @@
-:name:
-	Cursed Echo
-
-:description:
-	The word echoed word will have {count} of its tiles cursed
