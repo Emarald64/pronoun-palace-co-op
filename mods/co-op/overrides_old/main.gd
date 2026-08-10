@@ -44,8 +44,8 @@ func _on_peer_disconnected(id:int):
 			all_players_compleated_floor.emit()
 
 func save_and_exit():
+	await super()
 	kill_peer()
-	super()
 
 func player_death():
 	#await stop_dieing
@@ -192,12 +192,11 @@ func kill_peer():
 	Game.players.clear()
 
 func finish_run(is_victory: = false):
+	await super(is_victory)
 	kill_peer()
-	super(is_victory)
 
 @rpc("any_peer")
 func request_set_spells():
-	return
 	set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
 
 @rpc("any_peer")
