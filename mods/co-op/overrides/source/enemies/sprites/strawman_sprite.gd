@@ -1,3 +1,4 @@
+@tool
 extends "res://source/enemies/sprites/strawman_sprite.gd"
 
 func _touch():

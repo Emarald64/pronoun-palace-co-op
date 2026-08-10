@@ -1,3 +1,5 @@
-:word_waringing:
-	:other_repeated_word:
-		“{word}” has already been submitted by {name} this run
+:word_warnings:
+	:repeat_known_word:
+		“{word}” has already been submitted {:by_name: if name} this run
+	:by_name:
+		by {name}

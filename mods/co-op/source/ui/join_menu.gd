@@ -16,7 +16,7 @@ func _ready()->void:
 
 func _on_start_appearing()->void:
 	if icons.is_empty():
-		for id in Globals.CHARACTER_ORDER.filter(func (character:String)->bool:return character!=Globals.CHARACTERS.ADDICT):
+		for id in Globals.CHARACTER_ORDER:
 			var icon: CharacterSelectorIcon = ICON_SCENE.instantiate()
 			icon.set_character(id, true)
 			icons.append(icon)
@@ -50,8 +50,17 @@ func connection_ok()->void:
 
 
 func _on_icon_selector_selected(icon: SelectorIcon) -> void:
-	Game.player_info.character=icon.character
+	%CharacterTitle.key="character/%s/select_title" % icon.character
+	if icon.character==Globals.CHARACTERS.ADDICT:
+		$AddictDeselectTimer.start()
+	else:
+		$AddictDeselectTimer.stop()
+		Game.player_info.character=icon.character
 
 
 func _on_name_changed(new_text: String) -> void:
 	Game.player_info.name=new_text
+
+
+func select_lexicographer() -> void:
+	%IconSelector.select(Globals.CHARACTER_ORDER.find(Game.player_info.character))

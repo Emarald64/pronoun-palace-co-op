@@ -1,0 +1,11 @@
+:addict:
+	:select_title:
+		NO
+	
+	:description:
+		Valance "unfortunatly" suffered in a "accidental" fire
+		and so is unable to join
+	
+	:info:
+		Cannot be played as he wouldn't work well
+		in a coop setting
