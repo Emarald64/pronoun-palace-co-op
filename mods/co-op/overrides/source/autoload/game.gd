@@ -30,7 +30,7 @@ func start_game(run_seed:int, _difficulty:int):
 	active_daily = null
 	is_seeded = true
 	loading_run_save = null
-	get_tree().change_scene_to_file("res://mods/co-op/overrides_old/main.tscn")
+	get_tree().change_scene_to_file("res://mods/co-op/source/main.tscn")
 	#start_run(player_info.character,run_seed)
 
 @rpc
@@ -44,7 +44,7 @@ func load_joining_game(save_metadata:Dictionary,enemy_save,act_events)->void:
 	AudioManager.fade_music()
 	AudioManager.fade_sounds()
 	loading_run_save = save
-	get_tree().change_scene_to_file("res://mods/co-op/overrides_old/main.tscn")
+	get_tree().change_scene_to_file("res://mods/co-op/source/main.tscn")
 
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()

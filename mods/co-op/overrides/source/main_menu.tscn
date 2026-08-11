@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dcxoauy8mlpal" path="res://source/main_menu.tscn" id="1_5oid8"]
 [ext_resource type="PackedScene" uid="uid://bvocafatgbh30" path="res://mods/co-op/source/ui/join_button.tscn" id="2_isk42"]
-[ext_resource type="Script" uid="uid://dit6w1p5gk6f8" path="res://mods/co-op/overrides_old/main_menu.gd" id="2_le0k0"]
+[ext_resource type="Script" uid="uid://dit6w1p5gk6f8" path="res://mods/co-op/source/main_menu.gd" id="2_le0k0"]
 [ext_resource type="PackedScene" uid="uid://benomodipcosy" path="res://mods/co-op/source/ui/join_menu.tscn" id="3_le0k0"]
 [ext_resource type="Script" uid="uid://bkj57xrdfqerd" path="res://mods/co-op/overrides/source/ui/menu/character_select/character_select.gd" id="4_le0k0"]
 [ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/lobby.tscn" id="4_sfbee"]

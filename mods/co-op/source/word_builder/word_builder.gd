@@ -210,15 +210,15 @@ func add_warning(warnings: Dictionary, warning_id: String, context: Dictionary =
 	if warning_id==WARNINGS.REPEAT_WORD and "word" in context:
 		for id in others_submitted_words:
 			if context.word in others_submitted_words[id]:
-				super(warnings,"other_repeated_word",context.merged({name=Game.players[id].name}))
-	else:
-		super(warnings,warning_id,context)
+				context.name=Game.players[id].name
+				break
+	super(warnings,warning_id,context)
 
 func update_stats() -> void :
 	super()
 	if main.candy_round:
-		if can_submit():
-			heighest_candy_round_value=maxi(heighest_candy_round_value,self_heal)
+		if self_heal>heighest_candy_round_value and can_submit():
+			heighest_candy_round_value=self_heal
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()

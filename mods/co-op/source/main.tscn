@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://43fyxeyg1vj4"]
 
 [ext_resource type="PackedScene" uid="uid://dt2be1wikfttk" path="res://source/main.tscn" id="1_n0165"]
-[ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/overrides_old/main.gd" id="2_8s84c"]
-[ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/overrides_old/word_builder.gd" id="2_rhwav"]
+[ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/source/main.gd" id="2_8s84c"]
+[ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Script" uid="uid://07lliasr5hq0" path="res://mods/co-op/intents/intent_container.gd" id="4_2q8ta"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
 [ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="6_tcbgc"]

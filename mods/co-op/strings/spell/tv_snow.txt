@@ -1,0 +1,14 @@
+:name:
+	TV Snow
+
+:description:
+	Freeze 2 random tiles of every other player
+
+:label:
+	Freeze Other's Tiles
+
+:charge_category:
+	uncommon
+
+:max_charge:
+	2

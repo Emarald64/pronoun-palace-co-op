@@ -65,6 +65,15 @@ func _ready()->void:
 	#Game.difficulty=character_select.difficulty
 	#Game.player_info.character=character_select.character
 
+func get_spell_ids() -> Array[String]:
+	return [
+		"co-op:party_telephone",
+		"co-op:postage_stamp",
+		"co-op:blue_box",
+		"co-op:remote_object",
+		"co-op:tv_snow"
+	]
+
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	pool.erase("mba")
 	pool.erase("panic_button")
@@ -78,3 +87,5 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 		Globals.SPELL_CATEGORY.SUPPORT:
 			pool["co-op:blue_box"]=1.0
 			pool["co-op:remote_object"]=3.0
+		Globals.SPELL_CATEGORY.DEFENSIVE:
+			pool["co-op:tv_snow"]=3.0

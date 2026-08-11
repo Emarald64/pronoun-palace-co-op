@@ -224,6 +224,16 @@ func queue_tile(tile_data:Dictionary):
 	queued_tile.assign(tile_data)
 	tile_board.update_previews()
 
+@rpc("any_peer")
+func apply_status(status,count:=1):
+	var parameters={amount=count,exclude_effects=[Status.TileStatus.CRIT]}
+	if word_builder.is_submitting:
+		parameters["exlcude_tiles"]=word_builder.tiles
+	var tiles:=tile_board.get_tiles(parameters)
+	for tile in tiles:
+		tile.add_status(status)
+		tile.add_poofcloud(Globals.COLORS.ICE)
+
 func load_save_data(run_save):
 	super(run_save)
 	word_builder.resend_submitted.rpc()
