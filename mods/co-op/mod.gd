@@ -3,7 +3,7 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
-const coop_version="dead's suprise propal update - 10"
+const coop_version="Strawman <3 - 12"
 
 const intent_icons:Dictionary[String,String]={
 	"res://mods/co-op/intents/spell_swap.png":"spell_swap",
@@ -26,13 +26,6 @@ static func change_script_and_copy_properties(object:Object,script:Script):
 	for property in properties:
 		object.set(property,properties[property])
 
-#func _on_scene_changed()->void:
-	#var current_scene=get_tree().current_scene
-	##if current_scene is Main:
-		##main_aditions(current_scene)
-	#if current_scene is MainMenu:
-		#main_menu_additions(current_scene)
-
 func _process(_delta: float) -> void:
 	for path in unloaded_intents:
 		var status=ResourceLoader.load_threaded_get_status(path)
@@ -52,19 +45,6 @@ func _ready()->void:
 	
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
 	
-	if scene_tree.current_scene is MainMenu:
-		await scene_tree.process_frame
-		scene_tree.reload_current_scene.call_deferred()
-	
-#func main_menu_additions(main_menu:MainMenu)->void:
-	#var hud=main_menu.get_node("HUD")
-	#var play_menu=hud.get_node("PlayMenu")
-	#play_menu.get_node("ContinueButton").queue_free()
-	
-#func save_character_selector_info()->void:
-	#Game.difficulty=character_select.difficulty
-	#Game.player_info.character=character_select.character
-
 func get_spell_ids() -> Array[String]:
 	return [
 		"co-op:party_telephone",

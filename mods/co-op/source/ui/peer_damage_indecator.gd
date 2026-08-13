@@ -30,7 +30,8 @@ func update(damage_info:Dictionary):
 	
 	%HealthLabel.text=str(damage_info.health)
 	
-	self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
+	#print(damage_info)
+	$Panel.self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
 
 func set_character(character:String)->void:
 	%CharacterIcon.set_character(character,true)

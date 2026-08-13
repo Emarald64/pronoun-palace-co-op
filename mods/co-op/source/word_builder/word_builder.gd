@@ -11,6 +11,8 @@ var heighest_candy_round_value:=0
 var waiting_for_peers_to_submit:=false
 var log_all_damage_updates:=false
 
+var edjusted_peers_ui:=false
+
 var others_queued_words:Dictionary[int,PackedStringArray]={}
 var others_submitted_words:Dictionary[int,PackedStringArray]={}
 
@@ -23,7 +25,7 @@ func _ready() -> void:
 	Game.player_disconnected.connect(player_disconnected)
 
 @rpc("any_peer")
-func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int,words:PackedStringArray):
+func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int,words:PackedStringArray=[]):
 	others_queued_words[multiplayer.get_remote_sender_id()]=words
 	peer_stats_updated(peer_damage,peer_defense,valid,true,health)
 	
@@ -57,12 +59,22 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 	
 	# move damage indecator to match attack
 	@warning_ignore("confusable_local_declaration")
-	var index=damage_indecator_holder.get_children().bsearch_custom(damage_indecator,
+	var ordered_damage_indecators=damage_indecator_holder.get_children()
+	ordered_damage_indecators.erase(damage_indecator)
+	var index=ordered_damage_indecators.bsearch_custom(damage_indecator,
 		func (a,b)->bool:
-			if a.hidden or b.hidden:
+			if not a.visible:
 				return false
-			return peer_attacks[a.peer_id].damage>peer_attacks[b.peer_id].damage
+			if not b.visible:
+				return true
+			return get_peer_priority(a.peer_id)>get_peer_priority(b.peer_id)
 	)
+	if index>damage_indecator.get_index():
+		index+=1
+	#if multiplayer.is_server():
+		#print(index," ",peer_damage)
+		#print(damage_indecator_holder.get_children().map(func (damage_indecator):
+			#return peer_attacks[damage_indecator.peer_id].damage))
 	damage_indecator_holder.move_child(damage_indecator,index)
 	
 	update_total_damage_counter()
@@ -72,6 +84,14 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 		if submitted_count+main.dead_players.size()>=len(Game.players)-1:
 			all_peers_submitted.emit()
 	peer_attack_updated.emit(id,submitted)
+
+func get_peer_priority(peer_id:int)->int:
+	var priority:int=peer_attacks[peer_id].damage*1000+peer_attacks[peer_id].defense
+	if peer_attacks[peer_id].valid:
+		priority+=1000000
+	if peer_id in main.dead_players:
+		priority-=2000000
+	return priority
 
 func update_total_damage_counter():
 	var total_damage=damage
@@ -148,9 +168,10 @@ func submit_word() -> void :
 		await confirm_word()
 	
 func end_turn(reroll = false):
-	if reroll:
-		await send_attack_and_wait(true)
-	await super(reroll)
+	if not main.candy_round:
+		if reroll:
+			await send_attack_and_wait(true)
+		await super(reroll)
 
 func player_disconnected(id:int)->void:
 	if id in peer_attacks:
@@ -173,7 +194,9 @@ func get_attack_value()->int:
 @rpc("any_peer")
 func resend_submitted():
 	if waiting_for_peers_to_submit:
-		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,true,player.health)
+		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),player.health,words_list.words)
+	else:
+		peer_stats_updated.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),false,player.health)
 
 func get_repeat_word(word_list: WordList) -> String:
 	var own_repeat_word=super(word_list)
@@ -222,3 +245,7 @@ func update_stats() -> void :
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()
+	
+
+func _on_submit_button_pressed():
+	await super()

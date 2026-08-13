@@ -44,8 +44,8 @@ func _on_peer_disconnected(id:int):
 			all_players_compleated_floor.emit()
 
 func save_and_exit():
-	await super()
 	kill_peer()
+	await super()
 
 func player_death():
 	#await stop_dieing
@@ -237,3 +237,10 @@ func apply_status(status,count:=1):
 func load_save_data(run_save):
 	super(run_save)
 	word_builder.resend_submitted.rpc()
+
+func start_run():
+	await super()
+	var non_sync_rng=RNG.new()
+	non_sync_rng.seed=rng.game.seed^multiplayer.get_unique_id()
+	spell_select.reseed(non_sync_rng)
+	rng.spell.seed^=multiplayer.get_unique_id()

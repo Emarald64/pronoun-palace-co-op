@@ -8,7 +8,7 @@
 	Send word
 
 :charge_category:
-	uncommon
+	rare
 
 :max_charge:
 	2
