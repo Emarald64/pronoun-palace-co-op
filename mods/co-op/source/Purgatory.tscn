@@ -2,11 +2,5 @@
 
 [ext_resource type="Script" uid="uid://ks42beghxof5" path="res://mods/co-op/source/purgatory.gd" id="1_ovr4s"]
 
-[node name="Purgatory" type="ColorRect" unique_id=1470202314]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+[node name="Purgatory" type="Node" unique_id=799947893]
 script = ExtResource("1_ovr4s")

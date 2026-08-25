@@ -254,6 +254,9 @@ func apply_status(status,count:=1):
 
 func load_save_data(run_save):
 	super(run_save)
+	if Game.sync_start:
+		screen_wipe.uncover()
+		Game.sync_start=false
 	word_builder.resend_submitted.rpc()
 
 func start_run():
@@ -278,7 +281,8 @@ func fix_desyncs():
 @rpc
 func merge_and_load_save(host_save:Dictionary):
 	Game.loading_run_save=Game.merge_saves(host_save,{metadata=get_save_metadata(),data=get_save_data()})
-	screen_wipe.wipe_in()
-	await screen_wipe.screen_covered
+	#screen_wipe.wipe_in()
+	#await screen_wipe.screen_covered
+	Game.sync_start=true
 	get_tree().change_scene_to_file("res://mods/co-op/source/Purgatory.tscn")
 	

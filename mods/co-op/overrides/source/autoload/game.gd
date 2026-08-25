@@ -7,6 +7,7 @@ var player_info = {
 	steam_id=0
 }
 var upnp:UPNP
+var sync_start:=false
 signal player_connected(peer_id:int,player_info)
 signal player_disconnected(peer_id:int)
 
@@ -37,9 +38,16 @@ func start_game(run_seed:int, _difficulty:int):
 	#start_run(player_info.character,run_seed)
 
 @rpc
-func load_joining_game(host_metadata:Dictionary,enemy_save,act_events)->void:
+func load_joining_game(host_save:Dictionary)->void:
 	var save=SaveManager.get_save().get_saved_run()
-	loading_run_save=merge_saves({metadata=host_metadata,data={act_events=act_events,enemy=enemy_save}},save)
+	loading_run_save=merge_saves(host_save,save)
+	if loading_run_save==null:
+		multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+		if main_menu!=null and main_menu.menu_controller!=null:
+			if main_menu.menu_controller.currently_processing:
+				await main_menu.menu_controller.done_processing
+			main_menu.menu_controller.back()
+		return
 	if loading_run_save.metadata.character!=player_info.character:
 		player_info.character=loading_run_save.metadata.character
 		register_player.rpc(player_info)
@@ -48,13 +56,13 @@ func load_joining_game(host_metadata:Dictionary,enemy_save,act_events)->void:
 	AudioManager.fade_sounds()
 	get_tree().change_scene_to_file("res://source/main.tscn")
 
-static func merge_saves(host_save:Dictionary,local_save:Dictionary)->Dictionary:
+func merge_saves(host_save:Dictionary,local_save:Dictionary):
 	if host_save.metadata.seed==local_save.metadata.seed:
 		host_save.metadata.character=local_save.metadata.character
 		local_save.metadata=host_save.metadata
 		local_save.data.enemy=host_save.data.enemy
 		local_save.data.act_events=host_save.data.act_events
-	return host_save
+		return local_save
 
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()
@@ -68,10 +76,7 @@ func _on_other_connected(id:int)->void:
 		if enemy!=null and enemy.id=="nobody":
 			multiplayer.disconnect_peer(id)
 		else:
-			var current_enemy_data
-			if enemy!=null:
-				current_enemy_data={id=enemy.id,save=enemy.get_save_data()}
-			load_joining_game.rpc_id(id,main.get_save_metadata(),current_enemy_data,main.act_events)
+			load_joining_game.rpc_id(id,{metadata=main.get_save_metadata(),data=main.get_save_data()})
 
 func _on_peer_disconnected(id:int)->void:
 	print(id, " disconnected")
