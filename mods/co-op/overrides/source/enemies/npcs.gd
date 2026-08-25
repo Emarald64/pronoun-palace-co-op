@@ -34,4 +34,4 @@ func get_damage_taken():
 
 
 func get_damage_penalty():
-	return max(0, get_damage_taken() / (moves.pathfind.npc_health*(Game.players.size()-main.dead_players.size())))
+	return max(0, get_damage_taken() / (moves.pathfind.npc_health*maxi(1,Game.players.size()-main.dead_players.size())))

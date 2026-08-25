@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
 [ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="5_h7udt"]
 [ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="6_tcbgc"]
+[ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
 atlas = ExtResource("5_1hx8r")
@@ -79,10 +80,17 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="Label" parent="MenuLayer/PauseMenu/ResumeButton/HoverOffset/Panel/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(87354898, 210692313) index="0" unique_id=244723960]
-theme_override_font_sizes/font_size = 13
+[node name="FixDesync" parent="MenuLayer/PauseMenu" parent_id_path=PackedInt32Array(574455430) index="1" unique_id=159128984 groups=["multipanel_position_exclude"] instance=ExtResource("8_2w87v")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 479.0
+offset_top = 167.0
+offset_right = 479.0
+offset_bottom = 167.0
+text = "Stop fucking desyncing"
+use_string_key = false
 
 [connection signal="game_state_updated" from="." to="GameUILayer/PeersUI" method="_on_game_state_updated"]
+[connection signal="pressed" from="MenuLayer/PauseMenu/FixDesync" to="." method="fix_desyncs"]
 
 [editable path="GameUILayer/TileBoard"]
-[editable path="MenuLayer/PauseMenu/ResumeButton"]

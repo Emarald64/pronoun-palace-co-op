@@ -11,6 +11,9 @@
 [node name="MainMenu" unique_id=1522416414 instance=ExtResource("1_5oid8")]
 script = ExtResource("2_le0k0")
 
+[node name="ModdedLabel" parent="HUD/Info" parent_id_path=PackedInt32Array(449094268) index="1" unique_id=1449519670]
+text = ""
+
 [node name="Title" parent="HUD/PlayMenu/NewRunButton/HoverOffset/Panel/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(805290243, 1975147570) index="0" unique_id=1628657434]
 text = "Host"
 

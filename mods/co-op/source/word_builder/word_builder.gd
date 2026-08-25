@@ -85,7 +85,9 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 			all_peers_submitted.emit()
 	peer_attack_updated.emit(id,submitted)
 
-func get_peer_priority(peer_id:int)->int:
+func get_peer_priority(peer_id:int)->int: 
+	if peer_id not in peer_attacks:
+		return -100000000
 	var priority:int=peer_attacks[peer_id].damage*1000+peer_attacks[peer_id].defense
 	if peer_attacks[peer_id].valid:
 		priority+=1000000
@@ -95,7 +97,7 @@ func get_peer_priority(peer_id:int)->int:
 
 func update_total_damage_counter():
 	var total_damage=damage
-	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+	if main.enemy!=null and main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		var health_scaling=main.enemy._get_health_scaling()
 		total_damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	
@@ -185,7 +187,7 @@ func player_disconnected(id:int)->void:
 		all_peers_submitted.emit()
 
 func get_attack_value()->int:
-	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+	if main.enemy!=null and main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		#print("housebroken word spelled")
 		var health_scaling=main.enemy._get_health_scaling()
 		return damage+health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]

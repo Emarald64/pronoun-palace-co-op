@@ -37,18 +37,24 @@ func start_game(run_seed:int, _difficulty:int):
 	#start_run(player_info.character,run_seed)
 
 @rpc
-func load_joining_game(remote_save_metadata:Dictionary,enemy_save,act_events)->void:
+func load_joining_game(host_metadata:Dictionary,enemy_save,act_events)->void:
 	var save=SaveManager.get_save().get_saved_run()
-	if save.metadata.seed==remote_save_metadata.seed:
-		remote_save_metadata.character=save.metadata.character
-		save.metadata=remote_save_metadata
-		save.data.act_events=act_events
-		save.data.enemy=enemy_save
-		DailyManager.set_process(false)
-		AudioManager.fade_music()
-		AudioManager.fade_sounds()
-		loading_run_save = save
-		get_tree().change_scene_to_file("res://source/main.tscn")
+	loading_run_save=merge_saves({metadata=host_metadata,data={act_events=act_events,enemy=enemy_save}},save)
+	if loading_run_save.metadata.character!=player_info.character:
+		player_info.character=loading_run_save.metadata.character
+		register_player.rpc(player_info)
+	DailyManager.set_process(false)
+	AudioManager.fade_music()
+	AudioManager.fade_sounds()
+	get_tree().change_scene_to_file("res://source/main.tscn")
+
+static func merge_saves(host_save:Dictionary,local_save:Dictionary)->Dictionary:
+	if host_save.metadata.seed==local_save.metadata.seed:
+		host_save.metadata.character=local_save.metadata.character
+		local_save.metadata=host_save.metadata
+		local_save.data.enemy=host_save.data.enemy
+		local_save.data.act_events=host_save.data.act_events
+	return host_save
 
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()
@@ -84,3 +90,6 @@ func tag_screenshot(screenshot_handle:int,result:Steam.Result):
 		for player_id in players:
 			if player_id!=multiplayer.get_unique_id() and players[player_id].steam_id!=0:
 				Steam.tagUser(screenshot_handle,players[player_id].steam_id)
+
+func is_in_run():
+	return super() and main!=null

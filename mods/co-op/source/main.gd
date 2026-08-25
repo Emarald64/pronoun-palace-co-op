@@ -12,9 +12,15 @@ signal peer_set_spells
 var reviving:=false
 var candy_round:=false
 
+func _init():
+	super()
+	print_debug("set main scene on game")
+
 func _ready():
 	super()
 	Game.player_disconnected.connect(_on_peer_disconnected)
+	if not multiplayer.is_server():
+		%FixDesync.forced_hidden=true
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_R):
@@ -49,12 +55,12 @@ func _on_peer_disconnected(id:int):
 
 @rpc
 func save_and_exit():
-	#if multiplayer.get_remote_sender_id()!=0:
-		#print("asked by server to quit")
-	#if multiplayer.is_server():
-		#print("asked other players to quit")
-		#save_and_exit.rpc()
-		#await get_tree().process_frame
+	if multiplayer.is_server():
+		print_debug("asking other players to quit")
+		save_and_exit.rpc()
+		await get_tree().create_timer(1).timeout
+	if multiplayer.get_remote_sender_id()!=0:
+		print_debug("asked by server to quit")
 	kill_peer()
 	await super()
 
@@ -243,7 +249,8 @@ func apply_status(status,count:=1):
 	var tiles:=tile_board.get_tiles(parameters)
 	for tile in tiles:
 		tile.add_status(status)
-		tile.add_poofcloud(Globals.COLORS.ICE)
+		tile.add_poofcloud(tile.get_poof_color())
+		await Game.timeout(0.1)
 
 func load_save_data(run_save):
 	super(run_save)
@@ -259,3 +266,19 @@ func start_run():
 func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builder_if_possible: = true) -> void:
 	if not candy_round:
 		await super(ignore_spell_use,submit_word_builder_if_possible)
+
+func fix_desyncs():
+	merge_and_load_save.rpc({metadata=get_save_metadata(),data=get_save_data()})
+	dead_players.clear()
+	players_compleated_floor.clear()
+	candy_round=false
+	word_builder.peer_attacks.clear()
+	word_builder.submitted_count=0
+
+@rpc
+func merge_and_load_save(host_save:Dictionary):
+	Game.loading_run_save=Game.merge_saves(host_save,{metadata=get_save_metadata(),data=get_save_data()})
+	screen_wipe.wipe_in()
+	await screen_wipe.screen_covered
+	get_tree().change_scene_to_file("res://mods/co-op/source/Purgatory.tscn")
+	
