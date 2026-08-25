@@ -1,5 +1,5 @@
 :word_warnings:
 	:repeat_known_word:
-		“{word}” has already been submitted {:by_name: if name} this run
+		“{word}” has already been submitted {:by_name: if name}this run
 	:by_name:
-		by {name}
+		by {name} 

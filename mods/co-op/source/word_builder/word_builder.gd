@@ -232,7 +232,7 @@ func resolve_tile_words(use_tiles) -> WordList:
 func add_warning(warnings: Dictionary, warning_id: String, context: Dictionary = {}) -> void:
 	if warning_id==WARNINGS.REPEAT_WORD and "word" in context:
 		for id in others_submitted_words:
-			if context.word in others_submitted_words[id]:
+			if id in Game.players and context.word in others_submitted_words[id]:
 				context.name=Game.players[id].name
 				break
 	super(warnings,warning_id,context)

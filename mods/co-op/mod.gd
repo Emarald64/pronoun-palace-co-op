@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 
 func _ready()->void:
 	print("coop mod version:",coop_version)
-	var scene_tree=get_tree()
+	#var scene_tree=get_tree()
 		
 	for icon_path in intent_icons:
 		ResourceLoader.load_threaded_request(icon_path)
@@ -69,3 +69,13 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 			pool["co-op:remote_object"]=3.0
 		Globals.SPELL_CATEGORY.DEFENSIVE:
 			pool["co-op:tv_snow"]=3.0
+
+func get_run_save_data() -> Dictionary:
+	return {
+		others_submitted_words=Game.word_builder.others_submitted_words,
+		player_total_damage=Game.word_builder.player_total_damage
+		}
+	
+func load_run_save_data(data: Dictionary) -> void:
+	Game.word_builder.others_submitted_words=data.others_submitted_words
+	Game.word_builder.player_total_damage=data.player_total_damage

@@ -4,7 +4,7 @@ var players:Dictionary[int,Dictionary]={}
 var player_info = {
 	name="Client",
 	character="lexicographer",
-	#damage=0,
+	steam_id=0
 }
 var upnp:UPNP
 signal player_connected(peer_id:int,player_info)
@@ -15,6 +15,9 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_other_connected)
 	multiplayer.connected_to_server.connect(_on_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
+	if Bridge.own_user_id!=null:
+		player_info.steam_id=Bridge.own_user_id
+	Steam.screenshot_ready.connect(tag_screenshot)
 
 	
 @rpc("call_local")
@@ -30,21 +33,22 @@ func start_game(run_seed:int, _difficulty:int):
 	active_daily = null
 	is_seeded = true
 	loading_run_save = null
-	get_tree().change_scene_to_file("res://mods/co-op/source/main.tscn")
+	get_tree().change_scene_to_file("res://source/main.tscn")
 	#start_run(player_info.character,run_seed)
 
 @rpc
 func load_joining_game(remote_save_metadata:Dictionary,enemy_save,act_events)->void:
 	var save=SaveManager.get_save().get_saved_run()
-	remote_save_metadata.character=save.metadata.character
-	save.metadata=remote_save_metadata
-	save.data.act_events=act_events
-	save.data.enemy=enemy_save
-	DailyManager.set_process(false)
-	AudioManager.fade_music()
-	AudioManager.fade_sounds()
-	loading_run_save = save
-	get_tree().change_scene_to_file("res://mods/co-op/source/main.tscn")
+	if save.metadata.seed==remote_save_metadata.seed:
+		remote_save_metadata.character=save.metadata.character
+		save.metadata=remote_save_metadata
+		save.data.act_events=act_events
+		save.data.enemy=enemy_save
+		DailyManager.set_process(false)
+		AudioManager.fade_music()
+		AudioManager.fade_sounds()
+		loading_run_save = save
+		get_tree().change_scene_to_file("res://source/main.tscn")
 
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()
@@ -74,4 +78,9 @@ func register_player(other_player_info)->void:
 	var id=multiplayer.get_remote_sender_id()
 	players[id]=other_player_info
 	player_connected.emit(id,other_player_info)
-	
+
+func tag_screenshot(screenshot_handle:int,result:Steam.Result):
+	if result==Steam.Result.RESULT_OK and multiplayer.has_multiplayer_peer():
+		for player_id in players:
+			if player_id!=multiplayer.get_unique_id() and players[player_id].steam_id!=0:
+				Steam.tagUser(screenshot_handle,players[player_id].steam_id)

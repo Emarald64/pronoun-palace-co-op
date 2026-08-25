@@ -11,12 +11,23 @@
 [node name="MainMenu" unique_id=1522416414 instance=ExtResource("1_5oid8")]
 script = ExtResource("2_le0k0")
 
-[node name="JoinButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="1" unique_id=929244007 node_paths=PackedStringArray("opens_menu") instance=ExtResource("2_isk42")]
+[node name="Title" parent="HUD/PlayMenu/NewRunButton/HoverOffset/Panel/MarginContainer/VBoxContainer" parent_id_path=PackedInt32Array(805290243, 1975147570) index="0" unique_id=1628657434]
+text = "Host"
+
+[node name="ContinueButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="1" unique_id=99016043 node_paths=PackedStringArray("opens_menu")]
+opens_menu = NodePath("../../CreateServerMenu")
+
+[node name="JoinButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="2" unique_id=929244007 node_paths=PackedStringArray("opens_menu") instance=ExtResource("2_isk42")]
 layout_mode = 0
+offset_left = 242.0
+offset_top = 507.0
+offset_right = 242.0
+offset_bottom = 507.0
 opens_menu = NodePath("../../Join Menu")
 
-[node name="ContinueButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="2" unique_id=99016043]
-visible = false
+[node name="DailyButton" parent="HUD/PlayMenu" parent_id_path=PackedInt32Array(675902150) index="3" unique_id=1701327948]
+offset_left = 339.0
+offset_right = 339.0
 
 [node name="CharacterSelect" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="8" unique_id=423486846]
 script = ExtResource("4_le0k0")
@@ -35,3 +46,6 @@ character_select = NodePath("../CharacterSelect")
 [node name="CreateServerMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="17" unique_id=1190851394 node_paths=PackedStringArray("lobby") instance=ExtResource("5_f3mtu")]
 unique_name_in_owner = true
 lobby = NodePath("../Lobby")
+
+[editable path="HUD/PlayMenu/NewRunButton"]
+[editable path="HUD/CharacterSelect"]

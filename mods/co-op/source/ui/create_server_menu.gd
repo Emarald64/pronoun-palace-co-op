@@ -1,6 +1,7 @@
 extends MenuPanel
 
 @export var lobby:MenuPanel
+var continuing_game:=false
 #var upnp:UPNP
 
 func host_pressed():
@@ -15,7 +16,6 @@ func host_pressed():
 				push_error("UPnP port map failure: ",upnp_error)
 			else:
 				print("upnp port map success")
-		menu_controller.set_menu(lobby)
 		multiplayer.multiplayer_peer=peer
 		if %Name.text.is_empty():
 			Game.player_info.name="Host"
@@ -23,6 +23,12 @@ func host_pressed():
 			Game.player_info.name=%Name.text
 		Game.players[1]=Game.player_info
 		Game.player_connected.emit(1,Game.player_info)
+		if continuing_game:
+			#screen_wipe.wipe_in()
+			#await screen_wipe.screen_covered
+			Game.load_run(SaveManager.get_save().get_saved_run(true))
+		else:
+			menu_controller.set_menu(lobby)
 	else:
 		push_error("server creation error:", server_error)
 		%Header.text=error_string(server_error)

@@ -30,20 +30,31 @@ func start_battle(skipping_transition = false):
 	enemy.health=enemy.max_health
 
 func _on_peer_disconnected(id:int):
-	if id in dead_players:
-		dead_players.erase(id)
-	elif id in players_compleated_floor:
-		players_compleated_floor.erase(id)
+	print(id," disconnected")
+	if id==1:
+		save_and_exit()
 	else:
-		if dead_players.size()+1>=Game.players.size():
-			stop_dieing.emit()
-		elif dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():
-			reviving=true
-			stop_dieing.emit()
-		if players_compleated_floor.size()>=Game.players.size()-1:
-			all_players_compleated_floor.emit()
+		if id in dead_players:
+			dead_players.erase(id)
+		elif id in players_compleated_floor:
+			players_compleated_floor.erase(id)
+		else:
+			if dead_players.size()+1>=Game.players.size():
+				stop_dieing.emit()
+			elif dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():
+				reviving=true
+				stop_dieing.emit()
+			if players_compleated_floor.size()>=Game.players.size()-1:
+				all_players_compleated_floor.emit()
 
+@rpc
 func save_and_exit():
+	#if multiplayer.get_remote_sender_id()!=0:
+		#print("asked by server to quit")
+	#if multiplayer.is_server():
+		#print("asked other players to quit")
+		#save_and_exit.rpc()
+		#await get_tree().process_frame
 	kill_peer()
 	await super()
 
@@ -244,3 +255,7 @@ func start_run():
 	non_sync_rng.seed=rng.game.seed^multiplayer.get_unique_id()
 	spell_select.reseed(non_sync_rng)
 	rng.spell.seed^=multiplayer.get_unique_id()
+
+func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builder_if_possible: = true) -> void:
+	if not candy_round:
+		await super(ignore_spell_use,submit_word_builder_if_possible)
