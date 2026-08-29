@@ -129,6 +129,8 @@ func log_compleated_floor():
 		print("reviving")
 		reviving=true
 		stop_dieing.emit()
+		await get_tree().process_frame
+		reviving=false
 	if players_compleated_floor.size()>=Game.players.size()-1:
 		print("all players compleated floor")
 		all_players_compleated_floor.emit()
@@ -252,6 +254,17 @@ func apply_status(status,count:=1):
 		tile.add_poofcloud(tile.get_poof_color())
 		await Game.timeout(0.1)
 
+@rpc("any_peer")
+func apply_tile_effect(path:String,count:=1,delay:=0.1):
+	var parameters={amount=count,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
+	if word_builder.is_submitting:
+		parameters["exlcude_tiles"]=word_builder.tiles
+	var tiles:=tile_board.get_tiles(parameters)
+	var effect=load(path)
+	for tile in tiles:
+		tile.add_child(effect.instantiate())
+		await Game.timeout(delay)
+
 func load_save_data(run_save):
 	super(run_save)
 	if Game.sync_start:
@@ -262,9 +275,13 @@ func load_save_data(run_save):
 func start_run():
 	await super()
 	var non_sync_rng=RNG.new()
-	non_sync_rng.seed=rng.game.seed^multiplayer.get_unique_id()
+	non_sync_rng.seed=rng.game.seed^(multiplayer.get_unique_id()-1)
 	spell_select.reseed(non_sync_rng)
-	rng.spell.seed^=multiplayer.get_unique_id()
+	rng.spell.reseed(non_sync_rng)
+	tile_board.reseed(non_sync_rng)
+	tile_board.pregenerate()
+	for spell in spell_container.get_spells():
+		spell.reseed(non_sync_rng)
 
 func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builder_if_possible: = true) -> void:
 	if not candy_round:

@@ -2,7 +2,7 @@
 	:name:
 		Phone A Friend
 
-		:description:
+	:description:
 		All played tiles will be sent to {partner}'s board
 
 :phone_a_friend_send_cursed:

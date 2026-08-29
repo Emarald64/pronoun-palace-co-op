@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c0b8gsj36e32m"]
+
+[ext_resource type="Shader" uid="uid://brofj5s84k47e" path="res://mods/co-op/source/shaders/tv_static.gdshader" id="1_nb74f"]
+
+[resource]
+shader = ExtResource("1_nb74f")

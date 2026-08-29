@@ -15,7 +15,7 @@ const IGNORED_EXTENSIONS = [
 var mod_id: String = "co-op"
 var pack_name: = "co-op"
 var pack_zip: = false
-
+var release_pack:=true
 
 func _run() -> void :
 	var pack: = PackMeta.new()
@@ -30,6 +30,20 @@ func _run() -> void :
 		pack.pack_zip("res://mods/%s/%s.zip" % [mod_id, pack_name])
 	else:
 		pack.pack_pck("res://mods/%s/%s.pck" % [mod_id, pack_name])
+	
+	if release_pack:
+		var zip_packer:=ZIPPacker.new()
+		zip_packer.open("res://mods/%s/%s_release.zip"%[mod_id,mod_id])
+		zip_packer.start_file("%s.pck" % pack_name)
+		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/%s.pck" % [mod_id, pack_name]))
+		zip_packer.close_file()
+		zip_packer.start_file("mod.json")
+		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/mod.json" % mod_id))
+		zip_packer.close_file()
+		zip_packer.start_file("readme.txt")
+		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/readme.txt" % mod_id))
+		zip_packer.close_file()
+		zip_packer.close()
 
 
 class PackMeta extends RefCounted:

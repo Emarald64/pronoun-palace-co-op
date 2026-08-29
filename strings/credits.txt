@@ -17,3 +17,9 @@
 	::
 		Art:
 		TV Snow
+
+::
+	RENREN
+	::
+		Sound Effect:
+		TV Snow

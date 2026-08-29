@@ -5,9 +5,9 @@ const phone_pos=Vector2(113,140)
 var swap_partner:int
 var partnerless_players:Array[int]=[]
 
-var recived_spell
+var recived_spell:Dictionary={}
 var recived_board_piece:Dictionary={}
-var has_recived_swap_info:=false
+#var has_recived_swap_info:=false
 
 var last_move_tiles:Array=[]
 var recived_phone_a_friend_data:Array=[]
@@ -103,11 +103,11 @@ func _init():
 		},
 		solo_b={
 			#echo
-			cursed={
-				0:2,
-				1:3,
-				2:4,
-				3:7,
+			cursed_num={
+				0:3,
+				1:4,
+				2:6,
+				3:10
 			},
 			next="solo_a"
 		},
@@ -130,6 +130,10 @@ func _init():
 			}
 		}, 
 	}
+
+func _init_rng():
+	super()
+	rng.spell_swap=RNG.new()
 
 func _ready():
 	super()
@@ -168,10 +172,13 @@ func ask_set_partner(first:bool):
 		var peer_id=multiplayer.get_remote_sender_id()
 		ask_set_partner.rpc_id(peer_id,false)
 		swap_partner=peer_id
-		if first:
-			next_move="swap_big"
-		else:
-			next_move="swap_small"
+		#const solo_moves=["solo_c","solo_b","solo_a"]
+		#var partner_moves
+		#if first:
+			#partner_moves=["swap_big","phone_a_friend_recive","attack_big"]
+		#else:
+			#partner_moves=["swap_small","phone_a_friend_send","attack_small"]
+		#next_move=partner_moves[solo_moves.find(next_move)]
 
 func _on_player_died_or_dc(peer_id:int):
 	if peer_id==swap_partner:
@@ -181,10 +188,13 @@ func _on_player_died_or_dc(peer_id:int):
 		regular_board=true
 		await wait_for_idle()
 		await get_tree().process_frame
-		#if next_move in ["swap_big","swap_small"]:
-			#next_move="solo_a"
-		#elif next_move in ["phone_a_friend_recive","phone_a_friend_send"]:
-			#next_move="solo_b"
+		#await tile_board.set_size()
+		if next_move in ["swap_big","swap_small"]:
+			next_move="solo_c"
+		elif next_move in ["phone_a_friend_recive","phone_a_friend_send"]:
+			next_move="solo_b"
+		else:
+			next_move="solo_a"
 		update_intents()
 
 func display_intent():
@@ -199,11 +209,11 @@ func display_intent():
 			add_intent("spell_swap")
 		"phone_a_friend_recive":
 			add_intent("phone_a_friend_recive", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",discription_override="phone_a_friend_recive_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",discription_override="phone_a_friend_recive_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.PREPARING)
 		"phone_a_friend_send":
 			add_intent("phone_a_friend_send", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",discription_override="phone_a_friend_send_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",discription_override="phone_a_friend_send_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
 			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
@@ -211,10 +221,14 @@ func display_intent():
 			add_intent(Intent.ATTACK, {damage=moves.attack_small.damage})
 		"solo_a":
 			add_intent(Intent.ATTACK, {damage=moves.solo_a.damage})
+			if tile_board.num_columns!=4:
+				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_b":
 			add_intent("echo",{first_time=echo_tiles.is_empty()})
 			#add_intent("echo_cursed", {count=moves.solo_b.cursed,status=TileStatus.CURSED})
-			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",discription_override="echo_cursed",count=moves.solo_b.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",discription_override="echo_cursed",count=moves.solo_b.cursed_num,status=TileStatus.CURSED})
+			if tile_board.num_columns!=4:
+				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_c":
 			add_intent(Intent.CONCENTRATION,{
 				damage=get_multitude_attack_damage(),
@@ -222,15 +236,23 @@ func display_intent():
 				reduce_by = 1, 
 				per_health = moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
 			})
+			add_intent("spell_swap")
+			if tile_board.num_columns!=4:
+				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
 func _get_health_scaling():
 	return [60, 70, 80, 90]
 
 @rpc("any_peer")
-func recive_swap(swapped_spell:Dictionary,swapped_board_piece:Dictionary={}):
-	recived_spell=swapped_spell
+func recive_board(swapped_board_piece:Dictionary={}):
 	recived_board_piece=swapped_board_piece
-	has_recived_swap_info=true
+	recived_swap_info.emit()
+	
+
+@rpc("any_peer")
+func recive_spell(swapped_spell:Dictionary):
+	recived_spell=swapped_spell
+	#has_recived_swap_info=true
 	recived_swap_info.emit()
 
 func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
@@ -249,23 +271,15 @@ func swap_small():
 	await swap(false)
 
 func swap(big_board:bool):
-	# revaluate partners
-	
-	#swap spells
-	var spells=main.spell_container.player_spells
-	var spell_to_swap
-	if spells.size()>1:
-		spell_to_swap=spells.slice(1).pick_random()
-	else:
-		spell_to_swap=spells[0]
+	# pick spell to send
 	var swapping_board:bool=tile_board.num_columns==5
-	recive_swap.rpc_id(swap_partner,spell_to_swap.spell.get_save_data(), get_board_part_to_swap() if swapping_board and not big_board else {})
-	if not has_recived_swap_info:
+	recive_board.rpc_id(swap_partner, get_board_part_to_swap() if swapping_board and not big_board else {})
+	await send_spell()
+	
+	while recived_board_piece.is_empty() and big_board and swapping_board:
 		await recived_swap_info
-	await animate_attack()
-	spell_to_swap.set_spell(Spell.create_from_save(recived_spell))
-	recived_spell=null
-	has_recived_swap_info=false
+	
+	#has_recived_swap_info=false
 	if regular_board:
 		hit_player(moves.swap.first_damage)
 	elif big_board:
@@ -300,7 +314,39 @@ func swap(big_board:bool):
 		await tile_board.set_size(5, 4 if big_board else 2)
 	regular_board=false
 	await wait_for_idle()
+
+func send_spell():
+	var spells=main.spell_container.player_spells
+	var spell_to_swap
+	if spells.size()>1:
+		if player.id==Globals.CHARACTERS.CHILD:
+			var defense_spell=null
+			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
+			for spell:PlayerSpell in spells:
+				if spell.spell.id in direct_defense_spells:
+					if defense_spell==null:
+						defense_spell=spell
+					else:
+						defense_spell=null
+						break
+			if defense_spell!=null:
+				spells.erase(defense_spell)
+		spell_to_swap=spells.slice(1).pick_random()
+	else:
+		spell_to_swap=spells[0]
 	
+	var potential_spell_recivers:Array=Game.players.keys().filter(func (player_id)->bool:return player_id not in main.dead_players)
+	potential_spell_recivers.sort()
+	rng.spell_swap.shuffle(potential_spell_recivers)
+	print(potential_spell_recivers)
+	var spell_reciver=potential_spell_recivers[(potential_spell_recivers.find(multiplayer.get_unique_id())+1)%potential_spell_recivers.size()]
+	recive_spell.rpc_id(spell_reciver,spell_to_swap.spell.get_save_data())
+	while recived_spell.is_empty():
+		await recived_swap_info
+	await animate_attack()
+	spell_to_swap.set_spell(Spell.create_from_save(recived_spell))
+	recived_spell.clear()
+
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
 	super(words,_damage,_ending_turn)
 	if next_move=="phone_a_friend_send":
@@ -404,6 +450,9 @@ func attack_small():
 func solo_a():
 	await animate_attack()
 	hit_player(moves.solo_a.damage)
+	if tile_board.num_columns!=4:
+		await tile_board.set_size()
+		regular_board=true
 	await wait_for_idle()
 
 func solo_b():
@@ -420,7 +469,7 @@ func solo_b():
 	cursed_tiles.sort_custom(func (a,b)->bool:
 		return get_effect_priority(a.statuses)>get_effect_priority(b.statuses)
 	)
-	for tile_data in cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num):
+	for tile_data in cursed_tiles.slice(0,moves.solo_b.cursed_num):
 		if "statuses" in tile_data:
 			tile_data.statuses.append(TileStatus.CURSED)
 		else:
@@ -429,6 +478,9 @@ func solo_b():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
+	if tile_board.num_columns!=4:
+		await tile_board.set_size()
+		regular_board=true
 	for i in echo_tiles.size():
 		var cord=Vector2i(i%4,3-(i/4))
 		var tile=tile_board.create_tile()
@@ -456,16 +508,22 @@ func get_multitude_attack_damage():
 	return max(0, moves.solo_c.damage - get_multitude_damage_taken()/(moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size())))
 
 func solo_c():
+	await send_spell()
 	if get_multitude_attack_damage()>0:
-		await animate_attack()
+		#await animate_attack()
 		hit_player(get_multitude_attack_damage())
 		await wait_for_idle()
 		if swap_partner!=-1:
-			if swap_partner>multiplayer.get_remote_sender_id():
+			if swap_partner>multiplayer.get_unique_id():
 				next_move_override="swap_big"
 			else:
 				next_move_override="swap_small"
 	else:
+		if tile_board.num_columns!=4:
+			#await animate_attack()
+			await tile_board.set_size()
+			regular_board=true
+		await wait_for_idle()
 		await Game.timeout(0.5)
 
 func attack_check_for_missing_partner():
