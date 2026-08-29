@@ -3,7 +3,7 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
-const coop_version="Strawman <3 - 12"
+const coop_version="Still can't do steam networking - 8/28"
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
