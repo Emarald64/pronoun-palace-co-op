@@ -16,7 +16,7 @@
 	Joltmix
 	::
 		Art:
-		TV Snow
+		TV Snow Icon
 
 ::
 	RENREN

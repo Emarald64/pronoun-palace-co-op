@@ -1,4 +1,4 @@
-class_name CoOp
+#class_name CoOp
 extends Mod
 
 var character_select
@@ -39,56 +39,70 @@ func _process(_delta: float) -> void:
 			unloaded_intents.erase(file_name)
 
 func _ready()->void:
+	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
+	
 	print("coop mod version:",coop_version)
 	#var scene_tree=get_tree()
 		
 	for file_name in intent_icons:
 		ResourceLoader.load_threaded_request(intent_icon_path+file_name)
 	
-	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
-	
-func get_spell_ids() -> Array[String]:
-	return [
-		"co-op:party_telephone",
-		"co-op:postage_stamp",
-		"co-op:blue_box",
-		"co-op:remote_object",
-		"co-op:tv_snow"
-	]
+
+const spells:PackedStringArray=[
+	"party_telephone",
+	"postage_stamp",
+	"blue_box",
+	"remote_object",
+	"tv_snow"
+]
+
+const non_pool_spells:PackedStringArray=[
+	"gift_coop"
+]
 
 const spell_weights:Dictionary[String,float]={
-	"co-op:party_telephone":3.0,
-	"co-op:postage_stamp":3.0,
-	"co-op:blue_box":1.0,
-	"co-op:remote_object":3.0,
-	"co-op:tv_snow":3.0
+	"party_telephone":3.0,
+	"postage_stamp":2.0,
+	"blue_box":1.0,
+	"remote_object":3.0,
+	"tv_snow":3.0
 }
 
-const spell_catagories={
-	Globals.SPELL_CATEGORY.OFFENSIVE:[
-		"co-op:party_telephone",
-		"co-op:postage_stamp",
-	],
-	Globals.SPELL_CATEGORY.SUPPORT:[
-		"co-op:blue_box",
-		"co-op:remote_object"
-	],
-	Globals.SPELL_CATEGORY.DEFENSIVE:[
-		"co-op:tv_snow"
-	]
-}
+#const spell_catagories={
+	#Globals.SPELL_CATEGORY.OFFENSIVE:[
+		#"party_telephone",
+		#"postage_stamp",
+	#],
+	#Globals.SPELL_CATEGORY.SUPPORT:[
+		#"blue_box",
+		#"remote_object"
+	#],
+	##Globals.SPELL_CATEGORY.DEFENSIVE:[
+		##"co-op:tv_snow"
+	##],
+	#"coop":spells
+#}
+
+
+func get_spell_ids() -> Array[String]:
+	return namespace_ids(spells+non_pool_spells)
 
 func get_spell_pool(category: String = "") -> Dictionary[String, float]:
-	if category.is_empty():
-		return spell_weights
-	if category not in spell_catagories:
-		return {}
-	return SpellData.get_filtered_spell_pool(spell_weights,spell_catagories[category])
+	if category.is_empty() or category=="coop":
+		return namespace_dictionary_ids(spell_weights)
+	#if category not in spell_catagories:
+	return {}
+	#return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(spell_weights,spell_catagories[category]))
+
+const removed_spells:PackedStringArray=[
+	Globals.SPELLS.MBA,
+	Globals.SPELLS.PANIC_BUTTON,
+	Globals.SPELLS.RED_TAPE
+]
 
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
-	pool.erase("mba")
-	pool.erase("panic_button")
-	pool.erase("red_tape")
+	for id in removed_spells:
+		pool.erase(id)
 	
 	pool.merge(get_spell_pool(category))
 	

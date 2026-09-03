@@ -276,6 +276,7 @@ func start_run():
 	await super()
 	var non_sync_rng=RNG.new()
 	non_sync_rng.seed=rng.game.seed^(multiplayer.get_unique_id()-1)
+	spell_select.rng.clown=load("res://mods/co-op/source/f#ed_up_clown_rng.gd").new()
 	spell_select.reseed(non_sync_rng)
 	rng.spell.reseed(non_sync_rng)
 	tile_board.reseed(non_sync_rng)

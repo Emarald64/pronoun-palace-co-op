@@ -1,0 +1,17 @@
+:name:
+	{:category_name: not curse "cursed"} Gift{"?" if curse "cursed"}
+
+:category_name:
+	Co-Op
+
+:description:
+	Becomes a random {:category_name: not curse "cursed"}{" " not curse "cursed"}spell at the start of each battle.
+
+:label:
+	{:category_name: not curse "cursed"}{"Random" if curse "cursed"} spells{"?" if curse "cursed"}
+
+:charge_category:
+	unlimited
+
+:flags:
+	force_allow_charge_curse
