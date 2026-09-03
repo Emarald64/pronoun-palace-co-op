@@ -34,13 +34,13 @@ func start_game():
 	Game.start_game.rpc(run_seed,Game.difficulty)
 
 func disappear(instant: bool = false)->void:
-	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	for player_block in %Players.get_children():
 		player_block.queue_free()
 	player_blocks.clear()
 	Game.players.clear()
 	if Game.upnp!=null:
 		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 	super(instant)
 
 func leave()->void:

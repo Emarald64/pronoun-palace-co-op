@@ -26,6 +26,7 @@ func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_R):
 		reviving=true
 		stop_dieing.emit()
+		reviving=false
 	
 	if Input.is_key_pressed(KEY_P):
 		all_players_compleated_floor.emit()
@@ -75,9 +76,9 @@ func player_death():
 	word_builder.submitted_count=0
 	print("I died")
 	tile_board.clear_targets()
-	if dead_players.size()+players_compleated_floor.size()>=Game.players.size()-1:
+	if dead_players.size()+players_compleated_floor.size()>=Game.players.size():
 		reviving=true
-	elif dead_players.size()<=Game.players.size()-1 and enemy.id!=Enemies.NOBODY:
+	elif dead_players.size()+1<Game.players.size() and enemy.id!=Enemies.NOBODY:
 		for tile in tile_board.get_tiles():
 			tile.add_status(Globals.TileStatus.CANDY)
 			await Game.timeout(0.1)
@@ -211,8 +212,8 @@ func kill_peer():
 	Game.players.clear()
 
 func finish_run(is_victory: = false):
-	await super(is_victory)
 	kill_peer()
+	await super(is_victory)
 
 @rpc("any_peer")
 func request_set_spells():

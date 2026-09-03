@@ -394,7 +394,7 @@ func phone_a_friend_recive():
 	var cursed_tiles=recived_phone_a_friend_data.duplicate()
 	rng.move.shuffle(cursed_tiles)
 	cursed_tiles.sort_custom(func (a:Dictionary,b:Dictionary)->bool:
-		return get_effect_priority(a.get("statuses"))>get_effect_priority(b.get("Statuses"))
+		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
 	)
 	for tile_data in cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num):
 		if "statuses" in tile_data:

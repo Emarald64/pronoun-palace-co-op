@@ -18,6 +18,7 @@ func _on_start_appearing()->void:
 	if icons.is_empty():
 		for id in Globals.CHARACTER_ORDER:
 			var icon: CharacterSelectorIcon = ICON_SCENE.instantiate()
+			icon.show_locked_character=true
 			icon.set_character(id, true)
 			icons.append(icon)
 

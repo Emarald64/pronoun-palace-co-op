@@ -10,6 +10,7 @@ script = ExtResource("2_roion")
 source_boxes = [NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary/MarginContainer/LongestWordsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights/FightsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells/SpellsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words/WordsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer/CoopDamageStats"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer2/CoopLongestWordStats")]
 
 [node name="LongestWords" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary" parent_id_path=PackedInt32Array(115545741) index="3" unique_id=203239441]
+text = ""
 key = "summary/longest_words"
 metadata/_edit_pinned_properties_ = [&"key"]
 
@@ -65,13 +66,16 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="Title" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights" parent_id_path=PackedInt32Array(2143626055) index="0" unique_id=538066551]
+text = ""
 key = "summary/fights_title"
 metadata/_edit_pinned_properties_ = [&"key"]
 
 [node name="Title" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells" parent_id_path=PackedInt32Array(2047468486) index="0" unique_id=879608926]
+text = ""
 key = "summary/spells_used_title"
 metadata/_edit_pinned_properties_ = [&"key"]
 
 [node name="Title" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words" parent_id_path=PackedInt32Array(1085021027) index="0" unique_id=64131355]
+text = ""
 key = "summary/words_title"
 metadata/_edit_pinned_properties_ = [&"key"]

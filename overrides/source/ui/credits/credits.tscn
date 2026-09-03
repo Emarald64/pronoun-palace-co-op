@@ -29,9 +29,15 @@ credit_path = "mod/co-op/credits"
 
 [node name="FeaturingHeader" parent="CreditsContainer" index="7" unique_id=1882271877]
 text = ""
+key = "credits/featuring"
+metadata/_edit_pinned_properties_ = [&"key"]
 
 [node name="PlaytestersHeader" parent="CreditsContainer" index="10" unique_id=674690052]
 text = ""
+key = "credits/playtesting"
+metadata/_edit_pinned_properties_ = [&"key"]
 
 [node name="PlaytestingHeader2" parent="CreditsContainer" index="13" unique_id=634008708]
 text = ""
+key = "credits/shoutouts"
+metadata/_edit_pinned_properties_ = [&"key"]
