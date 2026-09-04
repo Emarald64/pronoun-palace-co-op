@@ -2,7 +2,10 @@ extends "res://mods/co-op/source/ui/join_menu.gd"
 
 func _on_start_appearing()->void:
 	super()
-	%LobbyInfo.text="Lobby id: "+str(Game.steam_lobby_id)
+	var lobby_id_array=PackedByteArray()
+	lobby_id_array.resize(8)
+	lobby_id_array.encode_u64(0,Game.steam_lobby_id)
+	%LobbyInfo.text="Lobby id: "+Marshalls.raw_to_base64(lobby_id_array)
 
 func connect_to_server() -> void:
 	var peer:=SteamMultiplayerPeer.new()
@@ -12,3 +15,7 @@ func connect_to_server() -> void:
 	else:
 		multiplayer.multiplayer_peer=peer
 		%Status.text="Connecting..."
+
+func disappear(instant: bool = false) -> void:
+	Steam.leaveLobby(Game.steam_lobby_id)
+	super()

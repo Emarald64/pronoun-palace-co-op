@@ -48,6 +48,7 @@ func connection_failed()->void:
 
 func connection_ok()->void:
 	if active:
+		AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 		%Status.text=""
 		menu_controller.set_menu(lobby)
 

@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dvx2rlq4ph0lh"]
+
+[ext_resource type="Script" uid="uid://dkg0g441tk014" path="res://mods/co-op/source/ui/steam_lobby_entry.gd" id="1_mnnfb"]
+[ext_resource type="PackedScene" uid="uid://bmihv37bkvnyh" path="res://source/ui/icons/difficulty_icon.tscn" id="2_gge1b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yekkh"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="SteamLobbyEntry" type="Panel" unique_id=1989158701]
+offset_right = 123.0
+offset_bottom = 36.0
+theme_type_variation = &"MenuPaperAlt"
+script = ExtResource("1_mnnfb")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1411186859]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=246109428]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="DifficultyIcon" parent="HBoxContainer/Control" unique_id=872184676 instance=ExtResource("2_gge1b")]
+unique_name_in_owner = true
+frame = 11
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1024463485]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=68395152]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Title"
+
+[node name="MemberCount" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1331773961]
+unique_name_in_owner = true
+layout_mode = 2
+text = "2/16"
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=206948259]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_yekkh")
+text = "Join"
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_join_pressed"]

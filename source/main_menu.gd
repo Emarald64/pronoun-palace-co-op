@@ -2,6 +2,7 @@ extends MainMenu
 
 func _ready():
 	%DailyButton.queue_free()
+	%LeaderboardButton.queue_free()
 	
 	%CharacterSelect.start_button.pressed.disconnect(%CharacterSelect._on_start_button_pressed)
 	%CharacterSelect.start_button.pressed.connect(func ():

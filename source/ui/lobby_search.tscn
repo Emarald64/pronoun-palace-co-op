@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bd1kelblt38w4"]
+
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_1jk6l"]
+[ext_resource type="Script" uid="uid://b3lkh8f5fec2u" path="res://mods/co-op/source/ui/lobby_search.gd" id="2_xm747"]
+
+[node name="LobbySearch" unique_id=1499490309 instance=ExtResource("1_1jk6l")]
+script = ExtResource("2_xm747")
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1960154012]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 7.0
+offset_right = -3.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1802660780]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=2132237506]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Lobbies" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=1979950085]
+layout_mode = 2
+
+[node name="RefreshButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1360177824]
+layout_mode = 2
+text = "Refresh"
+
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/RefreshButton" to="." method="refresh_lobbies"]

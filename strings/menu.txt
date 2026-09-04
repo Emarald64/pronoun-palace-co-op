@@ -1,0 +1,8 @@
+:join:
+	Join
+:ip:
+	IP
+:lobbies:
+	Steam Lobbies
+:host:
+	Host

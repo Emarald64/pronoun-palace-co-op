@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="4_yycis"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="5_3e76r"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="6_xcvp0"]
+[ext_resource type="FontFile" uid="uid://dloxpf3fuils7" path="res://fonts/JetBrainsMono-Regular.ttf" id="7_eupno"]
 
 [sub_resource type="Resource" id="Resource_ooua1"]
 script = ExtResource("5_3e76r")
@@ -46,6 +47,7 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 [node name="LobbyInfo" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=104160561]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_eupno")
 text = "Lobby id: 0"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=226221271]

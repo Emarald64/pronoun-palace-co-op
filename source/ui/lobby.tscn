@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_heodt"]
 [ext_resource type="Script" uid="uid://fn8op17sv5bv" path="res://mods/co-op/source/ui/multiplayer_lobby.gd" id="2_mb6rq"]
 [ext_resource type="PackedScene" uid="uid://7yaxnry66h85" path="res://mods/co-op/source/ui/lobby_player.tscn" id="3_mb6rq"]
+[ext_resource type="FontFile" uid="uid://dloxpf3fuils7" path="res://fonts/JetBrainsMono-Regular.ttf" id="4_qe3it"]
 
 [node name="Lobby" unique_id=1499490309 instance=ExtResource("1_heodt")]
 script = ExtResource("2_mb6rq")
@@ -30,7 +31,13 @@ theme_override_font_sizes/font_size = 16
 text = "Players"
 horizontal_alignment = 1
 
-[node name="Players" type="GridContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=436813728]
+[node name="LobbyID" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1855578020]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_qe3it")
+
+[node name="Players" type="GridContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=436813728]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -38,7 +45,7 @@ theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="Start" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1731870589]
+[node name="Start" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1731870589]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

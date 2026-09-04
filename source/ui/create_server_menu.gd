@@ -2,15 +2,23 @@ extends MenuPanel
 
 @export var lobby:MenuPanel
 var continuing_game:=false
-var steam_networking:=true
+var steam_networking:=false
 #var upnp:UPNP
+
+func _ready() -> void:
+	start_appearing.connect(_on_start_appearing)
+
+func _on_start_appearing():
+	%Steam.disabled=not Bridge.steam_initialized
 
 func host_pressed():
 	if steam_networking:
-		Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY,%MaxPlayers.value)
+		Steam.createLobby(%LobbyType.get_selected_id(),%MaxPlayers.value)
 		var responce=await Steam.lobby_created
 		if responce[0]==Steam.Result.RESULT_OK:
 			Game.steam_lobby_id=responce[1]
+			Steam.setLobbyData(Game.steam_lobby_id,"in_game","false")
+			Steam.setLobbyData(Game.steam_lobby_id,"difficulty",str(Game.difficulty))
 			print("sucessfully created lobby with id ",Game.steam_lobby_id)
 			var peer=SteamMultiplayerPeer.new()
 			peer.host_with_lobby(Game.steam_lobby_id)
@@ -44,6 +52,7 @@ func go_to_lobby():
 		Game.player_info.name=%Name.text
 	Game.players[1]=Game.player_info
 	Game.player_connected.emit(1,Game.player_info)
+	AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 	if continuing_game:
 		#screen_wipe.wipe_in()
 		#await screen_wipe.screen_covered
@@ -65,3 +74,13 @@ func show_ip():
 	%IP.text=Game.upnp.query_external_address()
 	%ShowIPButton.hide()
 	%IP.show()
+
+func select_steam():
+	steam_networking=true
+	%IPSettings.hide()
+	%SteamSettings.show()
+	
+func select_ip():
+	steam_networking=false
+	%IPSettings.show()
+	%SteamSettings.hide()

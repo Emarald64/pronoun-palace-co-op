@@ -60,6 +60,7 @@ func _ready()->void:
 		if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 			print("joined lobby ",steam_lobby_id," successfuly")
 			await Game.main_menu.screen_wipe.anim_player.animation_finished
+			await Game.main_menu.menu_controller.menu_appear_finish
 			Game.main_menu.menu_controller.set_menu(Game.main_menu.get_node("HUD/Steam Join Menu"))
 			#else:
 				#push_error("error connecting peer to lobby: ",error_string(peer_error))

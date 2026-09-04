@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/source/ui/create_server_menu.gd" id="2_i4ivu"]
 [ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_kvote"]
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_a6585"]
+
 [node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_y0u7g")]
 theme = ExtResource("2_kvote")
 script = ExtResource("2_i4ivu")
@@ -71,15 +73,36 @@ theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393,
 min_value = 1.0
 value = 16.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1978642974]
+[node name="NetworkingMethod" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3" unique_id=1958147952]
+layout_mode = 2
+theme_override_constants/separation = 23
+alignment = 1
+
+[node name="IP" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod" index="0" unique_id=768458419]
+layout_mode = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_a6585")
+text = "IP"
+
+[node name="Steam" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod" index="1" unique_id=1783556428]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_a6585")
+text = "Steam"
+
+[node name="IPSettings" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4" unique_id=1629222056]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5" index="0" unique_id=2117073776]
+[node name="HBoxContainer5" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings" index="0" unique_id=1978642974]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="0" unique_id=2117073776]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 text = "Port"
 
-[node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5" index="1" unique_id=678295482]
+[node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="1" unique_id=678295482]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/up_icon_modulate = Color(0.18, 0.18, 0.18, 1)
@@ -89,40 +112,40 @@ theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393,
 max_value = 65535.0
 value = 7000.0
 
-[node name="UPnP Option" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4" unique_id=1769431622]
+[node name="UPnP Option" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings" index="1" unique_id=1769431622]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option" index="0" unique_id=241829582]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option" index="0" unique_id=241829582]
 layout_mode = 2
 theme_type_variation = &"OptionsLabel"
 theme_override_font_sizes/font_size = 13
 text = "Enable UPnP:"
 
-[node name="CheckBox" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option" index="1" unique_id=1376439678]
+[node name="CheckBox" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option" index="1" unique_id=1376439678]
 layout_mode = 2
 
-[node name="UPnP Stuff" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5" unique_id=1783118323]
+[node name="UPnP Stuff" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings" index="2" unique_id=1783118323]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff" index="0" unique_id=1143341906]
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff" index="0" unique_id=1143341906]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="0" unique_id=1979019667]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer" index="0" unique_id=1979019667]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 text = "IP: "
 
-[node name="ShowIPButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="1" unique_id=155111474]
+[node name="ShowIPButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer" index="1" unique_id=155111474]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
 text = "Show"
 
-[node name="IP" type="TextEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer" index="2" unique_id=1928515433]
+[node name="IP" type="TextEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer" index="2" unique_id=1928515433]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -133,23 +156,51 @@ theme_override_font_sizes/font_size = 13
 text = "Couldn't get IP"
 editable = false
 
-[node name="UPnP Port Forward" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff" index="1" unique_id=1435588992]
+[node name="UPnP Port Forward" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff" index="1" unique_id=1435588992]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/UPnP Port Forward" index="0" unique_id=1662641242]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/UPnP Port Forward" index="0" unique_id=1662641242]
 layout_mode = 2
 theme_type_variation = &"OptionsLabel"
 theme_override_font_sizes/font_size = 13
 text = "UPnP Port Forward:"
 
-[node name="ForwardPort" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/UPnP Port Forward" index="1" unique_id=398108800]
+[node name="ForwardPort" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/UPnP Port Forward" index="1" unique_id=398108800]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="SteamSettings" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5" unique_id=885009588]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=1888688161]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="0" unique_id=678343981]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Visibility"
+
+[node name="LobbyType" type="OptionButton" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="1" unique_id=295512445]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 1
+item_count = 3
+popup/item_0/text = "Private"
+popup/item_0/id = 0
+popup/item_1/text = "Friends Only"
+popup/item_1/id = 1
+popup/item_2/text = "Public"
+popup/item_2/id = 2
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1806416797]
 layout_mode = 2
 text = "Host"
 
-[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Option/CheckBox" to="." method="enable_upnp"]
-[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/UPnP Stuff/HBoxContainer/ShowIPButton" to="." method="show_ip"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod/IP" to="." method="select_ip"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod/Steam" to="." method="select_steam"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option/CheckBox" to="." method="enable_upnp"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer/ShowIPButton" to="." method="show_ip"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="host_pressed"]
