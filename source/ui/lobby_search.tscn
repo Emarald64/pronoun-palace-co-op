@@ -26,7 +26,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Lobbies" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=1979950085]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="RefreshButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1360177824]
 layout_mode = 2

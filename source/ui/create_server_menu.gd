@@ -47,9 +47,14 @@ func host_pressed():
 
 func go_to_lobby():
 	if %Name.text.is_empty():
-		Game.player_info.name="Host"
+		if Bridge.steam_initialized:
+			Game.player_info.name=Bridge.get_username(Bridge.own_user_id)
+		else:
+			Game.player_info.name="Host"
 	else:
 		Game.player_info.name=%Name.text
+	if steam_networking:
+		Steam.setLobbyData(Game.steam_lobby_id,"name",Game.player_info.name)
 	Game.players[1]=Game.player_info
 	Game.player_connected.emit(1,Game.player_info)
 	AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)

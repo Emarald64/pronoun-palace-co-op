@@ -8,13 +8,13 @@ func _ready():
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
 func refresh_lobbies():
-	Steam.requestLobbyList()
-
-func _on_lobby_match_list(lobby_ids:Array[int]):
-	print(lobby_ids)
-	var new_lobby_entries=[]
 	for lobby_entry in lobby_entries:
 		lobby_entry.hide()
+	Steam.requestLobbyList()
+
+func _on_lobby_match_list(lobby_ids:Array):
+	print(lobby_ids)
+	var new_lobby_entries:Array[Control]=[]
 	
 	for lobby_id in lobby_ids:
 		var lobby_entry:Control
@@ -25,13 +25,13 @@ func _on_lobby_match_list(lobby_ids:Array[int]):
 		else:
 			lobby_entry=lobby_entries.pop_front()
 			lobby_entry.show()
-		
 		lobby_entry.set_lobby_id(lobby_id)
+		new_lobby_entries.append(lobby_entry)
 	
 	lobby_entries=new_lobby_entries
 
 func join_lobby(lobby_id:int):
-	Game.lobby_id=lobby_id
+	Game.steam_lobby_id=lobby_id
 	Steam.joinLobby(lobby_id)
 	var lobby_joined=await Steam.lobby_joined
 	var lobby_joined_response=lobby_joined[3]

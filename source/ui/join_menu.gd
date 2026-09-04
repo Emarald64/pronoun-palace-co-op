@@ -41,13 +41,14 @@ func connect_to_server() -> void:
 		%Status.text="Connecting..."
 
 func connection_failed()->void:
+	push_error("connection failed")
 	if active:
-		print("connection failed")
 		multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
 		%Status.text="Connection Failed"
 
 func connection_ok()->void:
 	if active:
+		print("Connected sucessfully")
 		AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 		%Status.text=""
 		menu_controller.set_menu(lobby)

@@ -12,6 +12,7 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [node name="SteamLobbyEntry" type="Panel" unique_id=1989158701]
+custom_minimum_size = Vector2(123, 36)
 offset_right = 123.0
 offset_bottom = 36.0
 theme_type_variation = &"MenuPaperAlt"
@@ -51,6 +52,7 @@ layout_mode = 2
 text = "2/16"
 
 [node name="Button" type="Button" parent="HBoxContainer" unique_id=206948259]
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_yekkh")

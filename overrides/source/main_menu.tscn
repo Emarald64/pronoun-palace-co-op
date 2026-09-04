@@ -62,7 +62,10 @@ offset_top = 1000.0
 offset_bottom = 1000.0
 lobby = NodePath("../Lobby")
 
-[node name="LobbySearch" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=1874066626 instance=ExtResource("9_ujukc")]
+[node name="LobbySearch" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=1874066626 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("9_ujukc")]
+offset_top = 1000.0
+offset_bottom = 1000.0
+steam_join_menu = NodePath("../Steam Join Menu")
 
 [node name="JoinSelectionMenu" type="Control" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="20" unique_id=1564897011]
 layout_mode = 3
