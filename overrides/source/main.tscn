@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
 [ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="5_h7udt"]
-[ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="6_tcbgc"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
@@ -71,10 +70,6 @@ offset_top = 7.0
 offset_right = 2.0
 offset_bottom = 22.000021
 theme_type_variation = &"BoldOutlineLabel"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("6_tcbgc")
-theme_override_font_sizes/font_size = 8
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2

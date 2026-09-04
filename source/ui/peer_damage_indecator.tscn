@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="2_dcsum"]
 [ext_resource type="Texture2D" uid="uid://dkr5ip4pph7of" path="res://mods/co-op/arte/ui/dead.png" id="3_lf8ko"]
 [ext_resource type="Texture2D" uid="uid://riaajkj4lyl5" path="res://arte/ui/hearts.png" id="4_g7q8g"]
-[ext_resource type="FontFile" uid="uid://2h7fup58h8vn" path="res://fonts/Suwannaphum-Bold.ttf" id="5_j6jlf"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="6_nlco3"]
 [ext_resource type="Script" uid="uid://7xvadspst3p5" path="res://source/ui/generic/hover_handler.gd" id="7_4jqla"]
 
@@ -92,10 +91,6 @@ offset_top = 7.0
 offset_right = 2.0
 offset_bottom = 22.000021
 theme_type_variation = &"BoldOutlineLabel"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("5_j6jlf")
-theme_override_font_sizes/font_size = 8
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -114,10 +109,6 @@ offset_top = 7.0
 offset_right = 2.0
 offset_bottom = 22.000021
 theme_type_variation = &"BoldOutlineLabel"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("5_j6jlf")
-theme_override_font_sizes/font_size = 8
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -134,10 +125,6 @@ offset_top = 7.0
 offset_right = 2.0
 offset_bottom = 22.000021
 theme_type_variation = &"BoldOutlineLabel"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 6
-theme_override_fonts/font = ExtResource("5_j6jlf")
-theme_override_font_sizes/font_size = 8
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
