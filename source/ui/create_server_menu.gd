@@ -2,36 +2,54 @@ extends MenuPanel
 
 @export var lobby:MenuPanel
 var continuing_game:=false
+var steam_networking:=true
 #var upnp:UPNP
 
 func host_pressed():
-	print("starting enet hosting")
-	var peer=ENetMultiplayerPeer.new()
-	var server_error=peer.create_server(%Port.value,%MaxPlayers.value)
-	if server_error==Error.OK:
-		print("server created ok")
-		if %ForwardPort.button_pressed:
-			var upnp_error=Game.upnp.add_port_mapping(%Port.value,0,"Pronoun Palace coop")
-			if upnp_error!=UPNP.UPNPResult.UPNP_RESULT_SUCCESS:
-				push_error("UPnP port map failure: ",upnp_error)
-			else:
-				print("upnp port map success")
-		multiplayer.multiplayer_peer=peer
-		if %Name.text.is_empty():
-			Game.player_info.name="Host"
+	if steam_networking:
+		Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY,%MaxPlayers.value)
+		var responce=await Steam.lobby_created
+		if responce[0]==Steam.Result.RESULT_OK:
+			Game.steam_lobby_id=responce[1]
+			print("sucessfully created lobby with id ",Game.steam_lobby_id)
+			var peer=SteamMultiplayerPeer.new()
+			peer.host_with_lobby(Game.steam_lobby_id)
+			multiplayer.multiplayer_peer=peer
+			go_to_lobby()
 		else:
-			Game.player_info.name=%Name.text
-		Game.players[1]=Game.player_info
-		Game.player_connected.emit(1,Game.player_info)
-		if continuing_game:
-			#screen_wipe.wipe_in()
-			#await screen_wipe.screen_covered
-			Game.load_run(SaveManager.get_save().get_saved_run(true))
-		else:
-			menu_controller.set_menu(lobby)
+			push_error("Lobby creation error: ",responce[0])
+			%Header.text="Lobby creation error, code: "+str(responce[0])
 	else:
-		push_error("server creation error:", server_error)
-		%Header.text=error_string(server_error)
+		print("starting enet hosting")
+		var peer=ENetMultiplayerPeer.new()
+		var server_error=peer.create_server(%Port.value,%MaxPlayers.value)
+		if server_error==Error.OK:
+			print("server created ok")
+			if %ForwardPort.button_pressed:
+				var upnp_error=Game.upnp.add_port_mapping(%Port.value,0,"Pronoun Palace coop")
+				if upnp_error!=UPNP.UPNPResult.UPNP_RESULT_SUCCESS:
+					push_error("UPnP port map failure: ",upnp_error)
+				else:
+					print("upnp port map success")
+			multiplayer.multiplayer_peer=peer
+			go_to_lobby()
+		else:
+			push_error("server creation error:", server_error)
+			%Header.text=error_string(server_error)
+
+func go_to_lobby():
+	if %Name.text.is_empty():
+		Game.player_info.name="Host"
+	else:
+		Game.player_info.name=%Name.text
+	Game.players[1]=Game.player_info
+	Game.player_connected.emit(1,Game.player_info)
+	if continuing_game:
+		#screen_wipe.wipe_in()
+		#await screen_wipe.screen_covered
+		Game.load_run(SaveManager.get_save().get_saved_run(true))
+	else:
+		menu_controller.set_menu(lobby)
 
 func enable_upnp():
 	Game.upnp=UPNP.new()

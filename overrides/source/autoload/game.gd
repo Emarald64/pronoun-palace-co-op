@@ -8,6 +8,7 @@ var player_info = {
 }
 var upnp:UPNP
 var sync_start:=false
+var steam_lobby_id:=0
 signal player_connected(peer_id:int,player_info)
 signal player_disconnected(peer_id:int)
 
@@ -20,7 +21,6 @@ func _ready() -> void:
 		player_info.steam_id=Bridge.own_user_id
 	Steam.screenshot_ready.connect(tag_screenshot)
 
-	
 @rpc("call_local")
 func start_game(run_seed:int, _difficulty:int):
 	print("starting game")

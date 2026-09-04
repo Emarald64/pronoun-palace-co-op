@@ -38,6 +38,8 @@ func disappear(instant: bool = false)->void:
 		player_block.queue_free()
 	player_blocks.clear()
 	Game.players.clear()
+	if Game.steam_lobby_id:
+		Steam.leaveLobby(Game.steam_lobby_id)
 	if Game.upnp!=null:
 		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()

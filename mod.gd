@@ -48,6 +48,29 @@ func _ready()->void:
 		ResourceLoader.load_threaded_request(intent_icon_path+file_name)
 	
 
+func _post_mods_loaded() -> void:
+	var cmdline_args:=OS.get_cmdline_args()
+	var connect_arg_pos:=cmdline_args.find("+connect_lobby")
+	if connect_arg_pos>=0 and cmdline_args.size()>connect_arg_pos+1:
+		#connect to steam lobby
+		var steam_lobby_id=int(cmdline_args[connect_arg_pos+1])
+		await get_tree().create_timer(2).timeout
+		Steam.joinLobby(steam_lobby_id)
+		Game.steam_lobby_id=steam_lobby_id
+		var lobby_joined=await Steam.lobby_joined
+		var lobby_joined_response=lobby_joined[3]
+		if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+			print("joined lobby",steam_lobby_id,"successfuly")
+			var peer=SteamMultiplayerPeer.new()
+			var peer_error=peer.connect_to_lobby(steam_lobby_id)
+			if peer_error==Error.OK:
+				multiplayer.peer=peer
+				Game.main.menu_controller.set_menu(Game.main_menu.get_node("%Lobby"))
+			else:
+				push_error("error connecting peer to lobby: ",error_string(peer_error))
+		else:
+			push_error("error joining lobby, code: ",lobby_joined_response)
+
 const spells:PackedStringArray=[
 	"party_telephone",
 	"postage_stamp",
@@ -67,22 +90,6 @@ const spell_weights:Dictionary[String,float]={
 	"remote_object":3.0,
 	"tv_snow":3.0
 }
-
-#const spell_catagories={
-	#Globals.SPELL_CATEGORY.OFFENSIVE:[
-		#"party_telephone",
-		#"postage_stamp",
-	#],
-	#Globals.SPELL_CATEGORY.SUPPORT:[
-		#"blue_box",
-		#"remote_object"
-	#],
-	##Globals.SPELL_CATEGORY.DEFENSIVE:[
-		##"co-op:tv_snow"
-	##],
-	#"coop":spells
-#}
-
 
 func get_spell_ids() -> Array[String]:
 	return namespace_ids(spells+non_pool_spells)
