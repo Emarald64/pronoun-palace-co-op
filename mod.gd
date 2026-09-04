@@ -3,7 +3,7 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
-const coop_version="Still can't do steam networking - 8/28"
+const coop_version="Can do Steam networking :D - 9/3"
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
@@ -46,30 +46,49 @@ func _ready()->void:
 		
 	for file_name in intent_icons:
 		ResourceLoader.load_threaded_request(intent_icon_path+file_name)
-	
 
-func _post_mods_loaded() -> void:
 	var cmdline_args:=OS.get_cmdline_args()
 	var connect_arg_pos:=cmdline_args.find("+connect_lobby")
 	if connect_arg_pos>=0 and cmdline_args.size()>connect_arg_pos+1:
 		#connect to steam lobby
 		var steam_lobby_id=int(cmdline_args[connect_arg_pos+1])
-		await get_tree().create_timer(2).timeout
-		Steam.joinLobby(steam_lobby_id)
+		await get_tree().process_frame
 		Game.steam_lobby_id=steam_lobby_id
+		Steam.joinLobby(steam_lobby_id)
 		var lobby_joined=await Steam.lobby_joined
 		var lobby_joined_response=lobby_joined[3]
 		if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-			print("joined lobby",steam_lobby_id,"successfuly")
-			var peer=SteamMultiplayerPeer.new()
-			var peer_error=peer.connect_to_lobby(steam_lobby_id)
-			if peer_error==Error.OK:
-				multiplayer.peer=peer
-				Game.main.menu_controller.set_menu(Game.main_menu.get_node("%Lobby"))
-			else:
-				push_error("error connecting peer to lobby: ",error_string(peer_error))
+			print("joined lobby ",steam_lobby_id," successfuly")
+			await Game.main_menu.screen_wipe.anim_player.animation_finished
+			Game.main_menu.menu_controller.set_menu(Game.main_menu.get_node("HUD/Steam Join Menu"))
+			#else:
+				#push_error("error connecting peer to lobby: ",error_string(peer_error))
 		else:
 			push_error("error joining lobby, code: ",lobby_joined_response)
+	
+	Steam.join_requested.connect(_on_join_lobby_requested)
+
+func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
+	Steam.joinLobby(lobby_id)
+	if Game.is_in_run():
+		print("returning to main menu to join lobby")
+		Game.return_to_menu()
+		await get_tree().scene_changed
+		await get_tree().process_frame
+	print("joining lobby ",lobby_id)
+	Game.steam_lobby_id=lobby_id
+	var lobby_joined=await Steam.lobby_joined
+	var lobby_joined_response=lobby_joined[3]
+	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+		print("joined lobby ",lobby_id," successfuly")
+		#await Game.main_menu.screen_wipe.anim_player.animation_finished
+		Game.main_menu.menu_controller.set_menu(Game.main_menu.get_node("HUD/Steam Join Menu"))
+		#else:
+			#push_error("error connecting peer to lobby: ",error_string(peer_error))
+	else:
+		push_error("error joining lobby, code: ",lobby_joined_response) 
+
+
 
 const spells:PackedStringArray=[
 	"party_telephone",

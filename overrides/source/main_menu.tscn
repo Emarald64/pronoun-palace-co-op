@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bkj57xrdfqerd" path="res://mods/co-op/overrides/source/ui/menu/character_select/character_select.gd" id="4_le0k0"]
 [ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/lobby.tscn" id="4_sfbee"]
 [ext_resource type="PackedScene" uid="uid://d1xbhbxo8rq8k" path="res://mods/co-op/source/ui/create_server_menu.tscn" id="5_f3mtu"]
+[ext_resource type="PackedScene" uid="uid://b0ic6lvqrr2a2" path="res://mods/co-op/source/ui/steam_join_menu.tscn" id="8_sfbee"]
 
 [node name="MainMenu" unique_id=1522416414 instance=ExtResource("1_5oid8")]
 script = ExtResource("2_le0k0")
@@ -48,6 +49,11 @@ character_select = NodePath("../CharacterSelect")
 
 [node name="CreateServerMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="17" unique_id=1190851394 node_paths=PackedStringArray("lobby") instance=ExtResource("5_f3mtu")]
 unique_name_in_owner = true
+lobby = NodePath("../Lobby")
+
+[node name="Steam Join Menu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="18" unique_id=883504903 node_paths=PackedStringArray("lobby") instance=ExtResource("8_sfbee")]
+offset_top = 1000.0
+offset_bottom = 1000.0
 lobby = NodePath("../Lobby")
 
 [editable path="HUD/PlayMenu/NewRunButton"]

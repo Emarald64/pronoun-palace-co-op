@@ -18,7 +18,7 @@ func _on_start_appearing()->void:
 	if icons.is_empty():
 		for id in Globals.CHARACTER_ORDER:
 			var icon: CharacterSelectorIcon = ICON_SCENE.instantiate()
-			icon.show_locked_character=true
+			icon.get_node("%CharacterIcon").show_locked_character=true
 			icon.set_character(id, true)
 			icons.append(icon)
 
@@ -41,13 +41,15 @@ func connect_to_server() -> void:
 		%Status.text="Connecting..."
 
 func connection_failed()->void:
-	print("connection failed")
-	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	%Status.text="Connection Failed"
+	if active:
+		print("connection failed")
+		multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+		%Status.text="Connection Failed"
 
 func connection_ok()->void:
-	%Status.text=""
-	menu_controller.set_menu(lobby)
+	if active:
+		%Status.text=""
+		menu_controller.set_menu(lobby)
 
 
 func _on_icon_selector_selected(icon: SelectorIcon) -> void:

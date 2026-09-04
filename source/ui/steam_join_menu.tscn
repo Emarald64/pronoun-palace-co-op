@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://b0ic6lvqrr2a2"]
+
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_vnwub"]
+[ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_eupno"]
+[ext_resource type="Script" uid="uid://b2kq08fa40dkm" path="res://mods/co-op/source/ui/steam_join_menu.gd" id="3_vnwub"]
+[ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="4_yycis"]
+[ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="5_3e76r"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="6_xcvp0"]
+
+[sub_resource type="Resource" id="Resource_ooua1"]
+script = ExtResource("5_3e76r")
+groups = PackedStringArray("UI")
+sound = "UI/CHAR_SELECT"
+metadata/_custom_type_script = "uid://c17dcnicbtc1a"
+
+[node name="Steam Join Menu" unique_id=1499490309 instance=ExtResource("1_vnwub")]
+theme = ExtResource("2_eupno")
+script = ExtResource("3_vnwub")
+full_screen_menu = false
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1484971715]
+layout_mode = 0
+offset_right = 217.0
+offset_bottom = 252.0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1894563190]
+layout_mode = 2
+
+[node name="IconSelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=1130161940 instance=ExtResource("4_yycis")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+selection_sound = SubResource("Resource_ooua1")
+
+[node name="CharacterTitle" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=481420769]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+horizontal_alignment = 1
+script = ExtResource("6_xcvp0")
+key = "character/lexicographer/select_title"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
+
+[node name="LobbyInfo" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=104160561]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Lobby id: 0"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=226221271]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1816822929]
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1641579130]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client"
+max_length = 16
+virtual_keyboard_enabled = false
+
+[node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="4" unique_id=990898958]
+layout_mode = 2
+text = "Connect"
+
+[node name="Status" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="5" unique_id=509349693]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="AddictDeselectTimer" type="Timer" parent="." index="2" unique_id=278685126]
+one_shot = true
+
+[connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/IconSelector" to="." method="_on_icon_selector_selected"]
+[connection signal="text_changed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="_on_name_changed"]
+[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="connect_to_server"]
+[connection signal="timeout" from="AddictDeselectTimer" to="." method="select_lexicographer"]
