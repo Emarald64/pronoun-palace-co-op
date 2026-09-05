@@ -111,15 +111,30 @@ const spell_weights:Dictionary[String,float]={
 	"tv_snow":3.0
 }
 
+const spell_catagories={
+	Globals.SPELL_CATEGORY.OFFENSIVE:[
+		"co-op:party_telephone",
+		"co-op:postage_stamp",
+	],
+	Globals.SPELL_CATEGORY.SUPPORT:[
+		"co-op:blue_box",
+		"co-op:remote_object"
+	],
+	Globals.SPELL_CATEGORY.DEFENSIVE:[
+		"co-op:tv_snow"
+	]
+}
+
+
 func get_spell_ids() -> Array[String]:
 	return namespace_ids(spells+non_pool_spells)
 
 func get_spell_pool(category: String = "") -> Dictionary[String, float]:
-	if category.is_empty() or category=="coop":
+	if category.is_empty():
 		return namespace_dictionary_ids(spell_weights)
-	#if category not in spell_catagories:
-	return {}
-	#return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(spell_weights,spell_catagories[category]))
+	if category not in spell_catagories:
+		return {}
+	return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(spell_weights,spell_catagories[category]))
 
 const removed_spells:PackedStringArray=[
 	Globals.SPELLS.MBA,
