@@ -21,6 +21,7 @@ func _on_start_appearing()->void:
 		lobby_id_array.resize(8)
 		lobby_id_array.encode_u64(0,Game.steam_lobby_id)
 		%LobbyID.text="Lobby ID: "+Marshalls.raw_to_base64(lobby_id_array)
+		Steam.setLobbyMemberData(Game.steam_lobby_id,"character",Game.player_info.character)
 
 func add_player(id:int,player_info:Dictionary)->void:
 	var block=lobby_player_scene.instantiate()

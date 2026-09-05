@@ -37,6 +37,7 @@ func join_lobby(lobby_id:int):
 	var lobby_joined_response=lobby_joined[3]
 	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		print("joined lobby ",lobby_id," successfuly")
+		AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 		menu_controller.set_menu(steam_join_menu)
 	else:
 		push_error("error joining lobby, code: ",lobby_joined_response)
