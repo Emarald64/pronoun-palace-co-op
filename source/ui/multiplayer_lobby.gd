@@ -35,8 +35,8 @@ func remove_player(id:int)->void:
 	block.queue_free()
 
 func start_game():
-	#if Game.steam_lobby_id and Steam.getLobbyOwner(Game.steam_lobby_id)==Bridge.own_user_id:
-		#Steam.setLobbyData(Game.steam_lobby_id,"in_game","true")
+	if Game.steam_lobby_id:
+		Steam.setLobbyData(Game.steam_lobby_id,"in_game","true")
 	var run_seed=character_select.seed_button.get_seed()
 	if run_seed==null:
 		run_seed=randi()

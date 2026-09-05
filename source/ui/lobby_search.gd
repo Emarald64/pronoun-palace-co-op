@@ -10,6 +10,7 @@ func _ready():
 func refresh_lobbies():
 	for lobby_entry in lobby_entries:
 		lobby_entry.hide()
+	Steam.addRequestLobbyListStringFilter("in_run","true",Steam.LobbyComparison.LOBBY_COMPARISON_NOT_EQUAL)
 	Steam.requestLobbyList()
 
 func _on_lobby_match_list(lobby_ids:Array):
