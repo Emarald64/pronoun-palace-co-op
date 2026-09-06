@@ -3,6 +3,7 @@ extends Mod
 
 var character_select
 var host_name:LineEdit
+var author="Xanderath"
 const coop_version="Can do Steam networking :D - 9/3"
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
@@ -13,7 +14,8 @@ const intent_icons:Dictionary[String,String]={
 	"pronounpalace-sendtilescursed-px.png":"phone_a_friend_send_cursed",
 	"pronounpalace-receivetilescursed-px.png":"phone_a_friend_recive_cursed",
 	"echo.png":"echo",
-	"echo_cursed.png":"echo_cursed"
+	"echo_cursed.png":"echo_cursed",
+	"candy_round_healing.png":"candy_round_healing"
 }
 
 var unloaded_intents:Array[String]=intent_icons.keys()
@@ -152,9 +154,13 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 func get_run_save_data() -> Dictionary:
 	return {
 		others_submitted_words=Game.word_builder.others_submitted_words,
-		player_total_damage=Game.word_builder.player_total_damage
+		player_total_damage=Game.word_builder.player_total_damage,
+		candy_round=Game.main.candy_round
 		}
 	
 func load_run_save_data(data: Dictionary) -> void:
 	Game.word_builder.others_submitted_words=data.others_submitted_words
 	Game.word_builder.player_total_damage=data.player_total_damage
+	Game.main.candy_round=data.candy_round
+	if data.candy_round:
+		Game.main.peer_died.rpc()

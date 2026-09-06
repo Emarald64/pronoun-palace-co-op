@@ -46,3 +46,11 @@
 
 	:description:
 		One of your spells will be swapped with a random spell of another player
+
+:candy_round_healing:
+	:name:
+		Redemption Round Healing
+	
+	:description:
+		Prevent submitting a word.
+		When the other players have killed the enemy, you will heal for {heal}, the highest healing value you've obtained.

@@ -7,7 +7,10 @@ var player_total_damage:Dictionary[int,int]={}
 @export var total_attack_label:Label
 @export var total_attack_container:Control
 var submitted_count:=0
+
 var heighest_candy_round_value:=0
+var heighest_cany_round_tiles:Array[Tile]
+
 var waiting_for_peers_to_submit:=false
 var log_all_damage_updates:=false
 
@@ -23,6 +26,7 @@ func _ready() -> void:
 	super()
 	print(Game.players)
 	Game.player_disconnected.connect(player_disconnected)
+	finished_updating_stats.connect(_on_finished_updating_stats)
 
 @rpc("any_peer")
 func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int,words:PackedStringArray=[]):
@@ -244,10 +248,14 @@ func update_stats() -> void :
 	if main.candy_round:
 		if self_heal>heighest_candy_round_value and can_submit():
 			heighest_candy_round_value=self_heal
+			heighest_cany_round_tiles=tiles.duplicate()
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()
-	
+
+func _on_finished_updating_stats(_words):
+	if main.candy_round:
+		add_intent("candy_round_healing",{heal=heighest_candy_round_value},heighest_cany_round_tiles.filter(func (tile):return is_instance_valid(tile)))
 
 func _on_submit_button_pressed():
 	await super()
