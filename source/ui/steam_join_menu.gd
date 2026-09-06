@@ -12,6 +12,7 @@ func _on_start_appearing()->void:
 
 func connect_to_server() -> void:
 	var peer:=SteamMultiplayerPeer.new()
+	peer.server_relay=true
 	var error=peer.connect_to_lobby(Game.steam_lobby_id)
 	if error:
 		push_error("failed to connect to server ",error_string(error))

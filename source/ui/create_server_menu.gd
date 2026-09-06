@@ -21,6 +21,7 @@ func host_pressed():
 			Steam.setLobbyData(Game.steam_lobby_id,"difficulty",str(Game.difficulty))
 			print("sucessfully created lobby with id ",Game.steam_lobby_id)
 			var peer=SteamMultiplayerPeer.new()
+			peer.server_relay=true
 			peer.host_with_lobby(Game.steam_lobby_id)
 			multiplayer.multiplayer_peer=peer
 			go_to_lobby()
