@@ -76,7 +76,9 @@ func player_death():
 	if dead_players.size()+players_compleated_floor.size()>=Game.players.size():
 		stop_waiting_for_death(not players_compleated_floor.is_empty())
 		return
-	elif dead_players.size()+1<Game.players.size() and enemy.id!=Enemies.NOBODY:
+	elif enemy.id!=Enemies.NOBODY:
+		await super()
+	elif dead_players.size()+1<Game.players.size():
 		candy_round=true
 		for tile in tile_board.get_tiles():
 			tile.add_status(Globals.TileStatus.CANDY)

@@ -71,6 +71,7 @@ func _init():
 		attack_big={
 			damage={
 				0:5,
+				1:6,
 				2:7,
 				4:11
 			},
@@ -83,10 +84,10 @@ func _init():
 		},
 		attack_small={
 			damage={
-				0:4,
-				1:5,
-				2:6,
-				3:7
+				0:3,
+				1:4,
+				2:5,
+				3:6
 			},
 			next="swap_big"
 		},
@@ -240,7 +241,7 @@ func display_intent():
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
 func _get_health_scaling():
-	return [60, 70, 80, 90]
+	return [65, 75, 85, 100]
 
 @rpc("any_peer")
 func recive_board(swapped_board_piece:Dictionary={}):
@@ -313,7 +314,7 @@ signal sending_spell_data_set
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
-	await Game.timeout(randf_range(1,5))
+	#await Game.timeout(randf_range(1,5))
 	recived_spell_data=swapped_spell
 
 @rpc("any_peer")
@@ -361,6 +362,7 @@ func send_spell():
 	await animate_attack()
 	if not recived_spell_data.is_empty():
 		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_data))
+		recived_spell_data.clear()
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
 
