@@ -27,28 +27,28 @@ func _init():
 	print("using co-op nobody")
 	
 	moves={
-		swap={
+		swap={ 
 			first_damage={
-				0:2,
-				1:3,
-				2:4,
-				3:5
+				0:4,
+				1:5,
+				2:6,
+				3:7
 			}
 		},
 		swap_big={
 			second_damage={
-				0:2,
-				2:3,
-				3:4
+				0:3,
+				2:4,
+				3:5,
+				4:7
 			},
 			next="phone_a_friend_recive"
 		},
 		swap_small={
 			second_damage={
-				0:3,
-				1:4,
-				2:5,
-				3:7
+				0:5,
+				1:6,
+				2:8,
 			},
 			next="phone_a_friend_send"
 		},
@@ -63,9 +63,9 @@ func _init():
 		},
 		phone_a_friend_send={
 			damage={
-				0:2,
-				1:3,
-				3:4
+				0:3,
+				1:4,
+				3:5
 			},
 			next="attack_small"
 		},
@@ -73,8 +73,7 @@ func _init():
 			damage={
 				0:5,
 				2:7,
-				3:8,
-				4:10
+				4:11
 			},
 			count={
 				0:1,
@@ -85,10 +84,10 @@ func _init():
 		},
 		attack_small={
 			damage={
-				0:3,
-				1:4,
-				2:5,
-				3:6
+				0:4,
+				1:5,
+				2:6,
+				3:7
 			},
 			next="swap_big"
 		},
@@ -112,9 +111,10 @@ func _init():
 			next="solo_a"
 		},
 		solo_c={
+			# npcs like attack
 			damage={
-				0:5,
-				1:6,
+				0:6,
+				1:7,
 				3:8
 			},
 			reduce_by_per_player={
@@ -124,7 +124,7 @@ func _init():
 			next="solo_b"
 		},
 		fishing = {
-			cursed_odds = {
+			cursed_odds = { # copied from the fisher nobody fight
 				0: 0.25, 
 				1: 0.33, 
 			}
@@ -251,6 +251,7 @@ func recive_board(swapped_board_piece:Dictionary={}):
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
+	#await Game.timeout(randf_range(.1,.4))
 	recived_spell=swapped_spell
 	#has_recived_swap_info=true
 	recived_swap_info.emit()
@@ -273,7 +274,8 @@ func swap_small():
 func swap(big_board:bool):
 	# pick spell to send
 	var swapping_board:bool=tile_board.num_columns==5
-	recive_board.rpc_id(swap_partner, get_board_part_to_swap() if swapping_board and not big_board else {})
+	if swapping_board and not big_board:
+		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
 	await send_spell()
 	
 	while recived_board_piece.is_empty() and big_board and swapping_board:
@@ -287,9 +289,8 @@ func swap(big_board:bool):
 	else:
 		hit_player(moves.swap_small.second_damage)
 	
-	@warning_ignore("incompatible_ternary")
-	await tile_board.set_size(5, 4 if big_board else 2,null,null if recived_board_piece.is_empty() else 2)
 	if not recived_board_piece.is_empty():
+		await tile_board.set_size(5, 4 if big_board else 2,null,2)
 		assert(big_board,"recived board piece when shrinking board")
 		AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 		await Game.timeout(1.2)
@@ -300,9 +301,9 @@ func swap(big_board:bool):
 			tile.load_save_data(recived_board_piece[cord])
 			tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100))
 			#projectile.impacted.disconnect(projectile.impacted.get_connections()[0].callable)
+			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			tile.impacted.connect(_on_projectile_impacted)
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			#projectile.impacted.connect(func ():
 				#tile.is_projectile=false
 				#tile_board.insert_tile(tile, cord,false)
@@ -311,7 +312,7 @@ func swap(big_board:bool):
 		recived_board_piece.clear()
 		await all_projectiles_impacted
 		await tile_board.settle_board()
-		await tile_board.set_size(5, 4 if big_board else 2)
+	await tile_board.set_size(5, 4 if big_board else 2)
 	regular_board=false
 	await wait_for_idle()
 

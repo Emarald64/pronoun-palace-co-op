@@ -58,10 +58,38 @@ func load_joining_game(host_save:Dictionary)->void:
 
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
 	if host_save.metadata.seed==local_save.metadata.seed:
+		const coppied_data=[
+			"act_events",
+			"background",
+			"enemy",
+			"showing_act_end_summary"
+		]
+		if "enemy" in local_save.data:
+			if local_save.data.enemy.id==Enemies.BRUTALIST and ("enemy" not in host_save.data or host_save.data.enemy.id!=Enemies.BRUTALIST):
+				for coord in local_save.data.board.tiles:
+					var tile_save=local_save.data.board.tiles[coord]
+					if "statuses" in tile_save:
+						if tile_save.type==Globals.TileType.DEFENSE:
+							tile_save.statuses.erase(Globals.TileStatus.ENHANCED)
+						tile_save.statuses.erase(Globals.TileStatus.LINKED)
+			elif local_save.data.enemy.id==Enemies.RECEIVER and ("enemy" not in host_save.data or host_save.data.enemy.id!=Enemies.RECEIVER) \
+			and local_save.data.enemy.save.saved_board!=null:
+				local_save.data.board.merge(local_save.data.enemy.save.saved_board,true)
+			elif local_save.data.enemy.id in [Enemies.PARADIGM,Enemies.COPYCAT] and ("enemy" not in host_save.data or host_save.data.enemy.id not in [Enemies.PARADIGM,Enemies.COPYCAT]):
+				for coord in local_save.data.board.tiles:
+					var tile_save=local_save.data.board.tiles[coord]
+					if "statuses" in tile_save and Globals.TileStatus.BOMB in tile_save.statuses:
+						local_save.data.board.tiles.erase(coord)
 		host_save.metadata.character=local_save.metadata.character
 		local_save.metadata=host_save.metadata
-		local_save.data.enemy=host_save.data.enemy
-		local_save.data.act_events=host_save.data.act_events
+		local_save.data.board.lock_amount=host_save.data.board.lock_amount
+		local_save.data.board.size=host_save.data.board.size
+		for key in coppied_data:
+			if key in host_save.data:
+				local_save.data[key]=host_save.data[key]
+			else:
+				local_save.data.erase(key)
+		
 		return local_save
 
 func _on_connected()->void:
