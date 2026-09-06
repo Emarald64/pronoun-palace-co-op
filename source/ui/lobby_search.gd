@@ -4,13 +4,16 @@ var lobby_entries:Array[Control]=[]
 var lobby_entry_scene:PackedScene=load("res://mods/co-op/source/ui/steam_lobby_entry.tscn")
 @export var steam_join_menu:MenuPanel
 
+signal apply_filters
+
 func _ready():
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
 func refresh_lobbies():
 	for lobby_entry in lobby_entries:
 		lobby_entry.hide()
-	Steam.addRequestLobbyListStringFilter("in_run","true",Steam.LobbyComparison.LOBBY_COMPARISON_NOT_EQUAL)
+	apply_filters.emit()
+	#Steam.addRequestLobbyListStringFilter("seed","",Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
 
 func _on_lobby_match_list(lobby_ids:Array):

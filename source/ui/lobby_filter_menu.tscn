@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://caf4hybwcdrm1"]
+
+[ext_resource type="Script" uid="uid://b0awmo81226p3" path="res://mods/co-op/source/ui/lobby_filter_menu.gd" id="1_apbov"]
+[ext_resource type="Script" uid="uid://drgtw8sp4tp8n" path="res://source/library/anim_player.gd" id="2_7as0y"]
+
+[sub_resource type="Animation" id="Animation_7ktls"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PositionRoot/Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-133, 38)]
+}
+
+[sub_resource type="Animation" id="Animation_j06b6"]
+resource_name = "appear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PositionRoot/Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(0.3077863, 2.0705302, 1),
+"update": 0,
+"values": [Vector2(2, 38), Vector2(-141, 38), Vector2(-133, 38)]
+}
+
+[sub_resource type="Animation" id="Animation_apbov"]
+resource_name = "disappear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PositionRoot/Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 2.0705302, 0.3077863),
+"update": 0,
+"values": [Vector2(-133, 38), Vector2(-141, 38), Vector2(2, 38)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mu8uq"]
+_data = {
+&"RESET": SubResource("Animation_7ktls"),
+&"appear": SubResource("Animation_j06b6"),
+&"disappear": SubResource("Animation_apbov")
+}
+
+[node name="LobbyFilterMenu" type="Control" unique_id=1526431567 node_paths=PackedStringArray("anim", "panel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_apbov")
+anim = NodePath("AnimPlayer")
+panel = NodePath("PositionRoot/Panel")
+metadata/_custom_type_script = "uid://bsqibr4dgehl3"
+
+[node name="PositionRoot" type="Control" parent="." unique_id=1094311890]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="PositionRoot" unique_id=116816196]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -133.0
+offset_top = -97.0
+offset_right = 7.999817
+offset_bottom = 97.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_type_variation = &"MenuTicketRight"
+
+[node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" unique_id=1800956408]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 3.0
+offset_right = -9.999817
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" unique_id=1770059088]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=440551612]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 16
+text = "Filters"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=1485416745]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1033466310]
+layout_mode = 2
+theme_type_variation = &"MenuDescriptionLabel"
+text = "Distance"
+
+[node name="Distance" type="OptionButton" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1471246346]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 8
+selected = 1
+fit_to_longest_item = false
+item_count = 4
+popup/item_0/text = "Close"
+popup/item_0/id = 0
+popup/item_1/text = "Default"
+popup/item_1/id = 1
+popup/item_2/text = "Far"
+popup/item_2/id = 2
+popup/item_3/text = "Worldwide"
+popup/item_3/id = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=783470405]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=274933017]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MenuDescriptionLabel"
+text = "Rejoin Game"
+
+[node name="CheckSeed" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1326600486]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="." unique_id=1523101132]
+libraries/ = SubResource("AnimationLibrary_mu8uq")
+script = ExtResource("2_7as0y")
+metadata/_custom_type_script = "uid://drgtw8sp4tp8n"

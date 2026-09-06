@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func _on_start_appearing()->void:
 	%Start.disabled=not multiplayer.is_server()
-	%LobbyID.visible=Game.steam_lobby_id!=0
+	%SteamStuff.visible=Game.steam_lobby_id!=0
 	if Game.steam_lobby_id:
 		var lobby_id_array=PackedByteArray()
 		lobby_id_array.resize(8)
@@ -35,11 +35,11 @@ func remove_player(id:int)->void:
 	block.queue_free()
 
 func start_game():
-	if Game.steam_lobby_id:
-		Steam.setLobbyData(Game.steam_lobby_id,"in_game","true")
 	var run_seed=character_select.seed_button.get_seed()
 	if run_seed==null:
 		run_seed=randi()
+	if Game.steam_lobby_id:
+		Steam.setLobbyData(Game.steam_lobby_id,"seed",String.num_int64(run_seed, 16, true).lpad(8, "0"))
 	Game.start_game.rpc(run_seed,Game.difficulty)
 
 func disappear(instant: bool = false)->void:
@@ -57,3 +57,7 @@ func disappear(instant: bool = false)->void:
 
 func leave()->void:
 	menu_controller.back()
+
+
+func invite_friends() -> void:
+	Steam.activateGameOverlayInviteDialog(Game.steam_lobby_id)

@@ -28,6 +28,7 @@ func _on_start_appearing()->void:
 
 
 func connect_to_server() -> void:
+	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
 	var address:String=%IP.text
 	if address.is_empty():
 		address="127.0.0.1"
