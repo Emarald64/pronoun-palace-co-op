@@ -3,7 +3,7 @@ extends Spell
 var frame:=0
 
 func _ready() -> void:
-	frame=rng.spell.randi_range(1,2)
+	frame=rng.spell.randi_range(0,1)
 	frame_updated.emit()
 
 func set_status_tooltips():

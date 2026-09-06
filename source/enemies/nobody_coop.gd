@@ -5,8 +5,9 @@ const phone_pos=Vector2(113,140)
 var swap_partner:int
 var partnerless_players:Array[int]=[]
 
-var recived_spell:Dictionary={}
 var recived_board_piece:Dictionary={}
+
+var recived_spell_data:={}
 #var has_recived_swap_info:=false
 
 var last_move_tiles:Array=[]
@@ -24,8 +25,6 @@ var echo_tiles:=[]
 
 func _init():
 	super()
-	print("using co-op nobody")
-	
 	moves={
 		swap={ 
 			first_damage={
@@ -164,13 +163,13 @@ func add_partnerless_player():
 	var peer_id=multiplayer.get_remote_sender_id()
 	partnerless_players.append(peer_id)
 	if swap_partner==-1:
-		ask_set_partner.rpc_id(peer_id,true)
+		ask_set_partner.rpc_id(peer_id)
 
 @rpc("any_peer")
-func ask_set_partner(first:bool):
+func ask_set_partner():
 	if swap_partner==-1:
 		var peer_id=multiplayer.get_remote_sender_id()
-		ask_set_partner.rpc_id(peer_id,false)
+		ask_set_partner.rpc_id(peer_id)
 		swap_partner=peer_id
 		#const solo_moves=["solo_c","solo_b","solo_a"]
 		#var partner_moves
@@ -249,13 +248,6 @@ func recive_board(swapped_board_piece:Dictionary={}):
 	recived_swap_info.emit()
 	
 
-@rpc("any_peer")
-func recive_spell(swapped_spell:Dictionary):
-	#await Game.timeout(randf_range(.1,.4))
-	recived_spell=swapped_spell
-	#has_recived_swap_info=true
-	recived_swap_info.emit()
-
 func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	var tiles=get_tiles({
 		rows=[2,3]
@@ -316,6 +308,20 @@ func swap(big_board:bool):
 	regular_board=false
 	await wait_for_idle()
 
+var sending_spell_data:Dictionary
+signal sending_spell_data_set
+
+@rpc("any_peer")
+func recive_spell(swapped_spell:Dictionary):
+	await Game.timeout(randf_range(1,5))
+	recived_spell_data=swapped_spell
+
+@rpc("any_peer")
+func ask_send_spell():
+	if sending_spell_data.is_empty():
+		await sending_spell_data_set
+	recive_spell.rpc_id(multiplayer.get_remote_sender_id(),sending_spell_data)
+
 func send_spell():
 	var spells=main.spell_container.player_spells
 	var spell_to_swap
@@ -332,21 +338,31 @@ func send_spell():
 						break
 			if defense_spell!=null:
 				spells.erase(defense_spell)
-		spell_to_swap=spells.slice(1).pick_random()
+		spell_to_swap=rng.move.pick_random(spells.slice(1))
 	else:
 		spell_to_swap=spells[0]
+	sending_spell_data=spell_to_swap.spell.get_save_data()
 	
 	var potential_spell_recivers:Array=Game.players.keys().filter(func (player_id)->bool:return player_id not in main.dead_players)
 	potential_spell_recivers.sort()
 	rng.spell_swap.shuffle(potential_spell_recivers)
-	print(potential_spell_recivers)
-	var spell_reciver=potential_spell_recivers[(potential_spell_recivers.find(multiplayer.get_unique_id())+1)%potential_spell_recivers.size()]
-	recive_spell.rpc_id(spell_reciver,spell_to_swap.spell.get_save_data())
-	while recived_spell.is_empty():
-		await recived_swap_info
+	var my_pos_in_recivers=potential_spell_recivers.find(multiplayer.get_unique_id())
+	#var spell_reciver=potential_spell_recivers[(my_pos_in_recivers+1)%potential_spell_recivers.size()]
+	var spell_sender=potential_spell_recivers[posmod((my_pos_in_recivers-1),potential_spell_recivers.size())]
+	ask_send_spell.rpc_id(spell_sender)
+	#recive_spell.rpc_id(spell_reciver,sent_spell)
+	for i in 30:
+		await Game.timeout(.3)
+		if recived_spell_data.is_empty():
+			if i%3==0:
+				ask_send_spell.rpc_id(spell_sender)
+		else:
+			break
 	await animate_attack()
-	spell_to_swap.set_spell(Spell.create_from_save(recived_spell))
-	recived_spell.clear()
+	if not recived_spell_data.is_empty():
+		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_data))
+	else:
+		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
 
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
 	super(words,_damage,_ending_turn)

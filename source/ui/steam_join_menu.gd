@@ -24,7 +24,7 @@ func disappear(instant: bool = false) -> void:
 	if not joining_game:
 		print("left lobby")
 		Steam.leaveLobby(Game.steam_lobby_id)
-	await super()
+	await super(instant)
 
 func connection_ok():
 	joining_game=true
