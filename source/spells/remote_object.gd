@@ -65,3 +65,7 @@ func remove_all_player_spells():
 	for player_spell in spell_container.player_spells:
 		player_spell.queue_free()
 	spell_container.player_spells.clear()
+
+func post_generate_tooltip(tooltip:GameTooltip):
+	var group=StringManager.get_string_group("mod/co-op/names")
+	tooltip.add_subtooltip(group.strings.values().pick_random())

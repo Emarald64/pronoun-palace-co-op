@@ -8,7 +8,7 @@
 	Send tile
 
 :charge_category:
-	common
+	uncommon
 
 :max_charge:
 	3

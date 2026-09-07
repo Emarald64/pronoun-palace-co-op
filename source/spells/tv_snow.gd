@@ -34,3 +34,7 @@ func get_save_data():
 func load_save_data(save):
 	super(save)
 	frame=save.frame
+
+func post_generate_tooltip(tooltip:GameTooltip):
+	var group=StringManager.get_string_group("mod/co-op/names")
+	tooltip.add_subtooltip(group.strings.values().pick_random())

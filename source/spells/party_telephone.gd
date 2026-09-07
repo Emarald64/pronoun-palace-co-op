@@ -28,3 +28,7 @@ func _use():
 
 func is_usable():
 	return super.is_usable() and word_builder.can_submit()
+
+func post_generate_tooltip(tooltip:GameTooltip):
+	var group=StringManager.get_string_group("mod/co-op/names")
+	tooltip.add_subtooltip(group.strings.values().pick_random())

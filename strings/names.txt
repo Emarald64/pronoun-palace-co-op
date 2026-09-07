@@ -10,3 +10,7 @@
 	Cooperative Multiplayer Mod
 ::
 	Pronoun Palace Cooperative Multiplayer Mod
+::
+	Co-Op
+::
+	Coop

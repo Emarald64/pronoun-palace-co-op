@@ -23,3 +23,7 @@ func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -
 
 func do_battle_start_transformation(exclude_spells):
 	transform_spell(rng.reroll.weighted_random(get_gift_reroll_pool(exclude_spells)))
+
+func post_generate_tooltip(tooltip:GameTooltip):
+	var group=StringManager.get_string_group("mod/co-op/names")
+	tooltip.add_subtooltip(group.strings.values().pick_random())
