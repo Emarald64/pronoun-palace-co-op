@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ca0e1cjsuwpar" path="res://mods/co-op/source/ui/peer_damage_indecator.gd" id="1_dt3se"]
 [ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="2_dcsum"]
 [ext_resource type="Texture2D" uid="uid://dkr5ip4pph7of" path="res://mods/co-op/arte/ui/dead.png" id="3_lf8ko"]
+[ext_resource type="PackedScene" uid="uid://dat3nkol372xh" path="res://source/ui/menu/generic/menu_page_shadow.tscn" id="4_dcsum"]
+[ext_resource type="Script" uid="uid://cfpkpmdehkp8u" path="res://source/ui/generic/shadow_cloner.gd" id="4_dt3se"]
 [ext_resource type="Texture2D" uid="uid://riaajkj4lyl5" path="res://arte/ui/hearts.png" id="4_g7q8g"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="6_nlco3"]
 [ext_resource type="Script" uid="uid://7xvadspst3p5" path="res://source/ui/generic/hover_handler.gd" id="7_4jqla"]
@@ -23,8 +25,9 @@ region = Rect2(38, 91, 16, 16)
 custom_minimum_size = Vector2(103, 39)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
+offset_right = 103.0
 offset_bottom = 40.0
+size_flags_horizontal = 0
 script = ExtResource("1_dt3se")
 
 [node name="Panel" type="Panel" parent="." unique_id=661252072]
@@ -63,12 +66,18 @@ mouse_filter = 2
 [node name="CharacterIcon" parent="Panel/MarginContainer/PeerDamageIndecator/Control" unique_id=1930440730 instance=ExtResource("2_dcsum")]
 unique_name_in_owner = true
 
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/Control/CharacterIcon" unique_id=255702735 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
+
 [node name="Dead" type="Sprite2D" parent="Panel/MarginContainer/PeerDamageIndecator/Control" unique_id=1019964827]
 unique_name_in_owner = true
 editor_description = "(Infinity)"
 visible = false
 texture = ExtResource("3_lf8ko")
 centered = false
+
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/Control/Dead" unique_id=1489390220 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/PeerDamageIndecator" unique_id=1938947579]
 layout_mode = 2
@@ -80,6 +89,7 @@ layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="HeartSprite" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1717586182]
+z_index = 1
 layout_mode = 2
 texture = SubResource("AtlasTexture_1eyvj")
 
@@ -95,8 +105,16 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite/HealthLabel" unique_id=1277359960 instance=ExtResource("4_dcsum")]
+z_index = -1
+position = Vector2(2, 2)
+
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite" unique_id=1303542295 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
+
 [node name="AttackSprite" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=868516907]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 2
 texture = SubResource("AtlasTexture_a6585")
 flip_h = true
@@ -113,7 +131,15 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite/AttackLabel" unique_id=362407352 instance=ExtResource("4_dcsum")]
+z_index = -1
+position = Vector2(2, 2)
+
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite" unique_id=626896643 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
+
 [node name="TextureRect2" type="TextureRect" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer" unique_id=1908147609]
+z_index = 1
 layout_mode = 2
 texture = SubResource("AtlasTexture_e47e5")
 
@@ -129,6 +155,13 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
 
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2/DefendLabel" unique_id=1610613248 instance=ExtResource("4_dcsum")]
+z_index = -1
+position = Vector2(2, 2)
+
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2" unique_id=1178598485 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
+
 [node name="Name" type="Label" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer" unique_id=940881744]
 unique_name_in_owner = true
 layout_mode = 2
@@ -136,6 +169,15 @@ theme_type_variation = &"BoldOutlineLabel"
 theme_override_constants/line_spacing = -9
 text = "Xanderath"
 text_overrun_behavior = 5
+
+[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/Name" unique_id=1064793705 instance=ExtResource("4_dcsum")]
+position = Vector2(2, 2)
+
+[node name="ShadowCloner" type="Node2D" parent="Panel" unique_id=1669253373]
+position = Vector2(2, 2)
+script = ExtResource("4_dt3se")
+local_shadow = true
+metadata/_custom_type_script = "uid://cfpkpmdehkp8u"
 
 [node name="Button" type="Button" parent="." unique_id=1607148441]
 unique_name_in_owner = true

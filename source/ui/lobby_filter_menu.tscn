@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b0awmo81226p3" path="res://mods/co-op/source/ui/lobby_filter_menu.gd" id="1_apbov"]
 [ext_resource type="Script" uid="uid://drgtw8sp4tp8n" path="res://source/library/anim_player.gd" id="2_7as0y"]
+[ext_resource type="Script" uid="uid://cfpkpmdehkp8u" path="res://source/ui/generic/shadow_cloner.gd" id="2_7ktls"]
 
 [sub_resource type="Animation" id="Animation_7ktls"]
 length = 0.001
@@ -154,6 +155,11 @@ text = "Rejoin Game"
 [node name="CheckSeed" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1326600486]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ShadowCloner" type="Node2D" parent="PositionRoot/Panel" unique_id=508375791]
+position = Vector2(2, 2)
+script = ExtResource("2_7ktls")
+metadata/_custom_type_script = "uid://cfpkpmdehkp8u"
 
 [node name="AnimPlayer" type="AnimationPlayer" parent="." unique_id=1523101132]
 libraries/ = SubResource("AnimationLibrary_mu8uq")
