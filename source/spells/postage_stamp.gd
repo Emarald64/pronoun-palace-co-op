@@ -24,9 +24,9 @@ func _use():
 		Vector2i(-7,7),
 		Vector2i(-7,-7),
 	]
-	#var legal_tile=not tile.has_harmful_status() and not tile.has_any_status([TileStatus.HOLE,TileStatus.SCREW])
+	var legal_tile=not tile.has_harmful_status() and not tile.has_any_status([TileStatus.HOLE,TileStatus.SCREW])
 	var stamped_save={
-		frame=rng.spell.randi_range(0,2),
+		frame=4 if legal_tile else rng.spell.randi_range(0,2),
 		rotation=maxi(rng.spell.randi_range(-4,3),0)*PI/2,
 		pos=rng.spell.pick_random(stamp_poses)+Vector2i(rng.spell.randi_range(-1,1),rng.spell.randi_range(-1,1)),
 		name=Game.player_info.name

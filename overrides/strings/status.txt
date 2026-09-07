@@ -2,7 +2,11 @@
 	:name:
 		Stamped
 	:description:
-		Sent by {name}
-		Approved by the Bureau of Information
+		Sent by {name}.
+		{:illegal: if illegal}{:approved: not illegal}
 	:flags:
 		shared 
+	:approved:
+		Approved by the Bureau of Information.
+	:illegal:
+		The party has been notified of your possession of this contraband and will take swift action to conatin it.

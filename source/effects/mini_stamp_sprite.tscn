@@ -4,4 +4,4 @@
 
 [node name="MiniStampSprite" type="Sprite2D" unique_id=1765996132]
 texture = ExtResource("1_i8vd5")
-hframes = 4
+hframes = 5

@@ -27,4 +27,4 @@ func load_save_data(save: Variant) -> void:
 	name=save.name
 
 func get_tooltip_context():
-	return {name=name}
+	return {name=name,illegal=sprite.frame==4}
