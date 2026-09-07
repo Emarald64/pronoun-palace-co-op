@@ -58,7 +58,7 @@ func load_joining_game(host_save:Dictionary)->void:
 
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
 	if host_save.metadata.seed==local_save.metadata.seed:
-		const coppied_data=[
+		const COPPIED_DATA=[
 			"act_events",
 			"background",
 			"enemy",
@@ -84,7 +84,7 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 		local_save.metadata=host_save.metadata
 		local_save.data.board.lock_amount=host_save.data.board.lock_amount
 		local_save.data.board.size=host_save.data.board.size
-		for key in coppied_data:
+		for key in COPPIED_DATA:
 			if key in host_save.data:
 				local_save.data[key]=host_save.data[key]
 			else:

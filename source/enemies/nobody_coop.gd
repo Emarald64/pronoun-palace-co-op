@@ -1,6 +1,6 @@
 extends "res://source/enemies/nobody.gd"
 
-const phone_pos=Vector2(113,140)
+const PHONE_POS=Vector2(113,140)
 
 var swap_partner:int
 var partnerless_players:Array[int]=[]
@@ -277,7 +277,7 @@ func swap_big():
 			var tile=tile_board.create_tile()
 			main.add_child(tile)
 			tile.load_save_data(recived_board_piece[cord])
-			tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100))
+			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100))
 			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			tile.impacted.connect(_on_projectile_impacted)
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
@@ -388,7 +388,7 @@ func phone_a_friend_send():
 	await animate_attack()
 	hit_player(moves.phone_a_friend_send.damage)
 	for tile_copy in tile_copies:
-		tile_copy.launch(tile_copy.global_position,phone_pos,randf_range(20,30))
+		tile_copy.launch(tile_copy.global_position,PHONE_POS,randf_range(20,30))
 		tile_copy.impacted.connect(_on_projectile_impacted)
 		tile_copy.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 		await Game.timeout(.16)
@@ -428,7 +428,7 @@ func phone_a_friend_recive():
 		tile.load_save_data(recived_phone_a_friend_data[i])
 		#if tile in cursed_tiles:
 			#tile.add_status(Globals.TileStatus.CURSED)
-		tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100),cord)
+		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
 		tile.impacted.connect(_on_projectile_impacted)
 		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 		await Game.timeout(0.16)

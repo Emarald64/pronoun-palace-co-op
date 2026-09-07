@@ -1,11 +1,10 @@
-#class_name CoOp
+class_name CoOp
 extends Mod
 
 var character_select
 var host_name:LineEdit
-var author="Xanderath"
-const coop_version="Stop Fucking Desyncing - 9/5"
-const version_number="1.o.n.e.1"
+const AUTHOR="Xanderath"
+const COOP_VERSION="Stop Fucking Desyncing - 9/5"
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
@@ -44,7 +43,7 @@ func _process(_delta: float) -> void:
 func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
 	
-	print("coop mod version:",coop_version)
+	print("coop mod version:",COOP_VERSION)
 	#var scene_tree=get_tree()
 		
 	for file_name in intent_icons:
@@ -94,7 +93,7 @@ func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 
 
 
-const spells:PackedStringArray=[
+const SPELLS:PackedStringArray=[
 	"party_telephone",
 	"postage_stamp",
 	"blue_box",
@@ -102,11 +101,11 @@ const spells:PackedStringArray=[
 	"tv_snow"
 ]
 
-const non_pool_spells:PackedStringArray=[
+const NON_POOL_SPELLS:PackedStringArray=[
 	"gift_coop"
 ]
 
-const spell_weights:Dictionary[String,float]={
+const SPELL_WEIGHTS:Dictionary[String,float]={
 	"party_telephone":3.0,
 	"postage_stamp":2.0,
 	"blue_box":1.0,
@@ -114,7 +113,7 @@ const spell_weights:Dictionary[String,float]={
 	"tv_snow":3.0
 }
 
-const spell_catagories={
+const SPELL_CATAGORIES={
 	Globals.SPELL_CATEGORY.OFFENSIVE:[
 		"co-op:party_telephone",
 		"co-op:postage_stamp",
@@ -130,23 +129,23 @@ const spell_catagories={
 
 
 func get_spell_ids() -> Array[String]:
-	return namespace_ids(spells+non_pool_spells)
+	return namespace_ids(SPELLS+NON_POOL_SPELLS)
 
 func get_spell_pool(category: String = "") -> Dictionary[String, float]:
 	if category.is_empty():
-		return namespace_dictionary_ids(spell_weights)
-	if category not in spell_catagories:
+		return namespace_dictionary_ids(SPELL_WEIGHTS)
+	if category not in SPELL_CATAGORIES:
 		return {}
-	return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(spell_weights,spell_catagories[category]))
+	return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(SPELL_WEIGHTS,SPELL_CATAGORIES[category]))
 
-const removed_spells:PackedStringArray=[
+const removed_SPELLS:PackedStringArray=[
 	Globals.SPELLS.MBA,
 	Globals.SPELLS.PANIC_BUTTON,
 	Globals.SPELLS.RED_TAPE
 ]
 
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
-	for id in removed_spells:
+	for id in removed_SPELLS:
 		pool.erase(id)
 	
 	pool.merge(get_spell_pool(category))
