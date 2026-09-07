@@ -7,7 +7,6 @@ var partnerless_players:Array[int]=[]
 
 var recived_board_piece:Dictionary={}
 
-var recived_spell_data:={}
 #var has_recived_swap_info:=false
 
 var last_move_tiles:Array=[]
@@ -16,6 +15,7 @@ var regular_board:=true
 
 var tile_copies=[]
 
+signal recived_spell_data(save:Dictionary)
 signal recived_swap_info
 
 # for solo attacks
@@ -200,11 +200,11 @@ func _on_player_died_or_dc(peer_id:int):
 func display_intent():
 	match next_move:
 		"swap_big":
-			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 4})
+			add_intent(Intent.EXPAND_BOARD, {size_x = 4, size_y = 5})
 			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_big.second_damage)})
 			add_intent("spell_swap")
 		"swap_small":
-			add_intent(Intent.EXPAND_BOARD, {size_x = 5, size_y = 2})
+			add_intent(Intent.EXPAND_BOARD, {size_x = 2, size_y = 5})
 			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
 			add_intent("spell_swap")
 		"phone_a_friend_recive":
@@ -251,7 +251,7 @@ func recive_board(swapped_board_piece:Dictionary={}):
 
 func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	var tiles=get_tiles({
-		rows=[2,3]
+		columns=[2,3]
 	})
 	var save_data:Dictionary[Vector2i,Dictionary]={}
 	for tile:Tile in tiles:
@@ -259,32 +259,17 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	return save_data
 
 func swap_big():
-	await swap(true)
-
-func swap_small():
-	await swap(false)
-
-func swap(big_board:bool):
-	# pick spell to send
-	var swapping_board:bool=tile_board.num_columns==5
-	if swapping_board and not big_board:
-		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
-	await send_spell()
-	
-	while recived_board_piece.is_empty() and big_board and swapping_board:
-		await recived_swap_info
-	
-	#has_recived_swap_info=false
+	var swapping_board:bool=tile_board.num_rows==5
 	if regular_board:
 		hit_player(moves.swap.first_damage)
-	elif big_board:
-		hit_player(moves.swap_big.second_damage)
 	else:
-		hit_player(moves.swap_small.second_damage)
+		hit_player(moves.swap_big.second_damage)
+	if recived_board_piece.is_empty() and swapping_board:
+		get_tree().create_timer(10).timeout.connect(recived_swap_info.emit)
+		await recived_swap_info
 	
 	if not recived_board_piece.is_empty():
-		await tile_board.set_size(5, 4 if big_board else 2,null,2)
-		assert(big_board,"recived board piece when shrinking board")
+		await tile_board.set_size(4, 5,null,0)
 		AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 		await Game.timeout(1.2)
 		num_projectiles=recived_board_piece.size()
@@ -293,19 +278,28 @@ func swap(big_board:bool):
 			main.add_child(tile)
 			tile.load_save_data(recived_board_piece[cord])
 			tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100))
-			#projectile.impacted.disconnect(projectile.impacted.get_connections()[0].callable)
 			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			tile.impacted.connect(_on_projectile_impacted)
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-			#projectile.impacted.connect(func ():
-				#tile.is_projectile=false
-				#tile_board.insert_tile(tile, cord,false)
-			#)
+
 			await Game.timeout(0.16)
 		recived_board_piece.clear()
 		await all_projectiles_impacted
 		await tile_board.settle_board()
-	await tile_board.set_size(5, 4 if big_board else 2)
+	await tile_board.set_size(4, 5)
+	regular_board=false
+	await wait_for_idle()
+
+func swap_small():
+	var swapping_board:bool=tile_board.num_rows==5
+	if swapping_board:
+		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
+	await send_spell()
+	if regular_board:
+		hit_player(moves.swap.first_damage)
+	else:
+		hit_player(moves.swap_small.second_damage)
+	await tile_board.set_size(2,5)
 	regular_board=false
 	await wait_for_idle()
 
@@ -315,7 +309,7 @@ signal sending_spell_data_set
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
 	#await Game.timeout(randf_range(1,5))
-	recived_spell_data=swapped_spell
+	recived_spell_data.emit(swapped_spell)
 
 @rpc("any_peer")
 func ask_send_spell():
@@ -352,17 +346,11 @@ func send_spell():
 	var spell_sender=potential_spell_recivers[posmod((my_pos_in_recivers-1),potential_spell_recivers.size())]
 	ask_send_spell.rpc_id(spell_sender)
 	#recive_spell.rpc_id(spell_reciver,sent_spell)
-	for i in 30:
-		await Game.timeout(.3)
-		if recived_spell_data.is_empty():
-			if i%3==0:
-				ask_send_spell.rpc_id(spell_sender)
-		else:
-			break
+	get_tree().create_timer(10).timeout.connect(recived_spell_data.emit.bind({}))
+	var new_spell_data=await recived_spell_data
 	await animate_attack()
-	if not recived_spell_data.is_empty():
-		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_data))
-		recived_spell_data.clear()
+	if not new_spell_data.is_empty():
+		spell_to_swap.set_spell(Spell.create_from_save(new_spell_data))
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
 
@@ -383,7 +371,7 @@ func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> vo
 		
 		await Game.timeout(.2)
 		for tile_copy in tile_copies:
-			var tween =get_tree().create_tween()
+			var tween =tile_copy.create_tween()
 			tween.tween_property(tile_copy,"position",tile_copy.position+Vector2(0,30),.5)
 	elif next_move == "solo_b":
 		echo_tiles=last_move_tiles
@@ -409,7 +397,15 @@ func phone_a_friend_send():
 
 func phone_a_friend_recive():
 	if recived_phone_a_friend_data.is_empty():
+		get_tree().create_timer(10).timeout.connect(recived_swap_info.emit)
 		await recived_swap_info
+	if recived_phone_a_friend_data.is_empty():
+		var word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
+		for letter in word:
+			echo_tiles.append({
+				faces=[letter],
+				type=tile_board.pop_from_bag()
+			})
 	var cursed_tiles=recived_phone_a_friend_data.duplicate()
 	rng.move.shuffle(cursed_tiles)
 	cursed_tiles.sort_custom(func (a:Dictionary,b:Dictionary)->bool:
@@ -483,7 +479,7 @@ func solo_b():
 				faces=[letter],
 				type=tile_board.pop_from_bag()
 			})
-	var cursed_tiles=recived_phone_a_friend_data.duplicate()
+	var cursed_tiles=echo_tiles.duplicate()
 	rng.move.shuffle(cursed_tiles)
 	cursed_tiles.sort_custom(func (a,b)->bool:
 		return get_effect_priority(a.statuses)>get_effect_priority(b.statuses)
@@ -509,7 +505,7 @@ func solo_b():
 		tile.impacted.connect(_on_projectile_impacted)
 		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 		await Game.timeout(0.16)
-	recived_phone_a_friend_data.clear()
+	#recived_phone_a_friend_data.clear()
 	damage_taken=0
 	await all_projectiles_impacted
 	await wait_for_idle()

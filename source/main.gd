@@ -299,12 +299,13 @@ func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builde
 		await super(ignore_spell_use,submit_word_builder_if_possible)
 
 func fix_desyncs():
-	merge_and_load_save.rpc({metadata=get_save_metadata(),data=get_save_data()})
-	dead_players.clear()
-	players_compleated_floor.clear()
-	candy_round=false
-	word_builder.peer_attacks.clear()
-	word_builder.submitted_count=0
+	if enemy==null or enemy.id!=Enemies.NOBODY:
+		merge_and_load_save.rpc({metadata=get_save_metadata(),data=get_save_data()})
+		#dead_players.clear()
+		players_compleated_floor.clear()
+		candy_round=false
+		word_builder.peer_attacks.clear()
+		word_builder.submitted_count=0
 
 @rpc
 func merge_and_load_save(host_save:Dictionary):
