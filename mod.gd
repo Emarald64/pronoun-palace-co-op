@@ -138,14 +138,14 @@ func get_spell_pool(category: String = "") -> Dictionary[String, float]:
 		return {}
 	return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(SPELL_WEIGHTS,SPELL_CATAGORIES[category]))
 
-const removed_SPELLS:PackedStringArray=[
+const REMOVED_SPELLS:PackedStringArray=[
 	Globals.SPELLS.MBA,
 	Globals.SPELLS.PANIC_BUTTON,
 	Globals.SPELLS.RED_TAPE
 ]
 
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
-	for id in removed_SPELLS:
+	for id in REMOVED_SPELLS:
 		pool.erase(id)
 	
 	pool.merge(get_spell_pool(category))
