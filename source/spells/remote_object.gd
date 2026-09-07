@@ -41,6 +41,9 @@ func _use():
 	
 	var my_save_data=get_save_data()
 	my_save_data.charge-=1
+	my_save_data.laced_deactivated=true
+	if has_curse(CURSE.FRAGILE) and rng.fragile.randf() <= FRAGILE_BREAK_CHANCE:
+		my_save_data.max_charge=maxi(0,max_charge)
 	main.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
 	
 	remove_all_player_spells()

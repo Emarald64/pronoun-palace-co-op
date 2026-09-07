@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://xlv3qp40v7lq"]
+
+[ext_resource type="Texture2D" uid="uid://ch7dkeh088yrd" path="res://mods/co-op/arte/effects/tiny-postage-stamp.png" id="1_i8vd5"]
+
+[node name="MiniStampSprite" type="Sprite2D" unique_id=1765996132]
+texture = ExtResource("1_i8vd5")
+hframes = 4

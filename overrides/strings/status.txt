@@ -1,0 +1,8 @@
+:stamped:
+	:name:
+		Stamped
+	:description:
+		Sent by {name}
+		Approved by the Bureau of Information
+	:flags:
+		shared 
