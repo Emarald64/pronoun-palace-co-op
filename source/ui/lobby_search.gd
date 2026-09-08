@@ -35,8 +35,9 @@ func _on_lobby_match_list(lobby_ids:Array):
 	lobby_entries=new_lobby_entries
 
 func join_lobby(lobby_id:int):
-	Game.steam_lobby_id=lobby_id
+	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
 	Steam.joinLobby(lobby_id)
+	Game.steam_lobby_id=lobby_id
 	var lobby_joined=await Steam.lobby_joined
 	var lobby_joined_response=lobby_joined[3]
 	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:

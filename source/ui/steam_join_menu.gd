@@ -11,11 +11,13 @@ func _on_start_appearing()->void:
 	%LobbyInfo.text="Lobby id: "+Marshalls.raw_to_base64(lobby_id_array)
 
 func connect_to_server() -> void:
+	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
 	var peer:=SteamMultiplayerPeer.new()
 	peer.server_relay=true
 	var error=peer.connect_to_lobby(Game.steam_lobby_id)
 	if error:
 		push_error("failed to connect to server ",error_string(error))
+		%Status.text="failed to connect to server. "+error_string(error)
 	else:
 		multiplayer.multiplayer_peer=peer
 		%Status.text="Connecting..."

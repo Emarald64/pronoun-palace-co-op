@@ -6,11 +6,11 @@ var peer_id:=0
 func _ready() -> void:
 	%AttackSprite.texture=%AttackSprite.texture.duplicate()
 	$HoverHandler.disabled=true
-	Game.player.selection_started.connect(update_selecting)
-	Game.player.selection_finished.connect(update_selecting)
-	
+
 
 func setup(id:int)->void:
+	Game.player.selection_started.connect(update_selecting)
+	Game.player.selection_finished.connect(update_selecting)
 	set_character(Game.players[id].character)
 	%Name.text=Game.players[id].name
 	peer_id=id

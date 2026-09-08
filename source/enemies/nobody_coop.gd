@@ -501,7 +501,7 @@ func solo_b():
 		var tile=tile_board.create_tile()
 		main.add_child(tile)
 		tile.load_save_data(echo_tiles[i])
-		tile.launch(phone_pos,tile_board.get_coord_position(cord),randf_range(80,100),cord)
+		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
 		tile.impacted.connect(_on_projectile_impacted)
 		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 		await Game.timeout(0.16)

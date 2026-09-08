@@ -37,6 +37,7 @@ func connect_to_server() -> void:
 	var error=peer.create_client(address,port)
 	if error:
 		push_error("failed to connect to server ",error_string(error))
+		%Status.text="failed to connect to server. "+error_string(error)
 	else:
 		multiplayer.multiplayer_peer=peer
 		%Status.text="Connecting..."

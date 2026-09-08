@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
 [ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="5_h7udt"]
+[ext_resource type="PackedScene" uid="uid://bovxkumucy48u" path="res://mods/co-op/source/ui/peer_damage_indecator.tscn" id="5_hfx5h"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
@@ -29,8 +30,9 @@ realign_with_word_length = false
 
 [node name="PeersUI" type="VBoxContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="15" unique_id=2129176583]
 unique_name_in_owner = true
-offset_right = 52.0
-offset_bottom = 20.0
+offset_top = 2.0
+offset_right = 112.0
+offset_bottom = 22.0
 script = ExtResource("5_h7udt")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="GameUILayer/PeersUI" index="0" unique_id=28968631]
@@ -41,9 +43,25 @@ horizontal_scroll_mode = 0
 vertical_scroll_mode = 5
 
 [node name="Damage Indecator Holder" type="VBoxContainer" parent="GameUILayer/PeersUI/ScrollContainer" index="0" unique_id=1099706273]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="PeerDamageIndecator" parent="GameUILayer/PeersUI/ScrollContainer/Damage Indecator Holder" index="0" unique_id=1962059010 instance=ExtResource("5_hfx5h")]
+layout_mode = 2
+
+[node name="PeerDamageIndecator2" parent="GameUILayer/PeersUI/ScrollContainer/Damage Indecator Holder" index="1" unique_id=2037256149 instance=ExtResource("5_hfx5h")]
+layout_mode = 2
+
+[node name="PeerDamageIndecator3" parent="GameUILayer/PeersUI/ScrollContainer/Damage Indecator Holder" index="2" unique_id=1104272661 instance=ExtResource("5_hfx5h")]
+layout_mode = 2
+
+[node name="PeerDamageIndecator4" parent="GameUILayer/PeersUI/ScrollContainer/Damage Indecator Holder" index="3" unique_id=979265082 instance=ExtResource("5_hfx5h")]
+layout_mode = 2
+
+[node name="PeerDamageIndecator5" parent="GameUILayer/PeersUI/ScrollContainer/Damage Indecator Holder" index="4" unique_id=129236354 instance=ExtResource("5_hfx5h")]
+layout_mode = 2
 
 [node name="TotalAttackContainer" type="HBoxContainer" parent="GameUILayer/PeersUI" index="1" unique_id=1571923227]
 unique_name_in_owner = true

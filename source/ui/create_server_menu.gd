@@ -12,6 +12,7 @@ func _on_start_appearing():
 	%Steam.disabled=not Bridge.steam_initialized
 
 func host_pressed():
+	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
 	if steam_networking:
 		Steam.createLobby(%LobbyType.get_selected_id(),%MaxPlayers.value)
 		var responce=await Steam.lobby_created
@@ -47,6 +48,7 @@ func host_pressed():
 			%Header.text=error_string(server_error)
 
 func go_to_lobby():
+	AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 	if %Name.text.is_empty():
 		if Bridge.steam_initialized:
 			Game.player_info.name=Bridge.get_username(Bridge.own_user_id)
