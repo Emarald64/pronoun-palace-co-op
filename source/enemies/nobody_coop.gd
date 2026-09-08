@@ -62,9 +62,8 @@ func _init():
 		},
 		phone_a_friend_send={
 			damage={
-				0:3,
-				1:4,
-				3:5
+				0:2,
+				1:3
 			},
 			next="attack_small"
 		},
@@ -236,7 +235,8 @@ func display_intent():
 				reduce_by = 1, 
 				per_health = moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
 			})
-			add_intent("spell_swap")
+			if Game.players.size()>main.dead_players.size()+1:
+				add_intent("spell_swap")
 			if tile_board.num_rows!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
@@ -532,7 +532,10 @@ func get_multitude_attack_damage():
 	return max(0, moves.solo_c.damage - get_multitude_damage_taken()/(moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size())))
 
 func solo_c():
-	await send_spell()
+	if Game.players.size()<=main.dead_players.size()+1:
+		await animate_attack()
+	else:
+		await send_spell()
 	if get_multitude_attack_damage()>0:
 		#await animate_attack()
 		hit_player(get_multitude_attack_damage())
