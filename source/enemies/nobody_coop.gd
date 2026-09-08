@@ -15,7 +15,7 @@ var regular_board:=true
 
 var tile_copies=[]
 
-signal recived_spell_data(save:Dictionary)
+signal recived_spell_data
 signal recived_swap_info
 
 # for solo attacks
@@ -221,13 +221,13 @@ func display_intent():
 			add_intent(Intent.ATTACK, {damage=moves.attack_small.damage})
 		"solo_a":
 			add_intent(Intent.ATTACK, {damage=moves.solo_a.damage})
-			if tile_board.num_columns!=4:
+			if tile_board.num_rows!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_b":
 			add_intent("echo",{first_time=echo_tiles.is_empty()})
 			#add_intent("echo_cursed", {count=moves.solo_b.cursed,status=TileStatus.CURSED})
 			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",discription_override="echo_cursed",count=moves.solo_b.cursed_num,status=TileStatus.CURSED})
-			if tile_board.num_columns!=4:
+			if tile_board.num_rows!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_c":
 			add_intent(Intent.CONCENTRATION,{
@@ -237,7 +237,7 @@ func display_intent():
 				per_health = moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
 			})
 			add_intent("spell_swap")
-			if tile_board.num_columns!=4:
+			if tile_board.num_rows!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
 func _get_health_scaling():
@@ -259,6 +259,7 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	return save_data
 
 func swap_big():
+	await send_spell()
 	var swapping_board:bool=tile_board.num_rows==5
 	if regular_board:
 		hit_player(moves.swap.first_damage)
@@ -305,15 +306,20 @@ func swap_small():
 
 var sending_spell_data:Dictionary
 signal sending_spell_data_set
+var recived_spell_save:Dictionary
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
 	#await Game.timeout(randf_range(1,5))
-	recived_spell_data.emit(swapped_spell)
+	print("recived ",swapped_spell.id," from ",multiplayer.get_remote_sender_id())
+	recived_spell_save=swapped_spell
+	recived_spell_data.emit()
 
 @rpc("any_peer")
 func ask_send_spell():
+	print("asked to send spell to ",multiplayer.get_remote_sender_id())
 	if sending_spell_data.is_empty():
+		print("waiting to determine which spell to send")
 		await sending_spell_data_set
 	recive_spell.rpc_id(multiplayer.get_remote_sender_id(),sending_spell_data)
 
@@ -337,23 +343,26 @@ func send_spell():
 	else:
 		spell_to_swap=spells[0]
 	sending_spell_data=spell_to_swap.spell.get_save_data()
-	
+	sending_spell_data_set.emit()
 	var potential_spell_recivers:Array=Game.players.keys().filter(func (player_id)->bool:return player_id not in main.dead_players)
 	potential_spell_recivers.sort()
 	rng.spell_swap.shuffle(potential_spell_recivers)
 	var my_pos_in_recivers=potential_spell_recivers.find(multiplayer.get_unique_id())
 	#var spell_reciver=potential_spell_recivers[(my_pos_in_recivers+1)%potential_spell_recivers.size()]
 	var spell_sender=potential_spell_recivers[posmod((my_pos_in_recivers-1),potential_spell_recivers.size())]
+	print("sending:",sending_spell_data.id,". requesting from ",spell_sender)
 	ask_send_spell.rpc_id(spell_sender)
 	#recive_spell.rpc_id(spell_reciver,sent_spell)
-	get_tree().create_timer(10).timeout.connect(recived_spell_data.emit.bind({}))
-	var new_spell_data=await recived_spell_data
+	if recived_spell_save.is_empty():
+		get_tree().create_timer(10).timeout.connect(recived_spell_data.emit)
+		await recived_spell_data
+	#var new_spell_data=
 	await animate_attack()
-	if not new_spell_data.is_empty():
-		spell_to_swap.set_spell(Spell.create_from_save(new_spell_data))
+	if not recived_spell_save.is_empty():
+		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_save))
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
-
+	get_tree().create_timer(10).timeout.connect(func ():sending_spell_data.clear())
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
 	super(words,_damage,_ending_turn)
 	if next_move=="phone_a_friend_send":
@@ -422,7 +431,7 @@ func phone_a_friend_recive():
 	await Game.timeout(1.2)
 	await animate_attack()
 	for i in recived_phone_a_friend_data.size():
-		var cord=Vector2i(i%5,3-(i/5))
+		var cord=Vector2i(i%4,4-(i/4))
 		var tile=tile_board.create_tile()
 		main.add_child(tile)
 		tile.load_save_data(recived_phone_a_friend_data[i])
@@ -465,7 +474,7 @@ func attack_small():
 func solo_a():
 	await animate_attack()
 	hit_player(moves.solo_a.damage)
-	if tile_board.num_columns!=4:
+	if tile_board.num_rows!=4:
 		await tile_board.set_size()
 		regular_board=true
 	await wait_for_idle()
@@ -493,7 +502,7 @@ func solo_b():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
-	if tile_board.num_columns!=4:
+	if tile_board.num_rows!=4:
 		await tile_board.set_size()
 		regular_board=true
 	for i in echo_tiles.size():
@@ -534,7 +543,7 @@ func solo_c():
 			else:
 				next_move_override="swap_small"
 	else:
-		if tile_board.num_columns!=4:
+		if tile_board.num_rows!=4:
 			#await animate_attack()
 			await tile_board.set_size()
 			regular_board=true
