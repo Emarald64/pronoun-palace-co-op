@@ -4,7 +4,10 @@ extends EditorScript
 const IGNORED_FILES = [
 	"mod.json", 
 	".authoring", 
-	".ignore"
+	".ignore",
+	"readme.md",
+	"readme-release.txt",
+	"mod_packer.gd"
 ]
 
 const IGNORED_EXTENSIONS = [
@@ -41,7 +44,7 @@ func _run() -> void :
 		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/mod.json" % mod_id))
 		zip_packer.close_file()
 		zip_packer.start_file("readme.txt")
-		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/readme.txt" % mod_id))
+		zip_packer.write_file(FileAccess.get_file_as_bytes("res://mods/%s/readme-release.txt" % mod_id))
 		zip_packer.close_file()
 		zip_packer.close()
 
