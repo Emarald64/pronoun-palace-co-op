@@ -12,6 +12,8 @@ signal peer_set_spells
 var reviving:=false
 var candy_round:=false
 
+var in_coop_spell_animation:=false
+
 func _init():
 	super()
 	print_debug("set main scene on game")
@@ -173,6 +175,7 @@ func spawn_enemy(enemy_name):
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
 	print(tiles)
+	await tile_board.wait_for_idle()
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
 	for i in height*width:
@@ -221,6 +224,9 @@ func finish_run(is_victory: = false):
 	kill_peer()
 	await super(is_victory)
 
+func is_game_actionable(include_spell_select: = false, include_summary_continue: = false, include_tutorial: = false):
+	return (not in_coop_spell_animation or not include_spell_select) and super(include_spell_select,include_summary_continue,include_tutorial)
+
 @rpc("any_peer")
 func request_set_spells():
 	set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
@@ -252,6 +258,7 @@ func queue_tile(tile_data:Dictionary):
 
 @rpc("any_peer")
 func apply_status(status,count:=1):
+	in_coop_spell_animation=true
 	var parameters={amount=count,exclude_effects=[Status.TileStatus.CRIT]}
 	if word_builder.is_submitting:
 		parameters["exlcude_tiles"]=word_builder.tiles
@@ -260,9 +267,12 @@ func apply_status(status,count:=1):
 		tile.add_status(status)
 		tile.add_poofcloud(tile.get_poof_color())
 		await Game.timeout(0.1)
+	in_coop_spell_animation=false
 
 @rpc("any_peer")
 func apply_tile_effect(path:String,count:=1,delay:=0.1):
+	in_coop_spell_animation=true
+	await tile_board.wait_for_idle()
 	var parameters={amount=count,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
 	if word_builder.is_submitting:
 		parameters["exlcude_tiles"]=word_builder.tiles
@@ -271,6 +281,7 @@ func apply_tile_effect(path:String,count:=1,delay:=0.1):
 	for tile in tiles:
 		tile.add_child(effect.instantiate())
 		await Game.timeout(delay)
+	in_coop_spell_animation=false
 
 func load_save_data(run_save):
 	super(run_save)
