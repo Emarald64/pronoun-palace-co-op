@@ -4,7 +4,7 @@ extends Mod
 var character_select
 var host_name:LineEdit
 const AUTHOR="Xanderath"
-const COOP_VERSION="Stop Fucking Desyncing - 9/5"
+const COOP_VERSION="1.1.4 - 9/8"
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
