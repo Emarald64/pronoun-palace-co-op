@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cpugjgnltp8c1"]
+
+[ext_resource type="PackedScene" uid="uid://dw5vy4c043mey" path="res://source/autoload/mod_loader/mod_packer.tscn" id="1_6bhk5"]
+
+[node name="ModPacker" unique_id=2049364679 instance=ExtResource("1_6bhk5")]
+mod_id = "co-op"
+pack_name = "co-op"
+separate_cache_pack = false
+ignored_files = Array[String](["mod.json", "readme.md", "readme-release.txt"])
+ignored_extensions = Array[String](["pck", "zip", "authoring", "ignore", "pxo"])

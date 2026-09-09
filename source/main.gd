@@ -58,10 +58,10 @@ func save_and_exit():
 	if multiplayer.is_server():
 		print_debug("asking other players to quit")
 		save_and_exit.rpc()
-		await get_tree().create_timer(1).timeout
+		#await get_tree().create_timer(1).timeout
 	if multiplayer.get_remote_sender_id()!=0:
 		print_debug("asked by server to quit")
-	kill_peer()
+	#kill_peer()
 	await super()
 
 func player_death():
@@ -211,18 +211,11 @@ func blue_box_effect(rng_seed:int):
 		spell.add_charge(1)
 	
 
-func kill_peer():
-	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	if Game.steam_lobby_id:
-		Steam.leaveLobby(Game.steam_lobby_id)
-		Game.steam_lobby_id=0
-	if Game.upnp!=null:
-		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
-	Game.players.clear()
 
-func finish_run(is_victory: = false):
-	kill_peer()
-	await super(is_victory)
+
+#func finish_run(is_victory: = false):
+	#kill_peer()
+	#await super(is_victory)
 
 func is_game_actionable(include_spell_select: = false, include_summary_continue: = false, include_tutorial: = false):
 	return (not in_coop_spell_animation or not include_spell_select) and super(include_spell_select,include_summary_continue,include_tutorial)
@@ -285,9 +278,9 @@ func apply_tile_effect(path:String,count:=1,delay:=0.1):
 
 func load_save_data(run_save):
 	super(run_save)
-	for mod in ModLoader.get_active_mods():
-		if mod.mod_data.id in mod_save_data:
-			mod.load_run_save_data(mod_save_data[mod.mod_data.id])
+	#for mod in ModLoader.get_active_mods():
+		#if mod.mod_data.id in mod_save_data:
+			#mod.load_run_save_data(mod_save_data[mod.mod_data.id])
 	if Game.sync_start:
 		screen_wipe.uncover()
 		Game.sync_start=false

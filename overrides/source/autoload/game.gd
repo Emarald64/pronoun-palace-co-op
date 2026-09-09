@@ -111,6 +111,8 @@ func _on_peer_disconnected(id:int)->void:
 	if id in players:
 		players.erase(id)
 		player_disconnected.emit(id)
+	else:
+		print(id, " disconnected, but was already removed from the player list")
 
 @rpc("any_peer")
 func register_player(other_player_info)->void:
@@ -126,3 +128,16 @@ func tag_screenshot(screenshot_handle:int,result:Steam.Result):
 
 func is_in_run():
 	return super() and main!=null
+
+func return_to_menu():
+	kill_peer()
+	super()
+
+func kill_peer():
+	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	if Game.steam_lobby_id:
+		Steam.leaveLobby(Game.steam_lobby_id)
+		Game.steam_lobby_id=0
+	if Game.upnp!=null:
+		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
+	Game.players.clear()
