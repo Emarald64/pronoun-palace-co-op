@@ -69,3 +69,8 @@ func remove_all_player_spells():
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")
 	tooltip.add_subtooltip(group.strings.values().pick_random())
+
+func do_battle_end_transformation():
+	super()
+	if secret_id=="co-op:gift_coop":
+		transform_spell("co-op:gift_coop")

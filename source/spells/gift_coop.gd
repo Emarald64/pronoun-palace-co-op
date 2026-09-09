@@ -1,13 +1,14 @@
+class_name GiftCoop
 extends "res://source/spells/gift.gd"
 
-func _spell_init():
-	secret_id=SPELLS.GIFT_ENHANCING
+#func _spell_init():
+	#secret_id=SPELLS.GIFT_ENHANCING
 
-func _ready():
-	if player_spell_slot==null:
-		is_ready=false
-	else:
-		player_spell_slot.set_meta("alt_gift",id)
+#func _ready():
+	#if player_spell_slot==null:
+		#is_ready=false
+	#else:
+		#player_spell_slot.set_meta("alt_gift",id)
 
 func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -> Dictionary:
 	var base_pool =  CoOp.SPELL_WEIGHTS.duplicate_deep()
