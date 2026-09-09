@@ -20,6 +20,7 @@ signal recived_swap_info
 
 # for solo attacks
 var echo_tiles:=[]
+var given_word:String
 #var damage_taken:=0
 
 
@@ -323,6 +324,7 @@ func ask_send_spell():
 		await sending_spell_data_set
 	recive_spell.rpc_id(multiplayer.get_remote_sender_id(),sending_spell_data)
 
+
 func send_spell():
 	var spells=main.spell_container.player_spells
 	var spell_to_swap
@@ -335,6 +337,7 @@ func send_spell():
 					if defense_spell==null:
 						defense_spell=spell
 					else:
+						# more than 1 direct deffense spell, dont protect
 						defense_spell=null
 						break
 			if defense_spell!=null:
@@ -411,7 +414,7 @@ func phone_a_friend_recive():
 	if recived_phone_a_friend_data.is_empty():
 		var word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
 		for letter in word:
-			echo_tiles.append({
+			recived_phone_a_friend_data.append({
 				faces=[letter],
 				type=tile_board.pop_from_bag()
 			})
@@ -482,8 +485,8 @@ func solo_a():
 func solo_b():
 	#echo
 	if echo_tiles.is_empty():
-		var word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
-		for letter in word:
+		given_word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
+		for letter in given_word:
 			echo_tiles.append({
 				faces=[letter],
 				type=tile_board.pop_from_bag()
@@ -491,7 +494,7 @@ func solo_b():
 	var cursed_tiles=echo_tiles.duplicate()
 	rng.move.shuffle(cursed_tiles)
 	cursed_tiles.sort_custom(func (a,b)->bool:
-		return get_effect_priority(a.statuses)>get_effect_priority(b.statuses)
+		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
 	)
 	for tile_data in cursed_tiles.slice(0,moves.solo_b.cursed_num):
 		if "statuses" in tile_data:

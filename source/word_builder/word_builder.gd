@@ -158,7 +158,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 	submitted_count=0
 	if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
 		#Beat the shit out of Nobody when killing her
-		for i in Game.players.size()-main.dead_players.size()-1:
+		for i in mini(8,Game.players.size()-main.dead_players.size()-1):
 			await player.attack(enemy,damage)
 	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		var health_scaling=main.enemy._get_health_scaling()
@@ -208,6 +208,10 @@ func get_repeat_word(word_list: WordList) -> String:
 	var own_repeat_word=super(word_list)
 	if not own_repeat_word.is_empty():
 		return own_repeat_word
+	if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty():
+		for word in word_list.words:
+			if main.enemy.given_word==word:
+				return word
 	for word in word_list.words:
 		for id in others_submitted_words:
 			if word in others_submitted_words[id]:
@@ -224,7 +228,8 @@ func resolve_tile_words(use_tiles) -> WordList:
 		depriority_words.append_array(main.run_stats.get_words())
 		for id in others_submitted_words:
 			depriority_words.append_array(others_submitted_words[id])
-		
+		if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty():
+			depriority_words.append(main.enemy.given_word)
 
 	if Game.enemy != null:
 		if Game.enemy.id == Enemies.HOUSEBROKEN:
@@ -237,6 +242,9 @@ func resolve_tile_words(use_tiles) -> WordList:
 
 func add_warning(warnings: Dictionary, warning_id: String, context: Dictionary = {}) -> void:
 	if warning_id==WARNINGS.REPEAT_WORD and "word" in context:
+		if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty() and context.word==main.enemy.given_word:
+			context.name="Nobody"
+			return super(warnings,warning_id,context)
 		for id in others_submitted_words:
 			if id in Game.players and context.word in others_submitted_words[id]:
 				context.name=Game.players[id].name
