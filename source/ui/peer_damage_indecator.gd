@@ -1,5 +1,6 @@
 extends Control
 
+@export var color_changing_shadow_cloners:Array[ShadowCloner]
 @onready var button:Button=$Button
 var peer_id:=0
 
@@ -26,7 +27,10 @@ func update(damage_info:Dictionary):
 	
 	#print(damage_info)
 	$Panel.self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
-	get_tree().set_group(&"shadow_cloner_change_color","solid_shadow_color",Color("74b054") if damage_info.submitted else Color("c4a1a1"))
+	var shadow_color=Color("74b054") if damage_info.submitted else Color("c4a1a1")
+	for shadow_cloner in color_changing_shadow_cloners:
+		shadow_cloner.solid_shadow_color=shadow_color
+	#get_tree().set_group(&"shadow_cloner_change_color","solid_shadow_color",)
 
 func set_character(character:String)->void:
 	%CharacterIcon.set_character(character,true)
