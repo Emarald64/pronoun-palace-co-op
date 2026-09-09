@@ -15,9 +15,10 @@ func refresh_lobbies():
 	apply_filters.emit()
 	#Steam.addRequestLobbyListStringFilter("seed","",Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
+	print("requested lobbies refresh")
 
 func _on_lobby_match_list(lobby_ids:Array):
-	print(lobby_ids)
+	#print_debug(lobby_ids)
 	var new_lobby_entries:Array[Control]=[]
 	
 	for lobby_id in lobby_ids:

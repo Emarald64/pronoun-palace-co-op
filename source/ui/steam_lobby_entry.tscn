@@ -51,6 +51,7 @@ layout_mode = 2
 
 [node name="CharacterIcons" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=560878767]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
