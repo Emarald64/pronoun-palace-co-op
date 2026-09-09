@@ -7,7 +7,7 @@ var partnerless_players:Array[int]=[]
 
 var recived_board_piece:Dictionary={}
 
-#var has_recived_swap_info:=false
+var dooming_rows:Array[int]
 
 var last_move_tiles:Array=[]
 var recived_phone_a_friend_data:Array=[]
@@ -21,7 +21,7 @@ signal recived_swap_info
 # for solo attacks
 var echo_tiles:=[]
 var given_word:String
-#var damage_taken:=0
+
 
 
 func _init():
@@ -158,6 +158,13 @@ func _ready():
 		if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and not submitted and next_move=="solo_c":
 			update_intents()
 		)
+	
+	var smoke_extention=ColorRect.new()
+	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
+	smoke.add_child(smoke_extention)
+	smoke_extention.size=Vector2(1000,100)
+	smoke_extention.position.y=-100
+	smoke_extention.z_index=2
 
 @rpc("any_peer")
 func add_partnerless_player():
@@ -209,11 +216,11 @@ func display_intent():
 			add_intent("spell_swap")
 		"phone_a_friend_recive":
 			add_intent("phone_a_friend_recive", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",discription_override="phone_a_friend_recive_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",description_override="phone_a_friend_recive_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.PREPARING)
 		"phone_a_friend_send":
 			add_intent("phone_a_friend_send", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",discription_override="phone_a_friend_send_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",description_override="phone_a_friend_send_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
 			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
@@ -221,13 +228,13 @@ func display_intent():
 			add_intent(Intent.ATTACK, {damage=moves.attack_small.damage})
 		"solo_a":
 			add_intent(Intent.ATTACK, {damage=moves.solo_a.damage})
-			if tile_board.num_rows!=4:
+			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_b":
 			add_intent("echo",{first_time=echo_tiles.is_empty()})
 			#add_intent("echo_cursed", {count=moves.solo_b.cursed,status=TileStatus.CURSED})
-			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",discription_override="echo_cursed",count=moves.solo_b.cursed_num,status=TileStatus.CURSED})
-			if tile_board.num_rows!=4:
+			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",description_override="echo_cursed",count=moves.solo_b.cursed_num,status=TileStatus.CURSED})
+			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_c":
 			add_intent(Intent.CONCENTRATION,{
@@ -238,7 +245,7 @@ func display_intent():
 			})
 			if Game.players.size()>main.dead_players.size()+1:
 				add_intent("spell_swap")
-			if tile_board.num_rows!=4:
+			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
 func _get_health_scaling():
@@ -252,7 +259,7 @@ func recive_board(swapped_board_piece:Dictionary={}):
 
 func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	var tiles=get_tiles({
-		columns=[2,3]
+		rows=[2,3]
 	})
 	var save_data:Dictionary[Vector2i,Dictionary]={}
 	for tile:Tile in tiles:
@@ -261,7 +268,7 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 
 func swap_big():
 	await send_spell()
-	var swapping_board:bool=tile_board.num_rows==5
+	var swapping_board:bool=tile_board.num_columns==5
 	if regular_board:
 		hit_player(moves.swap.first_damage)
 	else:
@@ -288,12 +295,14 @@ func swap_big():
 		recived_board_piece.clear()
 		await all_projectiles_impacted
 		await tile_board.settle_board()
-	await tile_board.set_size(4, 5)
+	await tile_board.set_size(5, 4)
+	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
+	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,0),5)
 	regular_board=false
 	await wait_for_idle()
 
 func swap_small():
-	var swapping_board:bool=tile_board.num_rows==5
+	var swapping_board:bool=tile_board.num_columns==5
 	if swapping_board:
 		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
 	await send_spell()
@@ -301,8 +310,11 @@ func swap_small():
 		hit_player(moves.swap.first_damage)
 	else:
 		hit_player(moves.swap_small.second_damage)
-	await tile_board.set_size(2,5)
+	await tile_board.set_size(5,2)
+	dooming_rows.clear()
 	regular_board=false
+	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
+	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,50),5)
 	await wait_for_idle()
 
 var sending_spell_data:Dictionary
@@ -330,6 +342,7 @@ func send_spell():
 	var spell_to_swap
 	if spells.size()>1:
 		if player.id==Globals.CHARACTERS.CHILD:
+			
 			var defense_spell=null
 			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
 			for spell:PlayerSpell in spells:
@@ -342,7 +355,8 @@ func send_spell():
 						break
 			if defense_spell!=null:
 				spells.erase(defense_spell)
-		spell_to_swap=rng.move.pick_random(spells.slice(1))
+
+		spell_to_swap=rng.move.pick_random(spells.filter(func (player_spell:PlayerSpell)->bool:return not player_spell.spell.spell_data.character_specific))
 	else:
 		spell_to_swap=spells[0]
 	sending_spell_data=spell_to_swap.spell.get_save_data()
@@ -383,8 +397,7 @@ func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> vo
 		
 		await Game.timeout(.2)
 		for tile_copy in tile_copies:
-			var tween =tile_copy.create_tween()
-			tween.tween_property(tile_copy,"position",tile_copy.position+Vector2(0,30),.5)
+			tile_copy.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(tile_copy,"position",tile_copy.position+Vector2(0,30),.5)
 	elif next_move == "solo_b":
 		echo_tiles=last_move_tiles
 		last_move_tiles=word_builder.tiles.map(func (tile:Tile):return tile.get_save_data())
@@ -405,6 +418,15 @@ func phone_a_friend_send():
 		tile_copy.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 		await Game.timeout(.16)
 	await all_projectiles_impacted
+	if last_move_tiles.size()<moves.phone_a_friend_recive.cursed_num:
+		var cursed_tiles=get_tiles({
+			amount = moves.phone_a_friend_recive.cursed_num-last_move_tiles.size(), 
+			effect_priority = EFFECT_PRIORITY.STATUS_ONLY, 
+		})
+		for tile in cursed_tiles:
+			tile.add_status(TileStatus.CURSED)
+			tile.add_poofcloud(tile.get_color())
+			await Game.timeout(.1)
 	await wait_for_idle()
 
 func phone_a_friend_recive():
@@ -434,7 +456,7 @@ func phone_a_friend_recive():
 	await Game.timeout(1.2)
 	await animate_attack()
 	for i in recived_phone_a_friend_data.size():
-		var cord=Vector2i(i%4,4-(i/4))
+		var cord=Vector2i(i%5,3-(i/5))
 		var tile=tile_board.create_tile()
 		main.add_child(tile)
 		tile.load_save_data(recived_phone_a_friend_data[i])
@@ -477,7 +499,7 @@ func attack_small():
 func solo_a():
 	await animate_attack()
 	hit_player(moves.solo_a.damage)
-	if tile_board.num_rows!=4:
+	if tile_board.num_columns!=4:
 		await tile_board.set_size()
 		regular_board=true
 	await wait_for_idle()
@@ -505,7 +527,7 @@ func solo_b():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
-	if tile_board.num_rows!=4:
+	if tile_board.num_columns!=4:
 		await tile_board.set_size()
 		regular_board=true
 	for i in echo_tiles.size():
@@ -549,7 +571,7 @@ func solo_c():
 			else:
 				next_move_override="swap_small"
 	else:
-		if tile_board.num_rows!=4:
+		if tile_board.num_columns!=4:
 			#await animate_attack()
 			await tile_board.set_size()
 			regular_board=true
@@ -576,3 +598,15 @@ func apply_fish(tile: Tile, fish: Fish) -> void:
 		if Game.balance.evil_fish_chance > 0.0:
 			fish.is_evil = true
 			fish.tile.tile_sprite.is_evil = true
+
+func _on_sprite_event(event:String)->void:
+	if event=="smoke_recede":
+		var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
+		if smoke.position.y>0:
+			smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,-50),5)
+			return
+	super(event)
+
+func unique_end_player_action() -> void :
+	if next_move=="swap_small":
+		dooming_rows = [2,3,4]

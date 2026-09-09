@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dt2be1wikfttk" path="res://source/main.tscn" id="1_n0165"]
 [ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/source/main.gd" id="2_8s84c"]
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
+[ext_resource type="Script" uid="uid://dlpnjmg71lnya" path="res://mods/co-op/source/tile/tile_board.gd" id="3_hfx5h"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="5_1hx8r"]
 [ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="5_h7udt"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
@@ -17,6 +18,9 @@ script = ExtResource("2_8s84c")
 [node name="BattleTimer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="0" unique_id=2106493120]
 offset_left = 150.0
 offset_right = 196.0
+
+[node name="TileBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="2" unique_id=1619504647]
+script = ExtResource("3_hfx5h")
 
 [node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder", "total_attack_label", "total_attack_container")]
 script = ExtResource("2_rhwav")

@@ -10,7 +10,8 @@
 		Curse Sent Tiles
 
 	:description:
-		{count} of the tiles you send to {partner} will be cursed
+		{count} of the tiles you send to {partner} will be cursed.
+		If you send less then {count} tiles, the remainder will be applied to your board.
 
 :phone_a_friend_recive:
 	:name:
@@ -24,7 +25,7 @@
 		Curse Recived Tiles
 
 	:description:
-		{count} of the tiles sent from {partner} will be cursed
+		Up to {count} of the tiles sent from {partner} will be cursed
 
 :echo:
 	:name:

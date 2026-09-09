@@ -5,6 +5,7 @@ var character_select
 var host_name:LineEdit
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.1.4 - 9/8"
+var version_number:String
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
@@ -43,6 +44,11 @@ func _process(_delta: float) -> void:
 func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
 	
+	version_number=mod_data.json.data.version
+	if mod_data.json.data.author!=AUTHOR:
+		push_error("some shenanagens are afoot >:(\n Please don't remove my name from the mod!")
+		return
+	
 	print("coop mod version:",COOP_VERSION)
 	#var scene_tree=get_tree()
 		
@@ -70,6 +76,8 @@ func _ready()->void:
 			push_error("error joining lobby, code: ",lobby_joined_response)
 	
 	Steam.join_requested.connect(_on_join_lobby_requested)
+	
+	
 
 func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 	Steam.joinLobby(lobby_id)
@@ -106,10 +114,10 @@ const NON_POOL_SPELLS:PackedStringArray=[
 ]
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
-	"party_telephone":3.0,
+	"party_telephone":1.5,
 	"postage_stamp":2.0,
-	"blue_box":1.0,
-	"remote_object":3.0,
+	"blue_box":2.0,
+	"remote_object":2.0,
 	"tv_snow":3.0
 }
 
