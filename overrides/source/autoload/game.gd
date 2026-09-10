@@ -1,10 +1,12 @@
 extends "res://source/autoload/game.gd"
 
 var players:Dictionary[int,Dictionary]={}
+var id_remaps:Dictionary[int,int]
 var player_info = {
 	name="Client",
 	character="lexicographer",
-	steam_id=0
+	steam_id=0,
+	
 }
 var upnp:UPNP
 var sync_start:=false
@@ -56,6 +58,10 @@ func load_joining_game(host_save:Dictionary)->void:
 	AudioManager.fade_sounds()
 	get_tree().change_scene_to_file("res://source/main.tscn")
 
+@rpc("any_peer")
+func set_original_id(original_id:int):
+	id_remaps[multiplayer.get_remote_sender_id()]=original_id
+
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
 	if host_save.metadata.seed==local_save.metadata.seed:
 		const COPPIED_DATA=[
@@ -64,6 +70,8 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 			"enemy",
 			"showing_act_end_summary"
 		]
+		
+		var tiles_to_remove:Array[Vector2i]=[]
 		if "enemy" in local_save.data:
 			if local_save.data.enemy.id==Enemies.BRUTALIST and ("enemy" not in host_save.data or host_save.data.enemy.id!=Enemies.BRUTALIST):
 				for coord in local_save.data.board.tiles:
@@ -79,11 +87,27 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 				for coord in local_save.data.board.tiles:
 					var tile_save=local_save.data.board.tiles[coord]
 					if "statuses" in tile_save and Globals.TileStatus.BOMB in tile_save.statuses:
-						local_save.data.board.tiles.erase(coord)
+						tiles_to_remove.append(coord)
+		
+		if local_save.data.run_stats.turns_taken!=host_save.data.run_stats.turns_taken:
+			#difrent turn remove tiles which are removed at the end of the turn
+			print('on diffrent turn')
+			for coord in local_save.data.board.tiles:
+				var tile_save=local_save.data.board.tiles[coord]
+				if "statuses" in tile_save:
+					for status in tile_save.statuses:
+						if "destroy_on_turn_end" in StringManager.get_string("/status/%s/flags"%status).split(" ",false):
+							tiles_to_remove.append(coord)
+							break 
+			local_save.data.run_stats.turns_taken=host_save.data.run_stats.turns_taken
+		if not tiles_to_remove.is_empty():
+			for coord_to_remove in tiles_to_remove:
+				local_save.data.board.tiles.erase(coord_to_remove)
 		host_save.metadata.character=local_save.metadata.character
 		local_save.metadata=host_save.metadata
 		local_save.data.board.lock_amount=host_save.data.board.lock_amount
 		local_save.data.board.size=host_save.data.board.size
+		local_save.data.board.size.erase("restock_depth")
 		for key in COPPIED_DATA:
 			if key in host_save.data:
 				local_save.data[key]=host_save.data[key]
@@ -118,6 +142,7 @@ func _on_peer_disconnected(id:int)->void:
 func register_player(other_player_info)->void:
 	var id=multiplayer.get_remote_sender_id()
 	players[id]=other_player_info
+	id_remaps[id]=id
 	player_connected.emit(id,other_player_info)
 
 func tag_screenshot(screenshot_handle:int,result:Steam.Result):
@@ -141,3 +166,7 @@ func kill_peer():
 	if Game.upnp!=null:
 		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	Game.players.clear()
+
+#func get_player_name(id:int):
+	#if id in players:
+		#return players[id].name

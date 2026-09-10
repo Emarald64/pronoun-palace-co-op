@@ -285,6 +285,8 @@ func load_save_data(run_save):
 		screen_wipe.uncover()
 		Game.sync_start=false
 	word_builder.resend_submitted.rpc()
+	tile_board.settle_board(true)
+	tile_board.fill_board(true)
 
 func start_run():
 	await super()
