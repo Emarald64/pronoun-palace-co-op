@@ -22,25 +22,23 @@ signal recived_swap_info
 var echo_tiles:=[]
 var given_word:String
 
-
-
 func _init():
 	super()
 	moves={
 		swap={ 
 			first_damage={
-				0:4,
-				1:5,
-				2:6,
-				3:7
+				0:3,
+				1:4,
+				2:5,
+				3:6
 			}
 		},
 		swap_big={
 			second_damage={
-				0:3,
-				2:4,
-				3:5,
-				4:7
+				0:2,
+				2:3,
+				3:4,
+				4:6
 			},
 			next="phone_a_friend_recive"
 		},
@@ -84,9 +82,9 @@ func _init():
 		},
 		attack_small={
 			damage={
-				0:3,
-				1:4,
-				2:5,
+				0:2,
+				1:3,
+				2:4,
 				3:6
 			},
 			next="swap_big"
@@ -278,7 +276,7 @@ func swap_big():
 		await recived_swap_info
 	
 	if not recived_board_piece.is_empty():
-		await tile_board.set_size(4, 5,null,0)
+		await tile_board.set_size(5, 4,null,0)
 		AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 		await Game.timeout(1.2)
 		num_projectiles=recived_board_piece.size()

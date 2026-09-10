@@ -37,7 +37,7 @@ func load_save_data(save):
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random())
+	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by joltmix")
 
 func do_battle_end_transformation():
 	super()

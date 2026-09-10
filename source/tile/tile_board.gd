@@ -8,7 +8,7 @@ func _add_tile_at(column, update = true, instant = false):
 			var queued_tile=queue.queue[Vector2i(column,0)]
 			var defense_chance: = float(Game.balance.defense_in_bag) / float(Game.balance.defense_in_bag + Game.balance.damage_in_bag)
 			var defense_tile=Game.random.randf()<=defense_chance
-			defense_bag.push_front(queued_tile.type)
+			defense_bag.insert(Game.random.randi_range(0,defense_bag.size()),queued_tile.type)
 			if defense_tile!=(queued_tile.type==TileType.DEFENSE):
 				queued_tile.type=TileType.DEFENSE if defense_tile else TileType.DAMAGE
 			if "statuses" in queued_tile and TileStatus.CRIT in queued_tile.statuses:

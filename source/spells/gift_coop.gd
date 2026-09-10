@@ -27,4 +27,4 @@ func do_battle_start_transformation(exclude_spells):
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random())
+	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by dragonslayr15001")
