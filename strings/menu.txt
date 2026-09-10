@@ -2,7 +2,27 @@
 	Join
 :ip:
 	IP
+:steam:
+	Steam
 :lobbies:
 	Steam Lobbies
 :host:
 	Host
+:name:
+	Name
+:max_players:
+	Max Players
+:port:
+	Port
+:visibility:
+	Visibility
+:connect:
+	Connect
+:refresh:
+	Refresh
+:filters:
+	Filters
+:distance:
+	Distance
+:rejoin_game:
+	Rejoin Game

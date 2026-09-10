@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_y0u7g"]
 [ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/source/ui/create_server_menu.gd" id="2_i4ivu"]
 [ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_kvote"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="4_xb03o"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_a6585"]
 
@@ -35,20 +36,24 @@ scroll_hint_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Header" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0" unique_id=870093584]
+[node name="Header" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0" unique_id=1764923486]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Host"
 horizontal_alignment = 1
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/host"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1" unique_id=1595444729]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=19490545]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=717161970]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Name:"
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/name"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1586746348]
 unique_name_in_owner = true
@@ -59,10 +64,12 @@ theme_override_font_sizes/font_size = 13
 [node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2" unique_id=294778016]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1326533942]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1457768145]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Max Players"
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/max_players"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="MaxPlayers" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=625778567]
 unique_name_in_owner = true
@@ -98,10 +105,12 @@ layout_mode = 2
 [node name="HBoxContainer5" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings" index="0" unique_id=1978642974]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="0" unique_id=2117073776]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="0" unique_id=497268185]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Port"
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/port"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="1" unique_id=678295482]
 unique_name_in_owner = true
@@ -178,10 +187,12 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=1888688161]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="0" unique_id=678343981]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="0" unique_id=38857167]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Visibility"
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/visibility"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="LobbyType" type="OptionButton" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="1" unique_id=295512445]
 unique_name_in_owner = true

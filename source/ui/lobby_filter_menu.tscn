@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b0awmo81226p3" path="res://mods/co-op/source/ui/lobby_filter_menu.gd" id="1_apbov"]
 [ext_resource type="Script" uid="uid://drgtw8sp4tp8n" path="res://source/library/anim_player.gd" id="2_7as0y"]
 [ext_resource type="Script" uid="uid://cfpkpmdehkp8u" path="res://source/ui/generic/shadow_cloner.gd" id="2_7ktls"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="2_j06b6"]
 
 [sub_resource type="Animation" id="Animation_7ktls"]
 length = 0.001
@@ -111,20 +112,24 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" unique_id=1770059088]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=440551612]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=753497270]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 theme_override_font_sizes/font_size = 16
-text = "Filters"
 horizontal_alignment = 1
+script = ExtResource("2_j06b6")
+key = "/mod/co-op/menu/filters"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=1485416745]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1033466310]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=929598929]
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
-text = "Distance"
+script = ExtResource("2_j06b6")
+key = "/mod/co-op/menu/distance"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Distance" type="OptionButton" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1471246346]
 unique_name_in_owner = true
@@ -146,11 +151,13 @@ popup/item_3/id = 3
 [node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=783470405]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=274933017]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1042086687]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"MenuDescriptionLabel"
-text = "Rejoin Game"
+script = ExtResource("2_j06b6")
+key = "/mod/co-op/menu/rejoin_game"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="CheckSeed" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1326600486]
 unique_name_in_owner = true

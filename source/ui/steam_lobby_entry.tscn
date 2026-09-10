@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkg0g441tk014" path="res://mods/co-op/source/ui/steam_lobby_entry.gd" id="1_mnnfb"]
 [ext_resource type="PackedScene" uid="uid://bmihv37bkvnyh" path="res://source/ui/icons/difficulty_icon.tscn" id="2_gge1b"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="3_yekkh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yekkh"]
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
@@ -69,6 +70,20 @@ custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_yekkh")
-text = "Join"
+
+[node name="StringKeyLabel" type="Label" parent="HBoxContainer/Button" unique_id=130250589]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_yekkh")
+key = "/mod/co-op/join"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [connection signal="pressed" from="HBoxContainer/Button" to="." method="_join_pressed"]

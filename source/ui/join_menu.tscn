@@ -46,10 +46,12 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 [node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=226221271]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1816822929]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=680433059]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Name:"
+script = ExtResource("6_51rn3")
+key = "/mod/co-op/menu/name"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Name" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=1641579130]
 unique_name_in_owner = true
@@ -62,10 +64,12 @@ virtual_keyboard_enabled = false
 [node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1698835746]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=124992295]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1276313966]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "IP:"
+script = ExtResource("6_51rn3")
+key = "/mod/co-op/menu/ip"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="IP" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=2024482678]
 unique_name_in_owner = true
@@ -78,10 +82,12 @@ select_all_on_focus = true
 [node name="HBoxContainer2" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="4" unique_id=7557173]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=788607249]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=927934971]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-text = "Port:"
+script = ExtResource("6_51rn3")
+key = "/mod/co-op/menu/port"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=1056341143]
 unique_name_in_owner = true
@@ -92,7 +98,22 @@ value = 7000.0
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="5" unique_id=990898958]
 layout_mode = 2
-text = "Connect"
+text = " "
+
+[node name="StringKeyLabel" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" index="0" unique_id=1340302420]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("6_51rn3")
+key = "/mod/co-op/menu/connect"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Status" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="6" unique_id=509349693]
 unique_name_in_owner = true

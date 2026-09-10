@@ -243,7 +243,7 @@ func resolve_tile_words(use_tiles) -> WordList:
 func add_warning(warnings: Dictionary, warning_id: String, context: Dictionary = {}) -> void:
 	if warning_id==WARNINGS.REPEAT_WORD and "word" in context:
 		if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty() and context.word==main.enemy.given_word:
-			context.name="Nobody"
+			context.name=StringManager.get_string("enemy/nobody/name")
 			return super(warnings,warning_id,context)
 		for id in others_submitted_words:
 			if id in Game.players and context.word in others_submitted_words[id]:
