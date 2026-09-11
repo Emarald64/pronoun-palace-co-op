@@ -410,12 +410,14 @@ func phone_a_friend_send():
 	recive_phone_a_friend_data.rpc_id(swap_partner,last_move_tiles)
 	await animate_attack()
 	hit_player(moves.phone_a_friend_send.damage)
-	for tile_copy in tile_copies:
-		tile_copy.launch(tile_copy.global_position,PHONE_POS,randf_range(20,30))
-		tile_copy.impacted.connect(_on_projectile_impacted)
-		tile_copy.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-		await Game.timeout(.16)
-	await all_projectiles_impacted
+	if not tile_copies.is_empty():
+		for tile_copy in tile_copies:
+			tile_copy.launch(tile_copy.global_position,PHONE_POS,randf_range(20,30))
+			tile_copy.impacted.connect(_on_projectile_impacted)
+			tile_copy.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
+			await Game.timeout(.16)
+		await all_projectiles_impacted
+
 	if last_move_tiles.size()<moves.phone_a_friend_recive.cursed_num:
 		var cursed_tiles=get_tiles({
 			amount = moves.phone_a_friend_recive.cursed_num-last_move_tiles.size(), 
@@ -528,18 +530,18 @@ func solo_b():
 	if tile_board.num_columns!=4:
 		await tile_board.set_size()
 		regular_board=true
-	for i in echo_tiles.size():
-		var cord=Vector2i(i%4,3-(i/4))
-		var tile=tile_board.create_tile()
-		main.add_child(tile)
-		tile.load_save_data(echo_tiles[i])
-		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
-		tile.impacted.connect(_on_projectile_impacted)
-		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-		await Game.timeout(0.16)
-	#recived_phone_a_friend_data.clear()
+	if not echo_tiles.is_empty():
+		for i in echo_tiles.size():
+			var cord=Vector2i(i%4,3-(i/4))
+			var tile=tile_board.create_tile()
+			main.add_child(tile)
+			tile.load_save_data(echo_tiles[i])
+			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
+			tile.impacted.connect(_on_projectile_impacted)
+			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
+			await Game.timeout(0.16)
+		await all_projectiles_impacted
 	damage_taken=0
-	await all_projectiles_impacted
 	await wait_for_idle()
 
 func get_multitude_damage_taken():
