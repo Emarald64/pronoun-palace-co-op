@@ -25,6 +25,7 @@ func _on_start_appearing()->void:
 		var selector_icons: Array[SelectorIcon] = []
 		selector_icons.assign(icons)
 		%IconSelector.set_icons(selector_icons)
+	%IconSelector.select(Globals.CHARACTER_ORDER.find(Game.player_info.character))
 
 
 func connect_to_server() -> void:

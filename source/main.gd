@@ -3,6 +3,8 @@ extends Main
 var dead_players:Array[int]=[]
 var players_compleated_floor:Array[int]=[]
 var allow_set_spells:=false
+var original_id:=0
+var strawman_taps:Dictionary[int,int]
 #var waiting_to_be_revived:=false
 signal all_players_compleated_floor
 #signal stop_dieing
@@ -299,6 +301,8 @@ func start_run():
 	tile_board.pregenerate()
 	for spell in spell_container.get_spells():
 		spell.reseed(non_sync_rng)
+	if original_id==0:
+		original_id=multiplayer.get_unique_id()
 
 func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builder_if_possible: = true) -> void:
 	if not candy_round:

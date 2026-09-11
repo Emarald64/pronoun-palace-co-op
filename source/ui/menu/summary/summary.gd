@@ -27,7 +27,10 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 		var longest_word_stats:Array[Array]=[]
 		for id in players_submitted_words:
 			if not players_submitted_words[id].is_empty():
-				var longest_word:String=Array(players_submitted_words[id]).max()
+				var longest_word:String
+				for word in players_submitted_words[id]:
+					if longest_word.length()<word.length():
+						longest_word=word
 				var stats_entry=[Game.players[id].name,longest_word]
 				var index=longest_word_stats.bsearch_custom(stats_entry,
 				func (a,b):
@@ -36,12 +39,12 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 					return a[1].length()>b[1].length()
 				)
 				longest_word_stats.insert(index,stats_entry)
-		var longest_word_labels=%CoopLongestWordStats.get_children()
+		#var longest_word_labels=%CoopLongestWordStats.get_children()
 		for longest_word_stat in longest_word_stats:
-			var label=longest_word_labels.pop_front()
-			if label==null:
-				label=SUMMARY_LABEL.instantiate()
-				%CoopLongestWordStats.add_child(label)
+			#var label=longest_word_labels.pop_front()
+			#if label==null:
+			var label=SUMMARY_LABEL.instantiate()
+			%CoopLongestWordStats.add_child(label)
 			label.text="• %s: %s" % longest_word_stat
 	else:
 		%Coop.hide()

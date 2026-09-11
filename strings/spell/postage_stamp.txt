@@ -21,3 +21,6 @@
 
 :banner_tile:
 	Select the tile to send
+
+:tags:
+	removes_word
