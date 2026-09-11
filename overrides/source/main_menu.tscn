@@ -123,10 +123,10 @@ offset_left = -20.0
 offset_right = -20.0
 steam_join_menu = NodePath("../../Steam Join Menu")
 
-[node name="LobbyFilterMenu" parent="HUD/LobbySearchMenu" index="1" unique_id=1526431567 groups=["multipanel_position_exclude"] instance=ExtResource("11_0y8nw")]
+[node name="LobbyFilterMenu" parent="HUD/LobbySearchMenu" index="1" unique_id=1526431567 instance=ExtResource("11_0y8nw")]
 layout_mode = 1
 
-[connection signal="apply_filters" from="HUD/LobbySearchMenu/LobbySearch" to="HUD/LobbySearchMenu/LobbyFilterMenu" method="apply_filters"]
+[connection signal="refresh" from="HUD/LobbySearchMenu/LobbyFilterMenu" to="HUD/LobbySearchMenu/LobbySearch" method="refresh_lobbies"]
 
 [editable path="HUD/PlayMenu/NewRunButton"]
 [editable path="HUD/CharacterSelect"]

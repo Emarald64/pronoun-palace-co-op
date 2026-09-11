@@ -4,15 +4,20 @@ var lobby_entries:Array[Control]=[]
 var lobby_entry_scene:PackedScene=load("res://mods/co-op/source/ui/steam_lobby_entry.tscn")
 @export var steam_join_menu:MenuPanel
 
-signal apply_filters
+#signal apply_filters
 
 func _ready():
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	start_appearing.connect(_on_start_appear)
+
+func _on_start_appear() -> void:
+	refresh_lobbies()
 
 func refresh_lobbies():
 	for lobby_entry in lobby_entries:
 		lobby_entry.hide()
-	apply_filters.emit()
+	%SectionedPanel.update_panels()
+	#apply_filters.emit()
 	#Steam.addRequestLobbyListStringFilter("seed","",Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
 	print("requested lobbies refresh")
@@ -25,7 +30,7 @@ func _on_lobby_match_list(lobby_ids:Array):
 		var lobby_entry:Control
 		if lobby_entries.is_empty():
 			lobby_entry=lobby_entry_scene.instantiate()
-			%Lobbies.add_child(lobby_entry)
+			%SectionedPanel.contents_box.add_child(lobby_entry)
 			lobby_entry.pressed.connect(join_lobby)
 		else:
 			lobby_entry=lobby_entries.pop_front()
@@ -34,6 +39,7 @@ func _on_lobby_match_list(lobby_ids:Array):
 		new_lobby_entries.append(lobby_entry)
 	
 	lobby_entries=new_lobby_entries
+	%SectionedPanel.update_panels()
 
 func join_lobby(lobby_id:int):
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)

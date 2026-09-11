@@ -12,20 +12,16 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="SteamLobbyEntry" type="Panel" unique_id=1989158701]
-custom_minimum_size = Vector2(123, 40)
-offset_right = 160.0
-offset_bottom = 40.0
-theme_type_variation = &"MenuPaperAlt"
+[node name="MarginContainer" type="MarginContainer" unique_id=996799715]
+offset_right = 191.0
+offset_bottom = 36.0
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 script = ExtResource("1_mnnfb")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1411186859]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="Control" type="Control" parent="HBoxContainer" unique_id=246109428]
 custom_minimum_size = Vector2(32, 32)
@@ -83,7 +79,7 @@ theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("3_yekkh")
-key = "/mod/co-op/join"
+key = "/mod/co-op/menu/join"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [connection signal="pressed" from="HBoxContainer/Button" to="." method="_join_pressed"]

@@ -265,5 +265,5 @@ func _on_finished_updating_stats(_words):
 	if main.candy_round:
 		add_intent("candy_round_healing",{heal=heighest_candy_round_value},heighest_cany_round_tiles.filter(func (tile):return is_instance_valid(tile)))
 
-func _on_submit_button_pressed():
-	await super()
+#func _on_submit_button_pressed():
+	#await super()
