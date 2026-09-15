@@ -11,10 +11,9 @@ extends "res://source/spells/gift.gd"
 		#player_spell_slot.set_meta("alt_gift",id)
 
 func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -> Dictionary:
-	var base_pool =  CoOp.SPELL_WEIGHTS.duplicate_deep()
-	var pool={}
-	for spell_id in base_pool:
-		pool["co-op:"+spell_id]=base_pool[spell_id]
+	var pool=ModLoader.get_node("coop").namespace_dictionary_ids(CoOp.SPELL_WEIGHTS)
+	#for spell_id in base_pool:
+		#pool["co-op:"+spell_id]=base_pool[spell_id]
 	
 	if not allow_player_repeats:
 		for spell in player.get_spells():
@@ -27,4 +26,4 @@ func do_battle_start_transformation(exclude_spells):
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by dragonslayr15001")
+	tooltip.add_subtooltip(group.strings.values().pick_random())

@@ -31,9 +31,17 @@ func is_usable():
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random())
+	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by dragonslayr15001")
+	
 
 func do_battle_end_transformation():
 	super()
-	if secret_id=="co-op:gift_coop":
-		transform_spell("co-op:gift_coop")
+	if secret_id in ModLoader.get_node("coop").namespace_ids(CoOp.GIFT_SPELLS):
+		transform_spell(secret_id)
+
+func player_turn_started(is_battle_start: bool) -> void :
+	super(is_battle_start)
+	if secret_id == ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.MIRACLE_CACHE_COOP):
+		var pool=ModLoader.get_node("coop").namespace_dictionary_ids(CoOp.SPELL_WEIGHTS)
+		var spell_id=rng.spell.pick_random(pool)
+		transform_spell(spell_id)

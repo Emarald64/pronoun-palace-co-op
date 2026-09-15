@@ -19,16 +19,57 @@ const intent_icons:Dictionary[String,String]={
 	"candy_round_healing.png":"candy_round_healing"
 }
 
+const SPELLS:Dictionary[StringName,String]={
+	PARTY_TELEPHONE="party_telephone",
+	POSTAGE_STAMP="postage_stamp",
+	BLUE_BOX="blue_box",
+	REMOTE_OBJECT="remote_object",
+	TV_SNOW="tv_snow",
+	GIFT_COOP="gift_coop",
+	MIRACLE_CACHE_COOP="miracle_cache_coop"
+}
+
+const SPELL_WEIGHTS:Dictionary[String,float]={
+	SPELLS.PARTY_TELEPHONE:1.5,
+	SPELLS.POSTAGE_STAMP:2.0,
+	SPELLS.BLUE_BOX:2.0,
+	SPELLS.REMOTE_OBJECT:2.0,
+	SPELLS.TV_SNOW:3.0
+}
+
+const SPELL_CATAGORIES={
+	#Globals.SPELL_CATEGORY.OFFENSIVE:[
+		#"co-op:party_telephone",
+		#"co-op:postage_stamp",
+	#],
+	#Globals.SPELL_CATEGORY.SUPPORT:[
+		#"co-op:blue_box",
+		#"co-op:remote_object"
+	#],
+	#Globals.SPELL_CATEGORY.DEFENSIVE:[
+		#"co-op:tv_snow"
+	#]
+}
+
+const GIFT_SPELLS:Array[String]=[
+	SPELLS.GIFT_COOP,
+	SPELLS.MIRACLE_CACHE_COOP
+]
+
+const SPELL_UPGRADES={
+	SPELLS.GIFT_COOP:SPELLS.MIRACLE_CACHE_COOP
+}
+
 var unloaded_intents:Array[String]=intent_icons.keys()
 
-static func change_script_and_copy_properties(object:Object,script:Script):
-	var properties:Dictionary[String,Variant]={}
-	for property in object.get_property_list():
-		if property.name!="script":
-			properties[property.name]=object.get(property.name)
-	object.set_script(script)
-	for property in properties:
-		object.set(property,properties[property])
+#static func change_script_and_copy_properties(object:Object,script:Script):
+	#var properties:Dictionary[String,Variant]={}
+	#for property in object.get_property_list():
+		#if property.name!="script":
+			#properties[property.name]=object.get(property.name)
+	#object.set_script(script)
+	#for property in properties:
+		#object.set(property,properties[property])
 
 func _process(_delta: float) -> void:
 	for file_name in unloaded_intents:
@@ -100,44 +141,8 @@ func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 		push_error("error joining lobby, code: ",lobby_joined_response) 
 
 
-
-const SPELLS:PackedStringArray=[
-	"party_telephone",
-	"postage_stamp",
-	"blue_box",
-	"remote_object",
-	"tv_snow"
-]
-
-const NON_POOL_SPELLS:PackedStringArray=[
-	"gift_coop"
-]
-
-const SPELL_WEIGHTS:Dictionary[String,float]={
-	"party_telephone":1.5,
-	"postage_stamp":2.0,
-	"blue_box":2.0,
-	"remote_object":2.0,
-	"tv_snow":3.0
-}
-
-const SPELL_CATAGORIES={
-	Globals.SPELL_CATEGORY.OFFENSIVE:[
-		"co-op:party_telephone",
-		"co-op:postage_stamp",
-	],
-	Globals.SPELL_CATEGORY.SUPPORT:[
-		"co-op:blue_box",
-		"co-op:remote_object"
-	],
-	Globals.SPELL_CATEGORY.DEFENSIVE:[
-		"co-op:tv_snow"
-	]
-}
-
-
 func get_spell_ids() -> Array[String]:
-	return namespace_ids(SPELLS+NON_POOL_SPELLS)
+	return namespace_ids(SPELLS.values())
 
 func get_spell_pool(category: String = "") -> Dictionary[String, float]:
 	if category.is_empty():
