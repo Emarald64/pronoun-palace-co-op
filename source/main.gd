@@ -16,7 +16,7 @@ var candy_round:=false
 
 var in_coop_spell_animation:=false
 
-@onready var coop_notifications=%CoopNotifications
+@onready var coop_notifications:CoopNotifications=%CoopNotifications
 
 func _init():
 	super()
@@ -213,8 +213,9 @@ func blue_box_effect(rng_seed:int):
 	if not valid_spells.is_empty():
 		var spell:Spell=random.pick_random(valid_spells).spell
 		spell.add_charge(1)
-	
-
+		coop_notifications.add_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX),{spell=spell.get_spell_name()})
+	else:
+		coop_notifications.add_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX))
 
 
 #func finish_run(is_victory: = false):

@@ -5,7 +5,7 @@ signal refresh
 
 func _ready():
 	var metadata=SaveManager.get_save().get_saved_run(false).metadata
-	if SaveFile.get_run_playable(metadata,false):
+	if SaveFile.get_run_playable(metadata,false).playable:
 		run_seed=metadata.seed
 	else:
 		%RejoinGame.hide()

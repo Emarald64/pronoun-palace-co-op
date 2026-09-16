@@ -18,6 +18,7 @@ func _use():
 			_end_use()
 			return
 	#var send_targets=Game.players.keys().filter(func (peer_id:int)->bool:return peer_id not in main.dead_players and peer_id!=my_id)
+	main.coop_notifications.add_notification.rpc_id(target_id,id,{word=word_builder.get_words().words[0]})
 	main.recive_word.rpc_id(target_id,tile_save_datas)
 	_post_use()
 	await word_builder.word_holder.clear_tiles(Callable(),false)
@@ -27,7 +28,7 @@ func _use():
 	
 
 func is_usable():
-	return super.is_usable() and word_builder.can_submit()
+	return super.is_usable() and word_builder.can_submit() and word_builder.get_words().sub_lists.size()==1
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")

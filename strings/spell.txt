@@ -9,16 +9,22 @@
 		Send Charge
 
 	:charge_category:
-		uncommon
+		rare
 
 	:max_charge:
-		3
+		2
 
 	:banner:
 		Select a player to send a charge to
 	
 	:effect_notifiction:
-		recharged your {spell_name}.
+		{:charged_spell_nofication: if spell}{:failed_notification: not spell}
+	
+	:charged_spell_nofication:
+		recharged your {spell}.
+	
+	:failed_notification:
+		tried to recharge a spell, but there was no valid spell.
 
 :gift_coop: {inherits :spell/gift:}
 	:name:
@@ -85,7 +91,7 @@
 		Select the player to send a tile to
 
 	:banner_tile:
-		Select the tile to send
+		Select a tile to send
 
 	:tags:
 		removes_word

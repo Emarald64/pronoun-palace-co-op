@@ -3,12 +3,14 @@ extends Spell
 var selecting_tile:=false
 
 func _use():
+	selecting_tile=false
 	var player_id= await player.get_selection(3)
 	if player_id==null:
 		_end_use()
 		return
 	
 	selecting_tile=true
+	update_banner_label()
 	var tile: = await get_selection()
 	selecting_tile=false
 	
@@ -85,7 +87,6 @@ func _use():
 
 #func is_tile_selectable(tile: Tile) -> bool:
 	#return not tile.has_harmful_status()
-
 
 func get_tooltip_context():
 	return {selecting_tile=selecting_tile}
