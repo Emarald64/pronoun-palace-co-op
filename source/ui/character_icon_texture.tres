@@ -1,0 +1,16 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://d1hrcojaw1lpk"]
+
+[ext_resource type="Texture2D" uid="uid://c31wscg22clcb" path="res://arte/ui/character_icons.png" id="1_sybb5"]
+
+[sub_resource type="GDScript" id="GDScript_3riqv"]
+script/source = "extends AtlasTexture
+
+func set_character(character:String,trans:=true):
+	region.position.x=Globals.CHARACTER_ORDER.find(character)*34
+	region.position.y=34 if trans else 0
+"
+
+[resource]
+atlas = ExtResource("1_sybb5")
+region = Rect2(1, 1, 32, 32)
+script = SubResource("GDScript_3riqv")

@@ -1,7 +1,7 @@
 extends MenuPanel
 
 @export var lobby:MenuPanel
-const ICON_SCENE: PackedScene = preload("res://source/ui/menu/character_select/character_selector_icon.tscn")
+var icon_scene: PackedScene = load("res://source/ui/menu/character_select/character_selector_icon.tscn")
 var icons:Array[CharacterSelectorIcon]=[]
 #var character:=Globals.CHARACTERS.LEXICOGRAPHER
 
@@ -17,7 +17,7 @@ func _ready()->void:
 func _on_start_appearing()->void:
 	if icons.is_empty():
 		for id in Globals.CHARACTER_ORDER:
-			var icon: CharacterSelectorIcon = ICON_SCENE.instantiate()
+			var icon: CharacterSelectorIcon = icon_scene.instantiate()
 			icon.get_node("%CharacterIcon").show_locked_character=true
 			icon.set_character(id, true)
 			icons.append(icon)

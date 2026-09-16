@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://de0ujkvckdxih"]
+
+[ext_resource type="Texture2D" uid="uid://b2ny68c6flnrm" path="res://arte/ui/menu_paper/menu_ticket_right.png" id="1_484hd"]
+[ext_resource type="Script" uid="uid://c1qi456enge2p" path="res://mods/co-op/source/ui/menu/coop_notifiction.gd" id="1_w43n7"]
+[ext_resource type="Texture2D" uid="uid://d1hrcojaw1lpk" path="res://mods/co-op/source/ui/character_icon_texture.tres" id="2_c3dy0"]
+[ext_resource type="Texture2D" uid="uid://dmofi0m21sgho" path="res://arte/spells/letter_opener.png" id="4_484hd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bt5iu"]
+texture = ExtResource("1_484hd")
+texture_margin_left = 5.0
+texture_margin_top = 3.0
+texture_margin_bottom = 4.0
+expand_margin_right = 10.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="CoopNotification" type="PanelContainer" unique_id=1950810581]
+custom_minimum_size = Vector2(135, 0)
+offset_right = 135.0
+offset_bottom = 55.0
+theme_type_variation = &"MenuTicketRight"
+theme_override_styles/panel = SubResource("StyleBoxTexture_bt5iu")
+script = ExtResource("1_w43n7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=853069421]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=630981779]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="SpellIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=694679640]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("4_484hd")
+expand_mode = 2
+stretch_mode = 2
+
+[node name="PlayerIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=1924504955]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_c3dy0")
+expand_mode = 2
+
+[node name="PlayerName" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=159537413]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BoldOutlineLabel"
+text = "Xanderath"
+
+[node name="Description" type="Label" parent="VBoxContainer" unique_id=1415067205]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+custom_maximum_size = Vector2(130, -1)
+layout_mode = 2
+size_flags_vertical = 3
+autowrap_mode = 2
+text_overrun_behavior = 1

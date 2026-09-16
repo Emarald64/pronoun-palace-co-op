@@ -39,6 +39,12 @@ func _use():
 	tile_save.get_or_add("status_data",{}).stamped=stamped_save
 	tile_save.as_save=true
 	main.queue_tile.rpc_id(player_id,tile_save)
+	var named_tile_status:=""
+	for status in tile_save.statuses:
+		var group: = StringManager.get_string_group("status/" + status)
+		if "shared" not in group.get_string("flags"):
+			named_tile_status=group.get_string("name")
+	main.coop_notifications.add_notification.rpc_id(player_id,id,{face=tile_save.faces[0],status=named_tile_status,type="wooden" if tile_save.type==TileType.DAMAGE else "plastic"})
 	
 	tile_board.remove_tile(tile,{delete_tiles = false,ignore_status=true})
 	const TARGET_OFFSET=Vector2(15,-25)

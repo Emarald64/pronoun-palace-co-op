@@ -45,7 +45,7 @@ func _use():
 	if has_curse(CURSE.FRAGILE) and rng.fragile.randf() <= FRAGILE_BREAK_CHANCE:
 		my_save_data.max_charge=maxi(0,max_charge)
 	main.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
-	
+	main.coop_notifications.add_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	remove_all_player_spells()
 	spell_container.load_save_data(old_spells_save_data)
 	_end_use()

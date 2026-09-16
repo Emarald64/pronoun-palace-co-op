@@ -11,6 +11,7 @@ func set_status_tooltips():
 
 func _use():
 	main.apply_tile_effect.rpc("res://mods/co-op/source/effects/tv_snow_effect.tscn",2)
+	main.coop_notifications.add_notification.rpc(id)
 	_post_use()
 	if charge==0:
 		frame=1

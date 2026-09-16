@@ -16,18 +16,27 @@
 
 	:banner:
 		Select a player to send a charge to
+	
+	:effect_notifiction:
+		recharged your {spell_name}.
 
 :gift_coop: {inherits :spell/gift:}
+	:name:
+		Co-Op gift
 	:description:
 		Becomes a random {:category_name:} spell at the start of each battle.
 	:category_name:
 		Co-Op
+	:label:
+		Co-Op spells
+	:charge_category:
+		unlimited
+	:flags:
+		force_allow_charge_curse
 
-:miracle_cache_coop: {inherits :spell/gift:}
+:miracle_cache_coop: {inherits :gift_coop:}
 	:name:
 		{:category_name:} Miracle Cache
-	:category_name:
-		Co-Op
 	:description:
 		Becomes a random {:category_name:} spell at the start of each turn.
 
@@ -49,6 +58,9 @@
 
 	:banner:
 		Select a player to send the word to
+	
+	:effect_notifiction:
+		sent you {word}.
 
 :postage_stamp:
 	:name:
@@ -77,6 +89,9 @@
 
 	:tags:
 		removes_word
+	
+	:effect_notification:
+		sent you a {type} {status}{" " if status}tile with the face {face}.
 
 :remote_object:
 	:name:
@@ -115,6 +130,9 @@
 	:banner_spell:
 		Select a spell to swap
 
+	:effect_notification:
+		took your {spell}.
+
 :tv_snow:
 	:name:
 		TV Snow
@@ -130,3 +148,6 @@
 
 	:max_charge:
 		2
+	
+	:effect_notification:
+		froze 2 of your tiles.

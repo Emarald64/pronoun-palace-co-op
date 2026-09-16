@@ -16,6 +16,8 @@ var candy_round:=false
 
 var in_coop_spell_animation:=false
 
+@onready var coop_notifications=%CoopNotifications
+
 func _init():
 	super()
 	print_debug("set main scene on game")
