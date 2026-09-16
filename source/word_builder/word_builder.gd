@@ -134,7 +134,8 @@ func send_attack_and_wait(reroll:bool=false)->void:
 		player_total_damage[my_id]+=damage
 	else:
 		player_total_damage[my_id]=damage
-		
+	
+	var bite_healing:=0
 	for id in peer_attacks:
 		if id not in main.dead_players:
 			var peer_attack=peer_attacks[id]
@@ -150,8 +151,10 @@ func send_attack_and_wait(reroll:bool=false)->void:
 				others_submitted_words[id]=others_queued_words[id]
 
 			if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
-				enemy.heal(enemy.moves.bite.damage-peer_attack.defense)
+				bite_healing+=enemy.moves.bite.damage-peer_attack.defense
 			damage_indecators[id].hide()
+	if bite_healing>0 and damage<enemy.health:
+		enemy.heal(bite_healing)
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
 	total_attack_container.hide()
