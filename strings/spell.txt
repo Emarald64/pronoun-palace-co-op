@@ -65,7 +65,7 @@
 	:banner:
 		Select a player to send the word to
 	
-	:effect_notifiction:
+	:effect_notification:
 		sent you {word}.
 
 :postage_stamp:

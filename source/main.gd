@@ -178,29 +178,22 @@ func spawn_enemy(enemy_name):
 		
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
-	print(tiles)
+	#print(tiles)
 	await tile_board.wait_for_idle()
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
 	for i in height*width:
 		var cord:=Vector2i(i%width,height-(i/width)-1)
-		var tile=tile_board.get_tile_at(cord)
-		if tile==null:
+		var existing_tile=tile_board.get_tile_at(cord)
+		if existing_tile==null or not existing_tile.in_word():
 			var tile_data =tiles.pop_front()
 			if tile_data==null:
 				break
-			tile=tile_board.create_tile()
-			
-			tile_board.insert_tile(tile,cord)
-			tile.load_save_data(tile_data)
-			tile.add_poofcloud(tile.get_poof_color())
-			await get_tree().create_timer(0.16).timeout
-		elif not tile.in_word():
-			var tile_data =tiles.pop_front()
-			if tile_data==null:
-				break
-			tile.load_save_data(tile_data)
-			tile.add_poofcloud(tile.get_poof_color())
+			var new_tile=tile_board.create_tile()
+			add_child(new_tile)
+			new_tile.load_save_data(tile_data)
+			tile_board.insert_tile(new_tile,cord)
+			new_tile.add_poofcloud(new_tile.get_poof_color())
 			await get_tree().create_timer(0.16).timeout
 
 @rpc("any_peer")

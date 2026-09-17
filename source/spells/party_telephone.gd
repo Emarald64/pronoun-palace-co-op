@@ -20,11 +20,11 @@ func _use():
 	#var send_targets=Game.players.keys().filter(func (peer_id:int)->bool:return peer_id not in main.dead_players and peer_id!=my_id)
 	main.coop_notifications.add_notification.rpc_id(target_id,id,{word=word_builder.get_words().words[0]})
 	main.recive_word.rpc_id(target_id,tile_save_datas)
-	_post_use()
 	await word_builder.word_holder.clear_tiles(Callable(),false)
 	word_builder.update()
 	await tile_board.settle_board()
-	tile_board.fill_board()
+	await tile_board.fill_board()
+	_post_use()
 	
 
 func is_usable():

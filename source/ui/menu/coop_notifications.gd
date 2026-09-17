@@ -19,7 +19,7 @@ func add_notification(spell_id:String,description_context:={}):
 	# remove last notifiction
 	if notifications.size()>=max_notifications:
 		var notifiction_to_remove=notifications.pop_back()
-		notifiction_to_remove.disapear()
+		notifiction_to_remove.disappear()
 	
 	#move other notifictions down
 	for existing_notification in notifications:
