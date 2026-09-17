@@ -15,8 +15,44 @@ Features:
 
 ## Died before the end?
 
-![Alt text](.readme_assets/candy round showcase.avif)
+![Alt text](.readme_assets/candy round showcase.webp)
 
 It's ok, you'll get a board of candy tiles and, so long as the other players beat the enemy, you'll be brought back, healed for the best healed for whatever healing you managed to get with your candy tiles in the meantime.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 <sub>michivous developer may join your public lobies and steal your things. be warned >:3</sub>
