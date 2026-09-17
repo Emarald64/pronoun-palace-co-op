@@ -1,6 +1,7 @@
+class_name CoopNotifications
 extends Control
 
-const max_notifications=4
+const max_notifications=1
 var notifiction_scene:PackedScene=load("res://mods/co-op/source/ui/menu/coop_notifiction.tscn")
 var notifications:Array[Control]=[]
 

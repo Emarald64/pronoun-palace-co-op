@@ -259,7 +259,7 @@ func update_stats() -> void :
 	if main.candy_round:
 		if self_heal>heighest_candy_round_value and can_submit():
 			heighest_candy_round_value=self_heal
-			heighest_cany_round_tiles=tiles.duplicate()
+			heighest_cany_round_tiles=tiles.filter(func (tile:Tile)->bool:return TileStatus.CANDY in tile.statuses)
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
 		update_total_damage_counter()

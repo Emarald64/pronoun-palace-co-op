@@ -13,10 +13,11 @@ func set_peer_id(id:int):
 		%PlayerIcon.texture=character_icon_texture
 
 func appear():
-	pass
+	show()
 
 func disappear():
-	pass
+	hide()
+	queue_free()
 
 func set_spell(spell_id:String, description_context:Dictionary):
 	var spell=Spell._instantiate_spell(spell_id)

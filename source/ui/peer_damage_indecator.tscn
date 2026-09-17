@@ -29,7 +29,7 @@ offset_right = 103.0
 offset_bottom = 40.0
 size_flags_horizontal = 0
 script = ExtResource("1_dt3se")
-color_changing_shadow_cloners = [NodePath("Panel/MarginContainer/PeerDamageIndecator/Control/CharacterIcon/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/Control/Dead/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite/HealthLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite/AttackLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2/DefendLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/Name/ShadowCloner")]
+color_changing_shadow_cloners = [NodePath("Panel/MarginContainer/PeerDamageIndecator/Control/CharacterIcon/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite/HealthLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/HeartSprite/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite/AttackLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/AttackSprite/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2/DefendLabel/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/HBoxContainer/TextureRect2/ShadowCloner"), NodePath("Panel/MarginContainer/PeerDamageIndecator/VBoxContainer/Name/ShadowCloner")]
 
 [node name="Panel" type="Panel" parent="." unique_id=661252072]
 custom_minimum_size = Vector2(103, 39)
@@ -76,9 +76,6 @@ editor_description = "(Infinity)"
 visible = false
 texture = ExtResource("3_lf8ko")
 centered = false
-
-[node name="ShadowCloner" parent="Panel/MarginContainer/PeerDamageIndecator/Control/Dead" unique_id=1489390220 instance=ExtResource("4_dcsum")]
-position = Vector2(2, 2)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/PeerDamageIndecator" unique_id=1938947579]
 layout_mode = 2

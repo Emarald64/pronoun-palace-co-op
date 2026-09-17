@@ -31,10 +31,10 @@ const SPELLS:Dictionary[StringName,String]={
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
 	SPELLS.PARTY_TELEPHONE:1.5,
-	SPELLS.POSTAGE_STAMP:2.0,
-	SPELLS.BLUE_BOX:2.0,
+	SPELLS.POSTAGE_STAMP:2.5,
+	SPELLS.BLUE_BOX:1.5,
 	SPELLS.REMOTE_OBJECT:2.0,
-	SPELLS.TV_SNOW:3.0
+	SPELLS.TV_SNOW:2.0
 }
 
 const SPELL_CATAGORIES={
@@ -168,12 +168,15 @@ func get_run_save_data() -> Dictionary:
 	return {
 		others_submitted_words=Game.word_builder.others_submitted_words,
 		player_total_damage=Game.word_builder.player_total_damage,
-		candy_round=Game.main.candy_round
+		candy_round=Game.main.candy_round,
+		original_id=Game.main.original_id
 		}
 	
 func load_run_save_data(data: Dictionary) -> void:
 	Game.word_builder.others_submitted_words=data.others_submitted_words
 	Game.word_builder.player_total_damage=data.player_total_damage
 	Game.main.candy_round=data.candy_round
+	Game.main.original_id=data.get("original_id",multiplayer.get_unique_id())
 	if data.candy_round:
 		Game.main.peer_died.rpc()
+	Game.set_original_id.rpc(Game.main.original_id)

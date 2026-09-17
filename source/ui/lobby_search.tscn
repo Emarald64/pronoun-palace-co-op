@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_1jk6l"]
 [ext_resource type="Script" uid="uid://b3lkh8f5fec2u" path="res://mods/co-op/source/ui/lobby_search.gd" id="2_xm747"]
 [ext_resource type="PackedScene" uid="uid://c5b7lvbrglom8" path="res://source/ui/menu/generic/sectioned_panel.tscn" id="3_v5vwi"]
-[ext_resource type="PackedScene" uid="uid://dvx2rlq4ph0lh" path="res://mods/co-op/source/ui/steam_lobby_entry.tscn" id="4_305ee"]
 
 [node name="LobbySearch" unique_id=1499490309 instance=ExtResource("1_1jk6l")]
 script = ExtResource("2_xm747")
@@ -22,14 +21,5 @@ size_flags_vertical = 3
 
 [node name="AlternatingPageBox" parent="PositionRoot/Panel/SectionedPanel/PageMask/MarginContainer/LinkedScrollContainer/MarginContainer" parent_id_path=PackedInt32Array(1400204219, 1393533725) index="0" unique_id=1381074398]
 last_panel_must_be_base = true
-
-[node name="SteamLobbyEntry" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox" parent_id_path=PackedInt32Array(1400204219, 828913805) index="0" unique_id=1989158701 instance=ExtResource("4_305ee")]
-layout_mode = 2
-
-[node name="SteamLobbyEntry2" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox" parent_id_path=PackedInt32Array(1400204219, 828913805) index="1" unique_id=1238911972 instance=ExtResource("4_305ee")]
-layout_mode = 2
-
-[node name="SteamLobbyEntry3" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox" parent_id_path=PackedInt32Array(1400204219, 828913805) index="2" unique_id=1411186859 instance=ExtResource("4_305ee")]
-layout_mode = 2
 
 [editable path="PositionRoot/Panel/SectionedPanel"]

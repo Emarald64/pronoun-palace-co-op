@@ -7,7 +7,7 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 		%Coop.show()
 		var sorted_total_damage=[]
 		for id in Game.players:
-			var total_damage_stat=[Game.players[id].name,Game.word_builder.player_total_damage[id]]
+			var total_damage_stat=[Game.players[id].name,Game.word_builder.player_total_damage.get(id,0)]
 			var index=sorted_total_damage.bsearch_custom(total_damage_stat,
 				func (a,b):
 					if a[1]==b[1]:
