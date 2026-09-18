@@ -169,7 +169,8 @@ func get_run_save_data() -> Dictionary:
 		others_submitted_words=Game.word_builder.others_submitted_words,
 		player_total_damage=Game.word_builder.player_total_damage,
 		candy_round=Game.main.candy_round,
-		original_id=Game.main.original_id
+		original_id=Game.main.original_id,
+		all_player_names=Game.all_player_names
 		}
 	
 func load_run_save_data(data: Dictionary) -> void:
@@ -180,3 +181,4 @@ func load_run_save_data(data: Dictionary) -> void:
 	if data.candy_round:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
+	Game.all_player_names.merge(data.all_player_names)

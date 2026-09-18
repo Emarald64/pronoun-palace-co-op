@@ -7,8 +7,8 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 		%Coop.show()
 		print_debug("showing coop summary")
 		var sorted_total_damage=[]
-		for id in Game.players:
-			var total_damage_stat=[Game.all_player_names[id],Game.word_builder.player_total_damage.get(id,0)]
+		for id in Game.word_builder.player_total_damage:
+			var total_damage_stat=[Game.all_player_names.get(id,"???"),Game.word_builder.player_total_damage.get(id,0)]
 			var index=sorted_total_damage.bsearch_custom(total_damage_stat,
 				func (a,b)->bool:
 					if a[1]==b[1]:
@@ -26,13 +26,13 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 		var players_submitted_words:Dictionary[int,PackedStringArray]=Game.word_builder.others_submitted_words.duplicate()
 		players_submitted_words[multiplayer.get_unique_id()]=Game.main.run_stats.get_words()
 		var longest_word_stats:Array[Array]=[]
-		for id in Game.players:
-			if id in players_submitted_words and not players_submitted_words[id].is_empty():
+		for id in players_submitted_words:
+			if not players_submitted_words[id].is_empty():
 				var longest_word:String
 				for word in players_submitted_words[id]:
 					if longest_word.length()<word.length():
 						longest_word=word
-				var stats_entry=[Game.all_player_names[id],longest_word]
+				var stats_entry=[Game.all_player_names.get(id,"???"),longest_word]
 				var index=longest_word_stats.bsearch_custom(stats_entry,
 				func (a,b):
 					if a[1].length()==b[1].length():

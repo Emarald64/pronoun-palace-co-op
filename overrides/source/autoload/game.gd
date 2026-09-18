@@ -174,9 +174,10 @@ func return_to_menu():
 
 func kill_peer():
 	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
-	if Game.steam_lobby_id:
-		Steam.leaveLobby(Game.steam_lobby_id)
-		Game.steam_lobby_id=0
-	if Game.upnp!=null:
-		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
-	Game.players.clear()
+	if steam_lobby_id:
+		Steam.leaveLobby(steam_lobby_id)
+		steam_lobby_id=0
+	if upnp!=null:
+		upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
+	players.clear()
+	all_player_names.clear()
