@@ -4,7 +4,7 @@ extends Mod
 var character_select
 var host_name:LineEdit
 const AUTHOR="Xanderath"
-const COOP_VERSION="1.1.4 - 9/8"
+const COOP_VERSION="1.1.6 - 9/17"
 var version_number:String
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
