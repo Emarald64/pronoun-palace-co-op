@@ -1,0 +1,147 @@
+:stawman_taps:
+	:title:
+		Objectum
+	:description:
+		Tapped {"housebroken" if housebroken}{"strawman" not housebroken} {value} times.
+	:minimum:
+		50
+:co-op_spells:
+	:title:
+		Helping Hand
+	:description:
+		Used co-op spells {value} times.
+	:minimum:
+		10
+:slurs_played:
+	:title:
+		Bigot
+	:description:
+		Submitted {value} slurs.
+	:minimum:
+		3
+:metals_played:
+	:title:
+		Metalic
+	:description:
+		Submitted {value} metals.
+	:minimum:
+		3
+:animals_played:
+	:title:
+		Furry
+	:description:
+		Submitted {value} animals.
+	:minimum:
+		3
+:fruits_and_veg_played:
+	:title:
+		Eat Your Greens
+	:description:
+		Submitted {value} fruits and vegetables.
+	:minimum:
+		3
+:colors_played:
+	:title:
+		{"Pallet" if pallete}{"Palette" not pallete} Expert
+	:description:
+		Submitted {value} colors.
+	:minimum:
+		3
+:body_parts_played:
+	:title:
+		Body Builder
+	:description:
+		Submitted {value} body parts.
+	:minimum:
+		3
+:time_spent:
+	:most:
+		:title:
+			Slowpoke
+		:description:
+			Spent a whole {value time "h:mm:ss"} deliberating.
+		:minimum:
+			# 1 hour
+			3600000
+	:least:
+		:title:
+			Speedster
+		:description:
+			Spent only {value time "mm:ss"} deliberating.
+		:maximum:
+			# 20 minutes
+			1200000
+:spells_used:
+	:most:
+		:title:
+			Magician
+		:description:
+			Used spells {value} times.
+		:minimum:
+			100
+	:least:
+		:title:
+			Inept
+		:description:
+			Only used spells {value} times.
+		:maximum:
+			20
+:average_letters_played:
+	:most:
+		:title:
+			Sesquipedalian
+		:description:
+			Played an average of {value} letters per word
+		:minimum:
+			8
+	:least:
+		:title:
+			Hippopotomonstrosesquippedaliophobia
+		:description:
+			Played an average of only {value} letters per word.
+		:maximum:
+			5
+:damage_taken:
+	:least:
+		:title:
+			{:title_normal: if value}{:title_no_hit: not value} 
+		:title_no_hit:
+			No-hitter
+		:title_normal:
+			Blocker
+		:description:
+			{:description_normal: if value}{:description_no_hit: not value}
+		:description_no_hit:
+			Took no damage.
+		:description_normal:
+			Only took {value} damage.
+		:maximum:
+			15
+	:most:
+		:title:
+			Battered and Bruised
+		:discription:
+			Took {value} damage.
+		:minimum:
+			60
+:screenshots_taken:
+	:title:
+		Photographer
+	:description:
+		Took {value} screenshots.
+	:minimum:
+		5
+:single_attack_damage:
+	:title:
+		Heavy Hitter
+	:description:
+		Dealt {value} damage in a single attack.
+	:minimum:
+		50
+:modded_spells:
+	:title:
+		Modifier
+	:description:
+		Used {value} (non-co-op) modded spells.
+	:minimum:
+		10

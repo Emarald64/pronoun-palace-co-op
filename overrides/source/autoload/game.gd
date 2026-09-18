@@ -58,12 +58,19 @@ func load_joining_game(host_save:Dictionary)->void:
 	AudioManager.fade_sounds()
 	get_tree().change_scene_to_file("res://source/main.tscn")
 
-@rpc("any_peer")
+@rpc("any_peer","call_local")
 func set_original_id(original_id:int):
-	id_remaps[multiplayer.get_remote_sender_id()]=original_id
+	var id=multiplayer.get_remote_sender_id()
+	id_remaps[original_id]=id
+	word_builder.others_submitted_words[id]=word_builder.others_submitted_words.get(original_id,PackedStringArray())
+	word_builder.player_total_damage[id]=word_builder.player_total_damage.get(original_id,0)
+	word_builder.others_submitted_words.erase(original_id)
+	word_builder.player_total_damage.erase(original_id)
+	
+	main.strawman_taps[id]=main.strawman_taps.get(original_id,0)
 
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
-	if host_save.metadata.seed==local_save.metadata.seed:
+	if host_save.metadata.seed==local_save.metadata.seed or (Input.is_key_pressed(KEY_PAGEDOWN) and Bridge.is_debug_build()):
 		const COPPIED_DATA=[
 			"act_events",
 			"background",
@@ -167,6 +174,10 @@ func kill_peer():
 		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	Game.players.clear()
 
-#func get_player_name(id:int):
-	#if id in players:
-		#return players[id].name
+func get_player_data(id:int):
+	if id in players:
+		return players[id].name
+	id=id_remaps[id]
+	if id in players:
+		return players[id].name
+	return player_info

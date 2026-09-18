@@ -67,7 +67,13 @@ func _on_icon_selector_selected(icon: SelectorIcon) -> void:
 
 
 func _on_name_changed(new_text: String) -> void:
-	Game.player_info.name=new_text
+	if new_text.is_empty():
+		if Bridge.steam_initialized:
+			Game.player_info.name=Bridge.get_username(Bridge.own_user_id)
+		else:
+			Game.player_info.name="Client"
+	else:
+		Game.player_info.name=new_text
 
 
 func select_lexicographer() -> void:
