@@ -158,6 +158,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
 	total_attack_container.hide()
+	others_queued_words.clear()
 	submitted_count=0
 	if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
 		#Beat the shit out of Nobody when killing her

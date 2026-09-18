@@ -79,8 +79,11 @@ func player_death():
 	word_builder.submitted_count=0
 	print("I died")
 	tile_board.clear_targets()
-	if dead_players.size()+players_compleated_floor.size()>=Game.players.size():
-		stop_waiting_for_death(not players_compleated_floor.is_empty())
+	if dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():
+		if players_compleated_floor.is_empty():
+			await super()
+		else:
+			stop_waiting_for_death(true)
 		return
 	elif enemy.id==Enemies.NOBODY:
 		await super()

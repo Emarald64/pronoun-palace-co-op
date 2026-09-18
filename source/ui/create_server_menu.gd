@@ -59,6 +59,7 @@ func go_to_lobby():
 	if steam_networking:
 		Steam.setLobbyData(Game.steam_lobby_id,"name",Game.player_info.name)
 	Game.players[1]=Game.player_info
+	Game.all_player_names[1]=Game.player_info.name
 	Game.player_connected.emit(1,Game.player_info)
 	AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
 	if continuing_game:

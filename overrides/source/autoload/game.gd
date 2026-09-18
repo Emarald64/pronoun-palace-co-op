@@ -6,8 +6,8 @@ var player_info = {
 	name="Client",
 	character="lexicographer",
 	steam_id=0,
-	
 }
+var all_player_names:Dictionary[int,String]={}
 var upnp:UPNP
 var sync_start:=false
 var steam_lobby_id:=0
@@ -125,7 +125,13 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 
 func _on_connected()->void:
 	var peer_id=multiplayer.get_unique_id()
+	if player_info.name.is_empty():
+		if Bridge.steam_initialized:
+			player_info.name=Bridge.get_username(Bridge.own_user_id)
+		else:
+			player_info.name="Client"
 	players[peer_id]=player_info
+	all_player_names[peer_id]=player_info.name
 	player_connected.emit(peer_id,player_info)
 
 func _on_other_connected(id:int)->void:
@@ -149,6 +155,7 @@ func _on_peer_disconnected(id:int)->void:
 func register_player(other_player_info)->void:
 	var id=multiplayer.get_remote_sender_id()
 	players[id]=other_player_info
+	all_player_names[id]=other_player_info.name
 	id_remaps[id]=id
 	player_connected.emit(id,other_player_info)
 
@@ -173,11 +180,3 @@ func kill_peer():
 	if Game.upnp!=null:
 		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	Game.players.clear()
-
-func get_player_data(id:int):
-	if id in players:
-		return players[id].name
-	id=id_remaps[id]
-	if id in players:
-		return players[id].name
-	return player_info
