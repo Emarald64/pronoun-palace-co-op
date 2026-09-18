@@ -13,10 +13,15 @@ func set_peer_id(id:int):
 		%PlayerIcon.texture=character_icon_texture
 
 func appear():
-	show()
+	position.y=-70
+	var tween=create_tween()
+	tween.tween_property(self,"position:y",0,.2).set_trans(Tween.TRANS_BACK)
+	await tween.finished
 
 func disappear():
-	hide()
+	var tween=create_tween()
+	tween.tween_property(self,"position:x",135,.2).set_trans(Tween.TRANS_BACK)
+	await tween.finished
 	queue_free()
 
 func set_spell(spell_id:String, description_context:Dictionary):
