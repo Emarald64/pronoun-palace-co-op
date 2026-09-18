@@ -8,7 +8,7 @@ func set_peer_id(id:int):
 		%PlayerIcon.texture=await Bridge.get_avatar(player_info.steam_id)
 	else:
 		#set character icon
-		var character_icon_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres").new()
+		var character_icon_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres")
 		character_icon_texture.set_character(player_info.character)
 		%PlayerIcon.texture=character_icon_texture
 
