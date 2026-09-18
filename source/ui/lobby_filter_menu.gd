@@ -18,5 +18,5 @@ func apply_filters():
 	Steam.addRequestLobbyListDistanceFilter(%Distance.get_selected_id())
 	#var metadata=SaveManager.get_save().get_saved_run(false)
 	if not Input.is_key_pressed(KEY_PAGEDOWN):
-		Steam.addRequestLobbyListStringFilter("seed",run_seed if %CheckSeed.button_pressed else "",Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL)
+		Steam.addRequestLobbyListStringFilter("seed",run_seed if %CheckSeed.button_pressed else " ",Steam.LobbyComparison.LOBBY_COMPARISON_EQUAL)
 	refresh.emit()
