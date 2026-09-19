@@ -365,6 +365,7 @@ func send_spell():
 	var my_pos_in_recivers=potential_spell_recivers.find(multiplayer.get_unique_id())
 	#var spell_reciver=potential_spell_recivers[(my_pos_in_recivers+1)%potential_spell_recivers.size()]
 	var spell_sender=potential_spell_recivers[posmod((my_pos_in_recivers-1),potential_spell_recivers.size())]
+	recived_spell_save.clear()
 	print("sending:",sending_spell_data.id,". requesting from ",spell_sender)
 	ask_send_spell.rpc_id(spell_sender)
 	#recive_spell.rpc_id(spell_reciver,sent_spell)
@@ -375,9 +376,10 @@ func send_spell():
 	await animate_attack()
 	if not recived_spell_save.is_empty():
 		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_save))
+		recived_spell_save.clear()
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
-	get_tree().create_timer(10).timeout.connect(func ():sending_spell_data.clear())
+	get_tree().create_timer(20).timeout.connect(func ():sending_spell_data.clear())
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
 	super(words,_damage,_ending_turn)
 	if next_move=="phone_a_friend_send":
