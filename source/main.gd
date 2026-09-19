@@ -302,6 +302,10 @@ func start_run():
 		spell.reseed(non_sync_rng)
 	if original_id==0:
 		original_id=multiplayer.get_unique_id()
+	
+	# add coop to the steam rich presence
+	Bridge.set_rich_presence_key("character", "(co-op) - "+StringManager.get_string("character/" + player.id + "/title"))
+
 
 func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builder_if_possible: = true) -> void:
 	if not candy_round:
