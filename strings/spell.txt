@@ -17,7 +17,7 @@
 	:banner:
 		Select a player to send a charge to
 	
-	:effect_notifiction:
+	:effect_notification:
 		{:charged_spell_nofication: if spell}{:failed_notification: not spell}
 	
 	:charged_spell_nofication:
@@ -93,7 +93,7 @@
 	:banner_tile:
 		Select a tile to send
 
-	:tags:
+	:flags:
 		removes_word
 	
 	:effect_notification:
