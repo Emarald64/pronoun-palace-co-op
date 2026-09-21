@@ -1,0 +1,3 @@
+:nobody:
+	:spell_swap_notification:
+		swapped your {sent_spell} for {sender}'s {recived_spell}

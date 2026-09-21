@@ -38,7 +38,6 @@ func _init():
 				0:2,
 				2:3,
 				3:4,
-				4:6
 			},
 			next="phone_a_friend_recive"
 		},
@@ -61,17 +60,17 @@ func _init():
 		},
 		phone_a_friend_send={
 			damage={
-				0:2,
-				1:3
+				0:1,
+				1:2,
+				3:3
 			},
 			next="attack_small"
 		},
 		attack_big={
 			damage={
-				0:5,
-				1:6,
-				2:7,
-				4:11
+				0:4,
+				1:5,
+				2:6,
 			},
 			count={
 				0:1,
@@ -85,7 +84,7 @@ func _init():
 				0:2,
 				1:3,
 				2:4,
-				3:6
+				3:5
 			},
 			next="swap_big"
 		},
@@ -318,12 +317,14 @@ func swap_small():
 var sending_spell_data:Dictionary
 signal sending_spell_data_set
 var recived_spell_save:Dictionary
+var sender_id:=0
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
 	#await Game.timeout(randf_range(1,5))
 	print("recived ",swapped_spell.id," from ",multiplayer.get_remote_sender_id())
 	recived_spell_save=swapped_spell
+	sender_id=multiplayer.get_remote_sender_id()
 	recived_spell_data.emit()
 
 @rpc("any_peer")
@@ -337,7 +338,7 @@ func ask_send_spell():
 
 func send_spell():
 	var spells=main.spell_container.player_spells
-	var spell_to_swap
+	var spell_to_swap:PlayerSpell
 	if spells.size()>1:
 		if player.id==Globals.CHARACTERS.CHILD:
 			
@@ -375,7 +376,21 @@ func send_spell():
 	#var new_spell_data=
 	await animate_attack()
 	if not recived_spell_save.is_empty():
-		spell_to_swap.set_spell(Spell.create_from_save(recived_spell_save))
+		var new_spell=Spell.create_from_save(recived_spell_save)
+		var new_notification=load("res://mods/co-op/source/ui/menu/nobody_notification.tscn").instantiate()
+		new_notification.get_node("%Description").text= \
+			StringManager.get_string(
+				"/mod/co-op/enemy/nobody/spell_swap_notification",
+				{
+					sent_spell=spell_to_swap.spell.get_title(),
+					sender=Game.all_player_names[sender_id],
+					recived_spell=new_spell.get_title()
+				}
+			)
+		new_notification.get_node("%SpellIcon").texture=new_spell.get_texture()
+		
+		spell_to_swap.set_spell(new_spell)
+		main.coop_notifications.add_notification(new_notification)
 		recived_spell_save.clear()
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)

@@ -18,7 +18,7 @@ func _use():
 			_end_use()
 			return
 	#var send_targets=Game.players.keys().filter(func (peer_id:int)->bool:return peer_id not in main.dead_players and peer_id!=my_id)
-	main.coop_notifications.add_notification.rpc_id(target_id,id,{word=word_builder.get_words().words[0]})
+	main.coop_notifications.add_spell_notification.rpc_id(target_id,id,{word=word_builder.get_words().words[0]})
 	main.recive_word.rpc_id(target_id,tile_save_datas)
 	await word_builder.word_holder.clear_tiles(Callable(),false)
 	word_builder.update()
@@ -31,8 +31,12 @@ func is_usable():
 	return super.is_usable() and word_builder.can_submit() and word_builder.get_words().sub_lists.size()==1
 
 func post_generate_tooltip(tooltip:GameTooltip):
-	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by dragonslayr15001")
+	var name_group=StringManager.get_string_group("mod/co-op/names")
+	var credit:=""
+	var group=get_string_group()
+	if group.has_string("credit"):
+		credit=group.get_string("credit")
+	tooltip.add_subtooltip(name_group.strings.values().pick_random(),credit)
 	
 
 func do_battle_end_transformation():

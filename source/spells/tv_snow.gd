@@ -10,8 +10,11 @@ func set_status_tooltips():
 	status_tooltips = [TileStatus.FROZEN]
 
 func _use():
-	main.apply_tile_effect.rpc("res://mods/co-op/source/effects/tv_snow_effect.tscn",2)
-	main.coop_notifications.add_notification.rpc(id)
+	main.apply_tile_overlay.rpc(
+		"res://mods/co-op/source/effects/tv_snow_effect.tscn",
+		{amount=2,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
+	)
+	main.coop_notifications.add_spell_notification.rpc(id)
 	_post_use()
 	if charge==0:
 		frame=1
@@ -37,8 +40,12 @@ func load_save_data(save):
 	frame=save.frame
 
 func post_generate_tooltip(tooltip:GameTooltip):
-	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random(),"sprite by joltmix")
+	var name_group=StringManager.get_string_group("mod/co-op/names")
+	var credit:=""
+	var group=get_string_group()
+	if group.has_string("credit"):
+		credit=group.get_string("credit")
+	tooltip.add_subtooltip(name_group.strings.values().pick_random(),credit)
 
 func do_battle_end_transformation():
 	super()

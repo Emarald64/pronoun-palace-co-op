@@ -44,6 +44,13 @@ func _on_button_pressed() -> void:
 		AudioManager.play_sound(Sounds.SPELLS.SPELL_CLICK)
 
 func update_selecting()->void:
-	var selecting_player:bool=Game.main.player.is_selecting(3)
-	$Button.disabled=not selecting_player
-	$HoverHandler.set_disabled(not selecting_player)
+	#var selecting_player:bool=Game.main.player.is_selecting(3)
+	if Game.main.player.is_selecting(3):
+		var selection_valid=Game.player.passes_selection_condition(peer_id)
+		$Button.disabled=not selection_valid
+		$HoverHandler.set_disabled(not selection_valid)
+		modulate=Color.WHITE if selection_valid else Color.GRAY
+	else:
+		$Button.disabled=true
+		$HoverHandler.set_disabled(true)
+		modulate=Color.WHITE

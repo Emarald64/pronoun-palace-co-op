@@ -209,9 +209,9 @@ func blue_box_effect(rng_seed:int):
 	if not valid_spells.is_empty():
 		var spell:Spell=random.pick_random(valid_spells).spell
 		spell.add_charge(1)
-		coop_notifications.add_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX),{spell=spell.get_spell_name()})
+		coop_notifications.add_spell_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX),{spell=spell.get_spell_name()})
 	else:
-		coop_notifications.add_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX))
+		coop_notifications.add_spell_notification(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.BLUE_BOX))
 
 
 #func finish_run(is_victory: = false):
@@ -250,28 +250,32 @@ func queue_tile(tile_data:Dictionary):
 	queued_tile.assign(tile_data)
 	tile_board.update_previews()
 
+const default_tile_parameters={amount=1,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
+
 @rpc("any_peer")
-func apply_status(status,count:=1):
+func apply_status(status,search_parameters:Dictionary={},delay:=0.1):
 	in_coop_spell_animation=true
-	var parameters={amount=count,exclude_effects=[Status.TileStatus.CRIT]}
+	search_parameters.merge(default_tile_parameters)
 	if word_builder.is_submitting:
-		parameters["exlcude_tiles"]=word_builder.tiles
-	var tiles:=tile_board.get_tiles(parameters)
+		search_parameters["in_word"]=false
+	var tiles:=tile_board.get_tiles(search_parameters)
 	for tile in tiles:
 		tile.add_status(status)
 		tile.add_poofcloud(tile.get_poof_color())
-		await Game.timeout(0.1)
+		await Game.timeout(delay)
 	in_coop_spell_animation=false
 
 @rpc("any_peer")
-func apply_tile_effect(path:String,count:=1,delay:=0.1):
+func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1):
 	in_coop_spell_animation=true
 	await tile_board.wait_for_idle()
-	var parameters={amount=count,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
+	search_parameters.merge(default_tile_parameters)
+	#var parameters={amount=count,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
 	if word_builder.is_submitting:
-		parameters["exlcude_tiles"]=word_builder.tiles
-	var tiles:=tile_board.get_tiles(parameters)
-	var effect=load(path)
+		search_parameters["in_word"]=false
+	print(search_parameters)
+	var tiles:=tile_board.get_tiles(search_parameters)
+	var effect:PackedScene=load(path)
 	for tile in tiles:
 		tile.add_child(effect.instantiate())
 		await Game.timeout(delay)
