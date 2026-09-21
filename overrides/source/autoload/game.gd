@@ -79,22 +79,26 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 		]
 		
 		var tiles_to_remove:Array[Vector2i]=[]
-		if "enemy" in local_save.data:
-			if local_save.data.enemy.id==Enemies.BRUTALIST and ("enemy" not in host_save.data or host_save.data.enemy.id!=Enemies.BRUTALIST):
+		if "enemy" in local_save.data and ("enemy" not in host_save.data or local_save.data.enemy.id!=host_save.data.enemy.id):
+			# on diffrent enemy
+			if local_save.data.enemy.id==Enemies.BRUTALIST:
 				for coord in local_save.data.board.tiles:
 					var tile_save=local_save.data.board.tiles[coord]
 					if "statuses" in tile_save:
 						if tile_save.type==Globals.TileType.DEFENSE:
 							tile_save.statuses.erase(Globals.TileStatus.ENHANCED)
 						tile_save.statuses.erase(Globals.TileStatus.LINKED)
-			elif local_save.data.enemy.id==Enemies.RECEIVER and ("enemy" not in host_save.data or host_save.data.enemy.id!=Enemies.RECEIVER) \
-			and local_save.data.enemy.save.saved_board!=null:
+			elif local_save.data.enemy.id==Enemies.RECEIVER and local_save.data.enemy.save.saved_board!=null:
 				local_save.data.board.merge(local_save.data.enemy.save.saved_board,true)
-			elif local_save.data.enemy.id in [Enemies.PARADIGM,Enemies.COPYCAT] and ("enemy" not in host_save.data or host_save.data.enemy.id not in [Enemies.PARADIGM,Enemies.COPYCAT]):
-				for coord in local_save.data.board.tiles:
-					var tile_save=local_save.data.board.tiles[coord]
-					if "statuses" in tile_save and Globals.TileStatus.BOMB in tile_save.statuses:
-						tiles_to_remove.append(coord)
+			#elif "enemy" in host_save.data and host_save.data.enemy.id==Enemies.RECEIVER:
+				#host_save.data.enemy.save.saved_board=local_save.data.board
+			for coord in local_save.data.board.tiles:
+				var tile_save=local_save.data.board.tiles[coord]
+				if "statuses" in tile_save and (
+					(Globals.TileStatus.BOMB in tile_save.statuses and local_save.data.enemy.id in [Enemies.PARADIGM,Enemies.COPYCAT])
+					or Globals.TileStatus.ETERNAL in tile_save.statuses
+				):
+					tiles_to_remove.append(coord)
 		
 		if local_save.data.run_stats.turns_taken!=host_save.data.run_stats.turns_taken:
 			#difrent turn remove tiles which are removed at the end of the turn
@@ -113,8 +117,8 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 		host_save.metadata.character=local_save.metadata.character
 		local_save.metadata=host_save.metadata
 		local_save.data.board.lock_amount=host_save.data.board.lock_amount
+		host_save.data.board.size.erase("restock_depth")
 		local_save.data.board.size=host_save.data.board.size
-		local_save.data.board.size.erase("restock_depth")
 		for key in COPPIED_DATA:
 			if key in host_save.data:
 				local_save.data[key]=host_save.data[key]
