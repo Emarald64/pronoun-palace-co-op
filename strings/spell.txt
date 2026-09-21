@@ -67,6 +67,9 @@
 	
 	:effect_notification:
 		sent you {word}.
+	
+	:credit:
+		Sprite by dragonslayr15001
 
 :postage_stamp:
 	:name:
@@ -157,3 +160,67 @@
 	
 	:effect_notification:
 		froze 2 of your tiles.
+	
+	:credit:
+		Sprite by joltmix
+
+:minute_of_hate:
+	:name:
+		Minute of HATE
+
+	:description:
+		Convert a plastic tile on all players' board to concrete.
+		Always picks the wrong tile.
+
+	:label:
+		Concrete for all
+
+	:charge_category:
+		common
+
+	:max_charge:
+		3
+	
+	:effect_notification:
+		made one of your tiles concrete.
+
+:ssn_printer:
+	:name:
+		SSN Printer
+	
+	:label:
+		Make SSN
+	
+	:description:
+		Transform this spell into the ssn of a selected player.
+	
+	:charge_category:
+		rare
+	
+	:max_charge:
+		1
+	
+	:banned_curses:
+		laced fragile
+	
+	:banner:
+		Select a player to copy the SSN of
+	
+:printed_ssn:
+	:name:
+		{:spell/ssn/name:}
+
+	:description:
+		{:spell/ssn/description:}
+		
+		Transforms back to the {ssn_printer/name} after all the charges are used.
+
+	:label:
+		{:spell/ssn/label:}
+
+	:charge_category:
+		limited
+
+	:max_charge:
+		{:spell/ssn/max_charge:}
+	

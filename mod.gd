@@ -26,7 +26,9 @@ const SPELLS:Dictionary[StringName,String]={
 	REMOTE_OBJECT="remote_object",
 	TV_SNOW="tv_snow",
 	GIFT_COOP="gift_coop",
-	MIRACLE_CACHE_COOP="miracle_cache_coop"
+	MIRACLE_CACHE_COOP="miracle_cache_coop",
+	SSN_PRINTER="ssn_printer",
+	PRINTED_SSN="printed_ssn"
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
@@ -34,7 +36,8 @@ const SPELL_WEIGHTS:Dictionary[String,float]={
 	SPELLS.POSTAGE_STAMP:2.5,
 	SPELLS.BLUE_BOX:1.5,
 	SPELLS.REMOTE_OBJECT:2.0,
-	SPELLS.TV_SNOW:2.0
+	SPELLS.TV_SNOW:2.0,
+	SPELLS.SSN_PRINTER:2.0
 }
 
 const SPELL_CATAGORIES={
@@ -182,3 +185,13 @@ func load_run_save_data(data: Dictionary) -> void:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
+
+const BANNED_CURSES_SPELL_DATA=[
+	SPELLS.SSN_PRINTER
+]
+
+func get_spell_data(spell_id: String) -> SpellData:
+	if spell_id in BANNED_CURSES_SPELL_DATA:
+		return SpellDataBannedCurses.new()
+	else:
+		return super(spell_id)

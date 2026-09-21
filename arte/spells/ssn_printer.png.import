@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ovluua21g52x"
-path="res://.godot/imported/character_icons.png-bd734e6d55becb35b0e7e69182c338b2.ctex"
+uid="uid://kgqmpfh1coof"
+path="res://.godot/imported/ssn_printer.png-7390e7739b47d5410d2b0e42ec8a6082.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/co-op/overrides/arte/ui/character_icons.png"
-dest_files=["res://.godot/imported/character_icons.png-bd734e6d55becb35b0e7e69182c338b2.ctex"]
+source_file="res://mods/co-op/arte/spells/ssn_printer.png"
+dest_files=["res://.godot/imported/ssn_printer.png-7390e7739b47d5410d2b0e42ec8a6082.ctex"]
 
 [params]
 
