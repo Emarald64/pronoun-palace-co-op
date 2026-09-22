@@ -24,10 +24,11 @@ func _on_start_appearing()->void:
 		Steam.setLobbyMemberData(Game.steam_lobby_id,"character",Game.player_info.character)
 
 func add_player(id:int,player_info:Dictionary)->void:
-	var block=lobby_player_scene.instantiate()
-	block.set_player_info(player_info)
-	%Players.add_child(block)
-	player_blocks[id]=block
+	if id not in player_blocks:
+		var block=lobby_player_scene.instantiate()
+		block.set_player_info(player_info)
+		%Players.add_child(block)
+		player_blocks[id]=block
 
 func remove_player(id:int)->void:
 	var block=player_blocks[id]
