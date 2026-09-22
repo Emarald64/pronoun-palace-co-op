@@ -4,7 +4,7 @@ extends Mod
 var character_select
 var host_name:LineEdit
 const AUTHOR="Xanderath"
-const COOP_VERSION="1.1.6 - 9/17"
+const COOP_VERSION="1.1.7beta1 - 9/21"
 var version_number:String
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
@@ -34,11 +34,12 @@ const SPELLS:Dictionary[StringName,String]={
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
 	SPELLS.PARTY_TELEPHONE:1.5,
-	SPELLS.POSTAGE_STAMP:2.5,
+	SPELLS.POSTAGE_STAMP:2.0,
 	SPELLS.BLUE_BOX:1.5,
 	SPELLS.REMOTE_OBJECT:2.0,
 	SPELLS.TV_SNOW:2.0,
-	SPELLS.SSN_PRINTER:2.0
+	SPELLS.SSN_PRINTER:3.0,
+	SPELLS.MINUTE_OF_HATE:2.5,
 }
 
 const SPELL_CATAGORIES={
