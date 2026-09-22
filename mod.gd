@@ -27,6 +27,7 @@ const SPELLS:Dictionary[StringName,String]={
 	TV_SNOW="tv_snow",
 	GIFT_COOP="gift_coop",
 	MIRACLE_CACHE_COOP="miracle_cache_coop",
+	MINUTE_OF_HATE="minute_of_hate",
 	SSN_PRINTER="ssn_printer",
 	PRINTED_SSN="printed_ssn"
 }

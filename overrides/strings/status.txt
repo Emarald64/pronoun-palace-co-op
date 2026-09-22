@@ -10,3 +10,11 @@
 		Approved by the Bureau of Information.
 	:illegal:
 		The party has been notified of your possession of this contraband and will take swift action to conatin it.
+
+:timed:
+	:name:
+		Timed
+	:description:
+		Will {"explode" if bomb}{"be removed" not bomb} in {time} seconds
+	:flags:
+		shared

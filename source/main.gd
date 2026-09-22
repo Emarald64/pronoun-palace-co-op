@@ -266,18 +266,20 @@ func apply_status(status,search_parameters:Dictionary={},delay:=0.1):
 	in_coop_spell_animation=false
 
 @rpc("any_peer")
-func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1):
+func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1,overlay_parameters=null):
 	in_coop_spell_animation=true
 	await tile_board.wait_for_idle()
 	search_parameters.merge(default_tile_parameters)
 	#var parameters={amount=count,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
 	if word_builder.is_submitting:
 		search_parameters["in_word"]=false
-	print(search_parameters)
 	var tiles:=tile_board.get_tiles(search_parameters)
-	var effect:PackedScene=load(path)
+	var effect_scene:PackedScene=load(path)
 	for tile in tiles:
-		tile.add_child(effect.instantiate())
+		var effect=effect_scene.instantiate()
+		if effect.has_method("set_parameters"):
+			effect.set_parameters(overlay_parameters)
+		tile.add_child(effect)
 		await Game.timeout(delay)
 	in_coop_spell_animation=false
 

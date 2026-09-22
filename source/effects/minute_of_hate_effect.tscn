@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ciqqmyh2cs406"]
+
+[ext_resource type="Script" uid="uid://dbtfpo4kjt4qg" path="res://mods/co-op/source/effects/minute_of_hate_effect.gd" id="1_73f47"]
+
+[node name="MinuteOfHateEffect" type="Node" unique_id=32623575]
+script = ExtResource("1_73f47")

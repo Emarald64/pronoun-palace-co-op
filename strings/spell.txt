@@ -140,7 +140,13 @@
 		Select a spell to swap
 
 	:effect_notification:
+		{:took_spell_notification: if spell}{:failed_notification: if failed}
+	
+	:took_spell_notification:
 		took your {spell}.
+	
+	:failed_notification:
+		Failed to get the other player's spells.
 
 :tv_snow:
 	:name:
@@ -169,30 +175,30 @@
 		Minute of HATE
 
 	:description:
-		Convert a plastic tile on all players' board to concrete.
-		Always picks the wrong tile.
+		Convert a tile on all players' board to a Timed Bomb {letter} with a 1-turn fuse.
+		Letter changes after every turn.
 
 	:label:
-		Concrete for all
+		Timed bomb {letter} for all
 
 	:charge_category:
-		common
+		rare
 
 	:max_charge:
-		3
+		1
 	
 	:effect_notification:
 		made one of your tiles concrete.
 
 :ssn_printer:
 	:name:
-		SSN Printer
+		Card Printer
 	
 	:label:
 		Make SSN
 	
 	:description:
-		Transform this spell into the ssn of a selected player.
+		Transform this spell into the SSN of a selected player.
 	
 	:charge_category:
 		rare
@@ -208,7 +214,7 @@
 	
 :printed_ssn:
 	:name:
-		{:spell/ssn/name:}
+		Counterfit {:spell/ssn/name:}
 
 	:description:
 		{:spell/ssn/description:}
