@@ -218,7 +218,8 @@ func get_repeat_word(word_list: WordList) -> String:
 				return word
 	for word in word_list.words:
 		for id in others_submitted_words:
-			if word in others_submitted_words[id]:
+			if word in others_submitted_words[id] \
+			and (main.enemy==null or main.enemy.id!=Enemies.HOUSEBROKEN or word!=main.enemy.passcode):
 				return word
 	
 	return ""
