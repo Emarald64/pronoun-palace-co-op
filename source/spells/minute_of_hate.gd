@@ -4,7 +4,7 @@ var letter:=""
 
 func set_status_tooltips():
 	#status_tooltips = [{status = TileStatus.ENHANCED, plastic = true}]
-	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1}]
+	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=60, bomb=true}]
 
 
 func _use_old():
@@ -33,7 +33,8 @@ func _use_old():
 
 func _use():
 	main.apply_tile_overlay.rpc("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
-	main.apply_tile_overlay("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
+	main.coop_notifications.add_spell_notification(id,{letter=letter})
+	await main.apply_tile_overlay("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
 
 	_post_use()
 

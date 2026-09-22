@@ -175,11 +175,11 @@
 		Minute of HATE
 
 	:description:
-		Convert a tile on all players' board to a Timed Bomb {letter} with a 1-turn fuse.
+		Convert a tile on all players' board to a Timed Bomb {letter upper} with a 1-turn fuse.
 		Letter changes after every turn.
 
 	:label:
-		Timed bomb {letter} for all
+		Timed bomb {letter upper} for all
 
 	:charge_category:
 		rare
@@ -188,7 +188,7 @@
 		1
 	
 	:effect_notification:
-		made one of your tiles concrete.
+		made one of your tiles a timed bomb {letter upper}.
 
 :ssn_printer:
 	:name:
