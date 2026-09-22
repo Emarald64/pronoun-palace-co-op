@@ -3,19 +3,20 @@ extends SSNSpell
 var steam_id:=0
 
 ## Charge character for when the spell transforms back into the printer
-var printer_charge_character:="?"
+var printer_charge_character:=""
 
 func _use():
 	await super()
 	if charge==0:
 		# transform back into the printer
-		var printer=transform_spell("co-op:ssn_printer",true,true,true,false,true,
+		var printer=transform_spell(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.SSN_PRINTER),true,true,true,false,true,
 		func (ssn_printer:Spell):
 			ssn_printer.last_ssn=steam_id
 			ssn_printer.frame=frame
 		)
-		printer.charge_character=printer_charge_character
-		charge_container.update_charge_character(false)
+		if not printer_charge_character.is_empty():
+			printer.charge_character=printer_charge_character
+			charge_container.update_charge_character(false)
 
 func _first_spawn(is_transform: = false) -> void:
 	_setup_ssn(steam_id)

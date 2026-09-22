@@ -2,14 +2,14 @@ extends Main
 
 var dead_players:Array[int]=[]
 var players_compleated_floor:Array[int]=[]
-var allow_set_spells:=false
+var using_remote_object:=false
 var original_id:=0
 var strawman_taps:Dictionary[int,int]
 #var waiting_to_be_revived:=false
 signal all_players_compleated_floor
 #signal stop_dieing
 signal player_died(id:int)
-signal peer_set_spells
+signal peer_set_spells(success:bool)
 
 var reviving:=false
 var candy_round:=false
@@ -223,11 +223,19 @@ func is_game_actionable(include_spell_select: = false, include_summary_continue:
 
 @rpc("any_peer")
 func request_set_spells():
-	set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
+	if using_remote_object:
+		push_warning(Game.players[multiplayer.get_remote_sender_id()]," tried to use remote object on me while I was already using it")
+		set_spells([],false)
+	else:
+		set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
 
 @rpc("any_peer")
-func set_spells(spells:Array):
-	if allow_set_spells:
+func set_spells(spells:Array,success:=true):
+	if not success:
+		peer_set_spells.emit(false)
+		push_warning("tried to use remote object while the ",Game.players[multiplayer.get_remote_sender_id()]," was using remote object")
+		return
+	if using_remote_object:
 		for player_spell in spell_container.player_spells:
 			player_spell.queue_free()
 		spell_container.player_spells.clear()
@@ -235,7 +243,7 @@ func set_spells(spells:Array):
 		spell_container.load_save_data(spells)
 		for player_spell in spell_container.player_spells:
 			player_spell.spell_paper.gain()
-		peer_set_spells.emit()
+		peer_set_spells.emit(true)
 
 @rpc("any_peer")
 func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index=null):

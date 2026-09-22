@@ -33,6 +33,17 @@ func get_hv_frames() -> Vector2i:
 func get_frame() -> int:
 	return frame
 
+func get_save_data():
+	var save=super()
+	save.last_ssn=last_ssn
+	save.frame=frame
+	return save
+
+func load_save_data(save):
+	super(save)
+	last_ssn=save.last_ssn
+	frame=save.frame
+
 func post_generate_tooltip(tooltip:GameTooltip):
 	var name_group=StringManager.get_string_group("mod/co-op/names")
 	var credit:=""

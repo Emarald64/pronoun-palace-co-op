@@ -12,12 +12,15 @@ func _use():
 		_end_use()
 		return
 	
-	main.allow_set_spells=true
+	main.using_remote_object=true
 	main.request_set_spells.rpc_id(peer_id)
-	var timeout_result=await wait_with_timeout(main.peer_set_spells)
-	main.allow_set_spells=false
+	player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
+	var timeout_result=main.peer_set_spells
+	#main.allow_set_spells=false
 	if not timeout_result:
-		push_warning("remote object request set spells timed out")
+		main.coop_notification.add_spell_notification(id,{failed=true})
+		push_warning("remote object request set spells failed")
+		main.using_remote_object=false
 		_end_use()
 		return
 	
@@ -31,6 +34,7 @@ func _use():
 	if new_spell == null:
 		remove_all_player_spells()
 		spell_container.load_save_data(old_spells_save_data)
+		main.using_remote_object=false
 		_end_use()
 		return
 		
@@ -48,6 +52,7 @@ func _use():
 	main.coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	remove_all_player_spells()
 	spell_container.load_save_data(old_spells_save_data)
+	main.using_remote_object=false
 	_end_use()
 
 func wait_with_timeout(sig:Signal,timeout:=5.0)->bool:
