@@ -4,8 +4,16 @@
 [ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/source/ui/create_server_menu.gd" id="2_i4ivu"]
 [ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_kvote"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="4_xb03o"]
+[ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="5_nywm6"]
+[ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="6_dveqe"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_a6585"]
+
+[sub_resource type="Resource" id="Resource_aecc4"]
+script = ExtResource("6_dveqe")
+groups = PackedStringArray("UI")
+sound = "UI/CHAR_SELECT"
+metadata/_custom_type_script = "uid://c17dcnicbtc1a"
 
 [node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_y0u7g")]
 theme = ExtResource("2_kvote")
@@ -30,7 +38,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
-scroll_hint_mode = 3
+vertical_scroll_mode = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=891331376]
 layout_mode = 2
@@ -100,6 +108,7 @@ text = "Steam"
 
 [node name="IPSettings" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4" unique_id=1629222056]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings" index="0" unique_id=1978642974]
@@ -181,31 +190,46 @@ layout_mode = 2
 
 [node name="SteamSettings" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5" unique_id=885009588]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=1888688161]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="0" unique_id=38857167]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=38857167]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 script = ExtResource("4_xb03o")
 key = "/mod/co-op/menu/visibility"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="LobbyType" type="OptionButton" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/HBoxContainer" index="1" unique_id=295512445]
+[node name="VisibilitySelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="1" unique_id=1130161940 instance=ExtResource("5_nywm6")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-selected = 1
-item_count = 3
-popup/item_0/text = "Private"
-popup/item_0/id = 0
-popup/item_1/text = "Friends Only"
-popup/item_1/id = 1
-popup/item_2/text = "Public"
-popup/item_2/id = 2
+size_flags_horizontal = 4
+selection_sound = SubResource("Resource_aecc4")
+
+[node name="IconContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector" index="1" unique_id=1136885849]
+custom_minimum_size = Vector2(120, 0)
+alignment = 1
+
+[node name="LobbyTypeHeader" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="2" unique_id=641234611]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+horizontal_alignment = 1
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/lobby_type/friends_only/name"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
+
+[node name="LobbyTypeDescription" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="3" unique_id=1835884942]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+theme_type_variation = &"MainMenuLabel"
+theme_override_constants/line_spacing = 1
+theme_override_constants/paragraph_spacing = -2
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+script = ExtResource("4_xb03o")
+key = "/mod/co-op/menu/lobby_type/friends_only/description"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1806416797]
 layout_mode = 2
@@ -215,4 +239,7 @@ text = "Host"
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod/Steam" to="." method="select_steam"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option/CheckBox" to="." method="enable_upnp"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer/ShowIPButton" to="." method="show_ip"]
+[connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector" to="." method="_on_visibility_selector_selected"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="host_pressed"]
+
+[editable path="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector"]

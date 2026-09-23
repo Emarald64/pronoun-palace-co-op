@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bkp40yluout07"]
+
+[ext_resource type="Script" uid="uid://0ahm6geseodf" path="res://mods/co-op/source/ui/menu/host/visibility_selector_icon.gd" id="1_v7t7h"]
+[ext_resource type="Texture2D" uid="uid://bpdtxhrldoo3l" path="res://mods/co-op/arte/ui/visibilty_selector_icons.png" id="2_ao3we"]
+[ext_resource type="PackedScene" uid="uid://dat3nkol372xh" path="res://source/ui/menu/generic/menu_page_shadow.tscn" id="4_yfjvp"]
+[ext_resource type="Script" uid="uid://7xvadspst3p5" path="res://source/ui/generic/hover_handler.gd" id="5_ltb8d"]
+
+[node name="VisibilitySelectorIcon" type="Control" unique_id=133060176]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 32.0
+script = ExtResource("1_v7t7h")
+metadata/_custom_type_script = "uid://dsaiijecg4puu"
+
+[node name="HoverOffset" type="Node2D" parent="." unique_id=371731686]
+
+[node name="VisibilityIcon" type="Sprite2D" parent="HoverOffset" unique_id=2113245484]
+unique_name_in_owner = true
+texture = ExtResource("2_ao3we")
+centered = false
+hframes = 3
+frame = 1
+
+[node name="ShadowCloner" parent="HoverOffset/VisibilityIcon" unique_id=255702735 node_paths=PackedStringArray("clone_offset") instance=ExtResource("4_yfjvp")]
+position = Vector2(2, 2)
+clone_offset = NodePath("../..")
+
+[node name="HoverHandler" type="Node2D" parent="." unique_id=1333618184 node_paths=PackedStringArray("hovering", "source")]
+unique_name_in_owner = true
+script = ExtResource("5_ltb8d")
+hovering = NodePath("../HoverOffset")
+source = NodePath("../Button")
+hovered_position = Vector2(0, -2)
+pressed_position = Vector2(0, -1)
+metadata/_custom_type_script = "uid://7xvadspst3p5"
+
+[node name="Button" type="Button" parent="." unique_id=239442317]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

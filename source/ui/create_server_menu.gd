@@ -3,18 +3,40 @@ extends MenuPanel
 @export var lobby:MenuPanel
 var continuing_game:=false
 var steam_networking:=false
+var created_icons:=false
 #var upnp:UPNP
+const lobby_type_order=[
+	Steam.LOBBY_TYPE_PRIVATE,
+	Steam.LOBBY_TYPE_FRIENDS_ONLY,
+	Steam.LOBBY_TYPE_PUBLIC,
+]
+const lobby_type_key:Dictionary[Steam.LobbyType,String]={
+	Steam.LOBBY_TYPE_PRIVATE:"private",
+	Steam.LOBBY_TYPE_FRIENDS_ONLY:"friends_only",
+	Steam.LOBBY_TYPE_PUBLIC:"public",
+}
+
+var visibility_selector_icon_scene:PackedScene=load("res://mods/co-op/source/ui/menu/host/visibility_selector_icon.tscn")
 
 func _ready() -> void:
 	start_appearing.connect(_on_start_appearing)
 
 func _on_start_appearing():
 	%Steam.disabled=not Bridge.steam_initialized
+	if Bridge.steam_initialized and not created_icons:
+		var icons:Array[SelectorIcon]=[]
+		for lobby_type in lobby_type_order:
+			var icon=visibility_selector_icon_scene.instantiate()
+			icon.set_lobby_type(lobby_type)
+			icons.append(icon)
+		%VisibilitySelector.set_icons(icons)
+		%VisibilitySelector.selected_index=1
+		created_icons=true
 
 func host_pressed():
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
 	if steam_networking:
-		Steam.createLobby(%LobbyType.get_selected_id(),%MaxPlayers.value)
+		Steam.createLobby(%VisibilitySelector.get_selected_icon().lobby_type,%MaxPlayers.value)
 		var responce=await Steam.lobby_created
 		if responce[0]==Steam.Result.RESULT_OK:
 			Game.steam_lobby_id=responce[1]
@@ -93,3 +115,10 @@ func select_ip():
 	steam_networking=false
 	%IPSettings.show()
 	%SteamSettings.hide()
+
+func _on_visibility_selector_selected(icon:SelectorIcon):
+	select_lobby_type(icon.lobby_type)
+
+func select_lobby_type(type:Steam.LobbyType):
+	%LobbyTypeHeader.key="/mod/co-op/menu/lobby_type/%s/name"%lobby_type_key[type]
+	%LobbyTypeDescription.key="/mod/co-op/menu/lobby_type/%s/description"%lobby_type_key[type]

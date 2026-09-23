@@ -15,7 +15,7 @@
 :port:
 	Port
 :visibility:
-	Visibility
+	Visibility:
 :connect:
 	Connect
 :refresh:
@@ -26,3 +26,20 @@
 	Distance
 :rejoin_game:
 	Rejoin Game
+:lobby_type:
+	:private:
+		:name:
+			Private
+		:description:
+			Only joinable by people you invite.
+	:friends_only:
+		:name:
+			Friends Only
+		:description:
+			Only your friends can join.
+			Won't be visible in the lobby search.
+	:public:
+		:name:
+			Public
+		:description:
+			Anyone can join. Visible in the lobby search.
