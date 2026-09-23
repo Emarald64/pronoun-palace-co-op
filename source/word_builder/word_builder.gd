@@ -29,13 +29,13 @@ func _ready() -> void:
 	finished_updating_stats.connect(_on_finished_updating_stats)
 
 @rpc("any_peer")
-func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int,words:PackedStringArray=[]):
+func peer_submitted_word(peer_damage:int,peer_defense:int,valid:bool,health:int,words:PackedStringArray,peer_bruise:int):
 	others_queued_words[multiplayer.get_remote_sender_id()]=words
-	peer_stats_updated(peer_damage,peer_defense,valid,true,health)
+	peer_stats_updated(peer_damage,peer_defense,valid,true,health,peer_bruise)
 	
 
 @rpc("any_peer","unreliable_ordered")
-func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool,health:int):
+func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bool,health:int,peer_bruise:int):
 	var id=multiplayer.get_remote_sender_id()
 	var attack_info={
 		damage=peer_damage,
@@ -43,6 +43,7 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 		valid=valid,
 		submitted=submitted,
 		health=health,
+		bruise=peer_bruise,
 		}
 	if submitted or log_all_damage_updates:
 		print("attack: ",id,attack_info)
@@ -115,7 +116,7 @@ func update_total_damage_counter():
 	total_attack_label.text=str(total_damage)
 
 func send_attack_and_wait(reroll:bool=false)->void:
-	peer_submitted_word.rpc(get_attack_value(),defense,not reroll,player.health,words_list.words)
+	peer_submitted_word.rpc(get_attack_value(),defense,not reroll,player.health,words_list.words,bruise)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
@@ -151,24 +152,24 @@ func send_attack_and_wait(reroll:bool=false)->void:
 				others_submitted_words[id]=others_queued_words[id]
 
 			if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
-				bite_healing+=enemy.moves.bite.damage-peer_attack.defense
+				bite_healing+=enemy.moves.bite.damage-peer_attack.defense+peer_attack.bruise
 			damage_indecators[id].hide()
-	if bite_healing>0 and damage<enemy.health:
-		enemy.heal(bite_healing)
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
 	total_attack_container.hide()
 	others_queued_words.clear()
 	submitted_count=0
-	if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
-		#Beat the shit out of Nobody when killing her
-		for i in mini(8,Game.players.size()-main.dead_players.size()-1):
-			await player.attack(enemy,damage)
+	#if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
+		##Beat the shit out of Nobody when killing her
+		#for i in mini(8,Game.players.size()-main.dead_players.size()-1):
+			#await player.attack(enemy,damage)
 	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		var health_scaling=main.enemy._get_health_scaling()
 		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	if reroll:
 		await player.attack(enemy,damage)
+	if bite_healing>0 and damage<enemy.health:
+		enemy.heal(bite_healing)
 
 func submit_word() -> void :
 	if not main.candy_round:
@@ -204,9 +205,9 @@ func get_attack_value()->int:
 @rpc("any_peer")
 func resend_submitted():
 	if waiting_for_peers_to_submit:
-		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),player.health,words_list.words)
+		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),player.health,words_list.words,bruise)
 	else:
-		peer_stats_updated.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),false,player.health)
+		peer_stats_updated.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),false,player.health,bruise)
 
 func get_repeat_word(word_list: WordList) -> String:
 	var own_repeat_word=super(word_list)
@@ -263,7 +264,7 @@ func update_stats() -> void :
 			heighest_candy_round_value=self_heal
 			heighest_cany_round_tiles=tiles.filter(func (tile:Tile)->bool:return TileStatus.CANDY in tile.statuses)
 	else:
-		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health)
+		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health,bruise)
 		update_total_damage_counter()
 
 func _on_finished_updating_stats(_words):

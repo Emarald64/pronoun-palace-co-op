@@ -337,11 +337,10 @@ func ask_send_spell():
 
 
 func send_spell():
-	var spells=main.spell_container.player_spells
+	var spells=main.spell_container.player_spells.duplicate()
 	var spell_to_swap:PlayerSpell
 	if spells.size()>1:
 		if player.id==Globals.CHARACTERS.CHILD:
-			spells=spells.duplicate()
 			var defense_spell=null
 			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
 			for spell:PlayerSpell in spells:
@@ -433,6 +432,7 @@ func phone_a_friend_send():
 			tile_copy.impacted.connect(_on_projectile_impacted)
 			tile_copy.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 			await Game.timeout(.16)
+		tile_copies.clear()
 		await all_projectiles_impacted
 
 	if last_move_tiles.size()<moves.phone_a_friend_recive.cursed_num:
@@ -613,10 +613,9 @@ func attack_check_for_missing_partner():
 		next_move_override="solo_a"
 
 func flinch_lethal(amount: int):
-	var player_id=player.id
-	player.id=Globals.CHARACTERS.LEXICOGRAPHER
 	super(amount)
-	player.id=player_id
+	for tile_copy in tile_copies:
+		tile_copy.queue_free()
 
 func _on_finished_updating_stats(_words):
 	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and next_move=="solo_c":
