@@ -17,8 +17,12 @@ func _status_connect():
 	
 	tile.tile_sprite.add_child(timer_label)
 	timer_label.position=Vector2(-11,2.125)
-	tile.updated.connect(update_timer_color)
+	tile.updated.connect(_on_tile_updated)
 	#timer.stopped.connect(_on_timer_stopped)
+
+func _on_tile_updated():
+	update_timer_color()
+	update_label()
 
 func update_timer_color():
 	var set_color:=false
@@ -30,6 +34,10 @@ func update_timer_color():
 		for status in tile.statuses:
 			if status in Globals.TILE_VALUE_COLOR:
 				timer_label.color=Globals.TILE_VALUE_COLOR[status][tile.type]
+				set_color=true
+	
+	if not set_color:
+		timer_label.color=Color.BLACK
 	
 	timer_label.deboss_color=tile.get_deboss_color()
 
@@ -43,7 +51,7 @@ func apply(time:=60000):
 	update_label()
 
 func _process(_delta:float):
-	if timer.is_running():
+	if timer.is_running() and not tile.is_indestructible():
 		update_label()
 		#print(timer.get_elapsed_time()," ", time_left)
 		if time_left>0 and timer.get_remaining_time(time_left)<=0:
@@ -51,7 +59,10 @@ func _process(_delta:float):
 			time_out()
 
 func update_label():
-	timer_label.text=str(timer.get_remaining_time(time_left)/1000)
+	if tile.is_indestructible():
+		timer_label.text="∞"
+	else:
+		timer_label.text=str(timer.get_remaining_time(time_left)/1000)
 
 func time_out():
 	if tile.is_preview or tile.is_projectile:
@@ -68,7 +79,7 @@ func _on_timer_stopped(elapsed_time:int):
 	time_left-=elapsed_time
 
 func get_tooltip_context():
-	return {time=time_left/1000,bomb=tile.has_status(TileStatus.BOMB)}
+	return {time=timer.get_remaining_time(time_left)/1000,bomb=tile.has_status(TileStatus.BOMB)}
 
 func get_save_data() -> Variant:
 	return timer.get_remaining_time(time_left)
