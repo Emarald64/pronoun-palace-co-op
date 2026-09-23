@@ -219,7 +219,7 @@
 	:description:
 		{:spell/ssn/description:}
 		
-		Transforms back to the {ssn_printer/name} after all the charges are used.
+		Transforms back to the {:ssn_printer/name:} after all the charges are used.
 
 	:label:
 		{:spell/ssn/label:}
