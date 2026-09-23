@@ -341,7 +341,7 @@ func send_spell():
 	var spell_to_swap:PlayerSpell
 	if spells.size()>1:
 		if player.id==Globals.CHARACTERS.CHILD:
-			
+			spells=spells.duplicate()
 			var defense_spell=null
 			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
 			for spell:PlayerSpell in spells:
@@ -472,19 +472,31 @@ func phone_a_friend_recive():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
-	for i in recived_phone_a_friend_data.size():
-		var cord=Vector2i(i%5,3-(i/5))
-		var tile=tile_board.create_tile()
-		main.add_child(tile)
-		tile.load_save_data(recived_phone_a_friend_data[i])
-		#if tile in cursed_tiles:
-			#tile.add_status(Globals.TileStatus.CURSED)
-		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
-		tile.impacted.connect(_on_projectile_impacted)
-		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-		await Game.timeout(0.16)
-	recived_phone_a_friend_data.clear()
-	await all_projectiles_impacted
+	if recived_phone_a_friend_data.is_empty():
+		#var tile_to_curse=get_tiles({
+			#amount = moves.phone_a_friend_recive.cursed_num, 
+			#effect_priority = EFFECT_PRIORITY.STATUS_ONLY, 
+		#})
+		#for tile in tile_to_curse:
+			#tile.add_status(TileStatus.CURSED)
+			#tile.add_poofcloud(tile.get_color())
+			#await Game.timeout(.1)
+		pass
+	else:
+		for i in recived_phone_a_friend_data.size():
+			var cord=Vector2i(i%5,3-(i/5))
+			var tile=tile_board.create_tile()
+			main.add_child(tile)
+			tile.load_save_data(recived_phone_a_friend_data[i])
+			#if tile in cursed_tiles:
+				#tile.add_status(Globals.TileStatus.CURSED)
+			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
+			tile.impacted.connect(_on_projectile_impacted)
+			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
+			await Game.timeout(0.16)
+		recived_phone_a_friend_data.clear()
+		await all_projectiles_impacted
+	await Game.tile_board.settle_board()
 	await wait_for_idle()
 
 static func get_effect_priority(tile_effects,priority_list: Array=Globals.EFFECT_PRIORITY.ENEMY.STATUS_ONLY) -> int:
@@ -558,6 +570,7 @@ func solo_b():
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
 			await Game.timeout(0.16)
 		await all_projectiles_impacted
+		await Game.tile_board.settle_board()
 	damage_taken=0
 	await wait_for_idle()
 
