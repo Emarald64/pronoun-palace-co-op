@@ -1,8 +1,11 @@
 class_name CoOp
 extends Mod
 
-var character_select
-var host_name:LineEdit
+#var character_select
+#var host_name:LineEdit
+const ID="co-op"
+const id=ID
+const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.1.7beta2 - 9/23"
 var version_number:String
@@ -20,16 +23,16 @@ const intent_icons:Dictionary[String,String]={
 }
 
 const SPELLS:Dictionary[StringName,String]={
-	PARTY_TELEPHONE="party_telephone",
-	POSTAGE_STAMP="postage_stamp",
-	BLUE_BOX="blue_box",
-	REMOTE_OBJECT="remote_object",
-	TV_SNOW="tv_snow",
-	GIFT_COOP="gift_coop",
-	MIRACLE_CACHE_COOP="miracle_cache_coop",
-	MINUTE_OF_HATE="minute_of_hate",
-	SSN_PRINTER="ssn_printer",
-	PRINTED_SSN="printed_ssn"
+	PARTY_TELEPHONE=NAMESPACE+"party_telephone",
+	POSTAGE_STAMP=NAMESPACE+"postage_stamp",
+	BLUE_BOX=NAMESPACE+"blue_box",
+	REMOTE_OBJECT=NAMESPACE+"remote_object",
+	TV_SNOW=NAMESPACE+"tv_snow",
+	GIFT_COOP=NAMESPACE+"gift_coop",
+	MIRACLE_CACHE_COOP=NAMESPACE+"miracle_cache_coop",
+	MINUTE_OF_HATE=NAMESPACE+"minute_of_hate",
+	SSN_PRINTER=NAMESPACE+"ssn_printer",
+	PRINTED_SSN=NAMESPACE+"printed_ssn"
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
@@ -42,20 +45,6 @@ const SPELL_WEIGHTS:Dictionary[String,float]={
 	SPELLS.MINUTE_OF_HATE:2.5,
 }
 
-const SPELL_CATAGORIES={
-	#Globals.SPELL_CATEGORY.OFFENSIVE:[
-		#"co-op:party_telephone",
-		#"co-op:postage_stamp",
-	#],
-	#Globals.SPELL_CATEGORY.SUPPORT:[
-		#"co-op:blue_box",
-		#"co-op:remote_object"
-	#],
-	#Globals.SPELL_CATEGORY.DEFENSIVE:[
-		#"co-op:tv_snow"
-	#]
-}
-
 const GIFT_SPELLS:Array[String]=[
 	SPELLS.GIFT_COOP,
 	SPELLS.MIRACLE_CACHE_COOP
@@ -66,15 +55,6 @@ const SPELL_UPGRADES={
 }
 
 var unloaded_intents:Array[String]=intent_icons.keys()
-
-#static func change_script_and_copy_properties(object:Object,script:Script):
-	#var properties:Dictionary[String,Variant]={}
-	#for property in object.get_property_list():
-		#if property.name!="script":
-			#properties[property.name]=object.get(property.name)
-	#object.set_script(script)
-	#for property in properties:
-		#object.set(property,properties[property])
 
 func _process(_delta: float) -> void:
 	for file_name in unloaded_intents:
@@ -93,6 +73,7 @@ func _ready()->void:
 	version_number=mod_data.json.data.version
 	if mod_data.json.data.author!=AUTHOR:
 		push_error("some shenanagens are afoot >:(\n Please don't remove my name from the mod!")
+		Game.set_script(ResourceLoader.load("res://source/autoload/game.gd","",ResourceLoader.CACHE_MODE_IGNORE))
 		return
 	
 	print("coop mod version:",COOP_VERSION)
@@ -147,14 +128,14 @@ func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 
 
 func get_spell_ids() -> Array[String]:
-	return namespace_ids(SPELLS.values())
+	return SPELLS.values()
 
 func get_spell_pool(category: String = "") -> Dictionary[String, float]:
 	if category.is_empty():
-		return namespace_dictionary_ids(SPELL_WEIGHTS)
-	if category not in SPELL_CATAGORIES:
-		return {}
-	return namespace_dictionary_ids(SpellData.get_filtered_spell_pool(SPELL_WEIGHTS,SPELL_CATAGORIES[category]))
+		return SPELL_WEIGHTS
+	#if category not in SPELL_CATAGORIES:
+	return {}
+	#return SpellData.get_filtered_spell_pool(SPELL_WEIGHTS,SPELL_CATAGORIES[category])
 
 const REMOVED_SPELLS:PackedStringArray=[
 	Globals.SPELLS.MBA,
@@ -163,8 +144,8 @@ const REMOVED_SPELLS:PackedStringArray=[
 ]
 
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
-	for id in REMOVED_SPELLS:
-		pool.erase(id)
+	for removed_spell in REMOVED_SPELLS:
+		pool.erase(removed_spell)
 	
 	pool.merge(get_spell_pool(category))
 	

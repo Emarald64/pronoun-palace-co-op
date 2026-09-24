@@ -9,7 +9,7 @@ func _use():
 	await super()
 	if charge==0:
 		# transform back into the printer
-		var printer=transform_spell(ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.SSN_PRINTER),true,true,true,false,true,
+		var printer=transform_spell(CoOp.SPELLS.SSN_PRINTER,true,true,true,false,true,
 		func (ssn_printer:Spell):
 			ssn_printer.last_ssn=steam_id
 			ssn_printer.frame=frame
@@ -58,12 +58,11 @@ func post_generate_tooltip(tooltip:GameTooltip):
 
 func do_battle_end_transformation():
 	super()
-	if secret_id in ModLoader.get_node("coop").namespace_ids(CoOp.GIFT_SPELLS):
+	if secret_id in CoOp.GIFT_SPELLS:
 		transform_spell(secret_id)
 
 func player_turn_started(is_battle_start: bool) -> void :
 	super(is_battle_start)
-	if not is_battle_start and secret_id == ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.MIRACLE_CACHE_COOP):
-		var pool=ModLoader.get_node("coop").namespace_dictionary_ids(CoOp.SPELL_WEIGHTS)
-		var spell_id=rng.spell.pick_random(pool)
+	if not is_battle_start and secret_id == CoOp.SPELLS.MIRACLE_CACHE_COOP:
+		var spell_id=rng.spell.weighted_random(CoOp.SPELL_WEIGHTS)
 		transform_spell(spell_id)

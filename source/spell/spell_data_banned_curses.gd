@@ -1,7 +1,7 @@
 class_name SpellDataBannedCurses
 extends SpellData
 
-var banned_curses:Array[String]=[]
+var banned_curses:PackedStringArray
 
 func can_have_curse(curse):
 	return curse not in banned_curses and super(curse)

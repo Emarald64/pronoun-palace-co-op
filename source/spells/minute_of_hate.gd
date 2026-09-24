@@ -4,7 +4,7 @@ var letter:=""
 
 func set_status_tooltips():
 	#status_tooltips = [{status = TileStatus.ENHANCED, plastic = true}]
-	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=60, bomb=true}]
+	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=120, bomb=true}]
 
 
 func _use_old():
@@ -50,15 +50,15 @@ func post_generate_tooltip(tooltip:GameTooltip):
 
 func do_battle_end_transformation():
 	super()
-	if secret_id in ModLoader.get_node("coop").namespace_ids(CoOp.GIFT_SPELLS):
+	if secret_id in CoOp.GIFT_SPELLS:
 		transform_spell(secret_id)
 
 func player_turn_started(is_battle_start: bool) -> void :
 	super(is_battle_start)
-	if not is_battle_start and secret_id == ModLoader.get_node("coop").namespace_id(CoOp.SPELLS.MIRACLE_CACHE_COOP):
-		var pool=ModLoader.get_node("coop").namespace_dictionary_ids(CoOp.SPELL_WEIGHTS)
-		var spell_id=rng.spell.pick_random(pool)
+	if not is_battle_start and secret_id == CoOp.SPELLS.MIRACLE_CACHE_COOP:
+		var spell_id=rng.spell.weighted_random(CoOp.SPELL_WEIGHTS)
 		transform_spell(spell_id)
 	elif is_owned():
-		letter=rng.spell.pick_random(Letters.ALPHABET)
+		# change applied letter
+		letter=Letters.pick_from_pool(Letters.LETTERS,rng.spell,{min_weight=3.0})
 		description_updated.emit()

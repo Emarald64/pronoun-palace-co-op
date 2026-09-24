@@ -11,7 +11,7 @@ extends "res://source/spells/gift.gd"
 		#player_spell_slot.set_meta("alt_gift",id)
 
 func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -> Dictionary:
-	var pool=ModLoader.get_node("coop").namespace_dictionary_ids(CoOp.SPELL_WEIGHTS)
+	var pool=CoOp.SPELL_WEIGHTS
 	#for spell_id in base_pool:
 		#pool["co-op:"+spell_id]=base_pool[spell_id]
 	
