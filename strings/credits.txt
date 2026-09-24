@@ -23,3 +23,9 @@
 	::
 		Sound Effect:
 		TV Snow
+
+::
+	cyphis
+	::
+		Art:
+		Global Lobby Visibility Icon
