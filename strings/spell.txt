@@ -180,7 +180,13 @@
 
 	:label:
 		Timed bomb {letter upper} for all
-
+	
+	:letter_label:
+		Timed bomb {letter upper} for all
+	
+	:select_label:
+		Timed bomb letter for all
+	
 	:charge_category:
 		rare
 

@@ -3,6 +3,7 @@ extends Status
 var time_left:=60000
 var timer_label:DebossLabel
 var timer:=GameTimer.new()
+var stopped_timer:=false
 
 func _init(_id:String):
 	super(_id)
@@ -23,6 +24,12 @@ func _status_connect():
 func _on_tile_updated():
 	update_timer_color()
 	update_label()
+	if tile.is_indestructible() and not stopped_timer:
+		timer.stop()
+		stopped_timer=true
+	elif not tile.is_indestructible() and stopped_timer:
+		timer.start()
+		stopped_timer=false
 
 func update_timer_color():
 	var set_color:=false
@@ -58,11 +65,14 @@ func _process(_delta:float):
 			time_left=0
 			time_out()
 
-func update_label():
+func get_time_text()->String:
 	if tile.is_indestructible():
-		timer_label.text="∞"
+		return "∞"
 	else:
-		timer_label.text=str(timer.get_remaining_time(time_left)/1000)
+		return str(timer.get_remaining_time(time_left)/1000)
+
+func update_label():
+	timer_label.text=get_time_text()
 
 func time_out():
 	if tile.is_preview or tile.is_projectile:
@@ -79,7 +89,7 @@ func _on_timer_stopped(elapsed_time:int):
 	time_left-=elapsed_time
 
 func get_tooltip_context():
-	return {time=timer.get_remaining_time(time_left)/1000,bomb=tile.has_status(TileStatus.BOMB)}
+	return {time=get_time_text(),bomb=tile.has_status(TileStatus.BOMB)}
 
 func get_save_data() -> Variant:
 	return timer.get_remaining_time(time_left)
