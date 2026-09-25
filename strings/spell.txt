@@ -172,14 +172,23 @@
 
 :minute_of_hate:
 	:name:
-		Minute of HATE
+		{:name_extra_time: if extra_time}{:name_normal_time: not extra_time}
+
+	:name_extra_time:
+		Two Minutes Hate
+	
+	:name_normal_time:
+		Minute of Hate
 
 	:description:
-		Convert a tile on all players' board to a Timed Bomb {letter upper} with a 1-turn fuse.
+		Convert a tile on all players' board to a {:time:}-second timed bomb {letter upper} with a 1-turn fuse.
 		Letter changes after every turn.
 
+	:time:
+		{120 if extra_time}{60 not extra_time}
+
 	:label:
-		Timed bomb {letter upper} for all
+		{:letter_label: if letter}{:select_label: not letter}
 	
 	:letter_label:
 		Timed bomb {letter upper} for all

@@ -1,11 +1,16 @@
 extends Spell
 
 var letter:=""
+var coop:CoOp=ModLoader.get_node("coop")
 
 func set_status_tooltips():
 	#status_tooltips = [{status = TileStatus.ENHANCED, plastic = true}]
-	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=120, bomb=true}]
+	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=120 if coop.extra_hate_time else 60, bomb=true}]
 
+func _init(_id: String):
+	super(_id)
+	coop.updated_extra_time.connect(set_status_tooltips.unbind(1))
+	coop.updated_extra_time.connect(frame_updated.emit.unbind(1))
 
 func _use_old():
 	const PARAMETERS={
@@ -38,11 +43,17 @@ func _use():
 
 	_post_use()
 
-func get_texture(spell_id: String = spell_data.get_base_id()) -> Texture2D:
-	return load("res://arte/ui/achievements/missing.png")
-
 func get_tooltip_context():
-	return {letter=letter}
+	var context={extra_time=coop.extra_hate_time}
+	if not letter.is_empty():
+		context.letter=letter
+	return context
+
+func get_frame() -> int:
+	return 1 if coop.extra_hate_time else 0
+
+func get_hv_frames() -> Vector2i:
+	return Vector2i(2,1)
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var group=StringManager.get_string_group("mod/co-op/names")

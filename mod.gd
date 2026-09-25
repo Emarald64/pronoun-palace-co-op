@@ -1,14 +1,16 @@
 class_name CoOp
 extends Mod
 
-#var character_select
-#var host_name:LineEdit
 const ID="co-op"
 const id=ID
 const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.1.7beta2 - 9/23"
+
+signal updated_extra_time(value:bool)
+
 var version_number:String
+var extra_hate_time:=false
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 const intent_icons:Dictionary[String,String]={
@@ -156,7 +158,7 @@ func get_run_save_data() -> Dictionary:
 		player_total_damage=Game.word_builder.player_total_damage,
 		candy_round=Game.main.candy_round,
 		original_id=Game.main.original_id,
-		all_player_names=Game.all_player_names
+		all_player_names=Game.all_player_names,
 		}
 	
 func load_run_save_data(data: Dictionary) -> void:
@@ -168,6 +170,19 @@ func load_run_save_data(data: Dictionary) -> void:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
+	extra_hate_time=data.extra_hate_time
+
+func get_options_save_data() -> Dictionary:
+	return {
+		extra_hate_time=extra_hate_time,
+	}
+
+func load_options_save_data(data: Dictionary) -> void:
+	extra_hate_time=data.extra_hate_time
+
+func set_extra_hate_time(value:bool):
+	extra_hate_time=value
+	updated_extra_time.emit(value)
 
 const BANNED_CURSES_SPELL_DATA=[
 	SPELLS.SSN_PRINTER

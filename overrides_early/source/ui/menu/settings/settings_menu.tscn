@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dwm5twfek53ul"]
+
+[ext_resource type="PackedScene" uid="uid://bcbv0t5n3n151" path="res://source/ui/menu/settings/settings_menu.tscn" id="1_jyljq"]
+[ext_resource type="Script" uid="uid://c4lnl05x0wvj0" path="res://mods/co-op/source/ui/menu/settings/settings_menu.gd" id="2_816og"]
+[ext_resource type="PackedScene" uid="uid://ddx8f3s1ssr7p" path="res://source/ui/menu/settings/check_box_setting.tscn" id="2_bp4k3"]
+
+[node name="SettingsMenu" unique_id=1592660299 instance=ExtResource("1_jyljq")]
+script = ExtResource("2_816og")
+
+[node name="General" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox" parent_id_path=PackedInt32Array(1400204219, 828913805) index="0" unique_id=338649415]
+visible = false
+
+[node name="Game" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox" parent_id_path=PackedInt32Array(1400204219, 828913805) index="1" unique_id=101734297]
+visible = true
+
+[node name="ExtraHateTime" parent="PositionRoot/Panel/SectionedPanel/MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Game" index="7" unique_id=607064002 instance=ExtResource("2_bp4k3")]
+unique_name_in_owner = true
+layout_mode = 2
+setting_name = "/mod/co-op/menu/extra_hate_time"
+
+[editable path="PositionRoot/Panel/SectionedPanel"]
