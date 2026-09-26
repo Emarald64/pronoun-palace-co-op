@@ -46,8 +46,16 @@ func _use():
 		var group: = StringManager.get_string_group("status/" + status)
 		if "shared" not in group.get_string("flags"):
 			named_tile_status=group.get_string("name")+" "
+	
+	# send notification
+	var notification_face:String=tile_save.faces[0]
+	if TileStatus.MYSTERY in tile_save.statuses:
+		notification_face="?".repeat(notification_face.length())
+	elif TileStatus.MONEY in tile_save.statuses:
+		notification_face=notification_face.replace_char("*".unicode_at(0),"$".unicode_at(0))
 	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,{face=tile_save.faces[0],status=named_tile_status,type="wooden" if tile_save.type==TileType.DAMAGE else "plastic"})
 	
+	# launch tile to spell icon
 	tile_board.remove_tile(tile,{delete_tiles = false,ignore_status=true})
 	const TARGET_OFFSET=Vector2(15,-25)
 	var projectile_target=player_spell_slot.global_position+TARGET_OFFSET
