@@ -17,8 +17,8 @@ region = Rect2(73, 91, 16, 16)
 script = ExtResource("2_8s84c")
 
 [node name="BattleTimer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="0" unique_id=2106493120]
-offset_left = 150.0
-offset_right = 196.0
+offset_left = 110.0
+offset_right = 156.0
 
 [node name="TileBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="2" unique_id=1619504647]
 script = ExtResource("3_hfx5h")
