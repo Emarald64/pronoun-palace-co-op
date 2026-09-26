@@ -15,7 +15,7 @@ func _use():
 	main.using_remote_object=true
 	main.request_set_spells.rpc_id(peer_id)
 	player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
-	var timeout_result=main.peer_set_spells
+	var timeout_result=await main.peer_set_spells
 	#main.allow_set_spells=false
 	if not timeout_result:
 		main.coop_notification.add_spell_notification(id,{failed=true})
