@@ -214,10 +214,6 @@ func blue_box_effect(rng_seed:int):
 		coop_notifications.add_spell_notification(CoOp.SPELLS.BLUE_BOX)
 
 
-#func finish_run(is_victory: = false):
-	#kill_peer()
-	#await super(is_victory)
-
 func is_game_actionable(include_spell_select: = false, include_summary_continue: = false, include_tutorial: = false):
 	return (not in_coop_spell_animation or not include_spell_select) and super(include_spell_select,include_summary_continue,include_tutorial)
 

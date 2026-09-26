@@ -13,7 +13,7 @@ func _use():
 	
 	var steam_id=Game.players[selected_player].steam_id#76561198172774482
 	
-	transform_spell("co-op:printed_ssn",true,true,false,false,true,
+	transform_spell(CoOp.SPELLS.PRINTED_SSN,true,true,false,false,true,
 		func (ssn:SSNSpell):
 			ssn.steam_id=steam_id
 			ssn.printer_charge_character=charge_character
