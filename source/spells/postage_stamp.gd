@@ -17,14 +17,15 @@ func _use():
 	if tile == null:
 		_end_use()
 		return
-
+	
 	AudioManager.play_sound(Sounds.SPELLS.STAMP_BIG)
 	
+	# make data for stamped
 	const STAMP_CORNERS=[
 		#Vector2i(7,7),
-		Vector2i(7,-7),
-		Vector2i(-7,7),
-		Vector2i(-7,-7),
+		Vector2i(7,-7),#bottom right
+		Vector2i(-7,7),#top right
+		Vector2i(-7,-7),#top left
 	]
 	var illegal_tile=tile.has_harmful_status() or tile.has_any_status([TileStatus.HOLE,TileStatus.SCREW])
 	var stamped_save={
@@ -33,27 +34,37 @@ func _use():
 		pos=rng.spell.pick_random(STAMP_CORNERS)+Vector2i(rng.spell.randi_range(-1,1),rng.spell.randi_range(-1,1)),
 		name=Game.player_info.name
 	}
-	#var tile_coord=tile.get_coord()
-	#var mailing_tile=legal_tile or tile.has_effect("stamped")
-	#if mailing_tile:
+	
+	# add stamp to sent tile data
 	var tile_save=tile.get_save_data()
 	tile_save.get_or_add("statuses",[]).append("stamped")
 	tile_save.get_or_add("status_data",{}).stamped=stamped_save
 	tile_save.as_save=true
+	#send tile
 	main.queue_tile.rpc_id(player_id,tile_save)
+	
+	# send notification
+	# get status to be named in the notification
 	var named_tile_status:=""
 	for status in tile_save.statuses:
 		var group: = StringManager.get_string_group("status/" + status)
 		if "shared" not in group.get_string("flags"):
 			named_tile_status=group.get_string("name")+" "
-	
-	# send notification
+			break
+	# get face to be displayed in the notificaton
 	var notification_face:String=tile_save.faces[0]
 	if TileStatus.MYSTERY in tile_save.statuses:
 		notification_face="?".repeat(notification_face.length())
 	elif TileStatus.MONEY in tile_save.statuses:
 		notification_face=notification_face.replace_char("*".unicode_at(0),"$".unicode_at(0))
-	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,{face=tile_save.faces[0],status=named_tile_status,type="wooden" if tile_save.type==TileType.DAMAGE else "plastic"})
+	# send notification
+	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,
+		{
+			face=notification_face,
+			status=named_tile_status,
+			wooden=tile_save.type==TileType.DAMAGE,
+			plastic=tile_save.type==TileType.DEFENSE
+		})
 	
 	# launch tile to spell icon
 	tile_board.remove_tile(tile,{delete_tiles = false,ignore_status=true})
@@ -72,29 +83,19 @@ func _use():
 	player_spell_slot.add_child(tile)
 	tile.position=TARGET_OFFSET
 	
-	#var had_stamp=tile.has_status("stamped")
-	#if not had_stamp:
+	#add stamp to tile
 	AudioManager.play_sound(Sounds.SPELLS.STAMP)
 	tile.bounce()
 	tile.load_status("stamped",stamped_save)
 	_post_use()
-	#if not had_stamp:
 	await Game.timeout(1)
-	#else:
-		#await Game.timeout(.5)
+	
+	#animate the tile off the bottom of the screen
 	var tween=tile.create_tween()
 	AudioManager.play_sound(Sounds.GENERIC.BOARD_OUT,1.0,.75)
 	tween.tween_property(tile,"position",TARGET_OFFSET+Vector2(0,41),0.2)
 	await tween.finished
 	tile.queue_free()
-	#else:
-		#await Game.timeout(1)
-		#tile.launch(tile.global_position,tile_board.get_coord_position(tile_coord),180,tile_coord)
-		#_post_use()
-	
-
-#func is_tile_selectable(tile: Tile) -> bool:
-	#return not tile.has_harmful_status()
 
 func get_tooltip_context():
 	return {selecting_tile=selecting_tile}
