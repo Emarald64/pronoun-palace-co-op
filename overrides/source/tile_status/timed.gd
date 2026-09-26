@@ -18,16 +18,18 @@ func _status_connect():
 	
 	tile.tile_sprite.add_child(timer_label)
 	timer_label.position=Vector2(-11,2.125)
-	tile.updated.connect(_on_tile_updated)
+	#tile.updated.connect(_on_tile_updated)
 	#timer.stopped.connect(_on_timer_stopped)
 
-func _on_tile_updated():
+func update_visuals():
 	update_timer_color()
 	update_label()
 	if tile.is_indestructible() and not stopped_timer:
+		print("stopped timed timer")
 		timer.stop()
 		stopped_timer=true
 	elif not tile.is_indestructible() and stopped_timer:
+		print("restarted timed timer")
 		timer.start()
 		stopped_timer=false
 
@@ -57,9 +59,18 @@ func apply(time:=60000):
 		timer.start()
 	update_label()
 
+func update_tooltip():
+	if tile.tooltip_collision.is_displaying:
+		var tooltip:GameTooltip=tile.tooltip_collision.tooltip
+		var title=StringManager.get_string("/status/timed/name")
+		for subtooltip:SubTooltip in tooltip.subtooltips:
+			if subtooltip.get_node("%Title").text==title:
+				subtooltip.set_description(StringManager.get_string("/status/timed/description",get_tooltip_context()))
+
 func _process(_delta:float):
 	if timer.is_running() and not tile.is_indestructible():
 		update_label()
+		update_tooltip()
 		#print(timer.get_elapsed_time()," ", time_left)
 		if time_left>0 and timer.get_remaining_time(time_left)<=0:
 			time_left=0
@@ -86,13 +97,15 @@ func time_out():
 	tile_board.state_updated.connect(Game.player.recompose,ConnectFlags.CONNECT_ONE_SHOT)
 
 func _on_timer_stopped(elapsed_time:int):
-	time_left-=elapsed_time
+	if not stopped_timer:
+		time_left-=elapsed_time
 
 func get_tooltip_context():
 	return {time=get_time_text(),bomb=tile.has_status(TileStatus.BOMB)}
 
 func get_save_data() -> Variant:
 	return timer.get_remaining_time(time_left)
+
 
 func load_save_data(save: Variant) -> void:
 	time_left=save
