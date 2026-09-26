@@ -28,7 +28,7 @@
 
 :gift_coop: {inherits :spell/gift:}
 	:name:
-		Co-Op gift
+		{"Co-Op Gift" not alt_title}{"Skinner Box 2: Green Version" if alt_title}
 	:description:
 		Becomes a random {:category_name:} spell at the start of each battle.
 	:category_name:

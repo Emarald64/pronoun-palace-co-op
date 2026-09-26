@@ -1,14 +1,8 @@
 class_name GiftCoop
 extends "res://source/spells/gift.gd"
 
-#func _spell_init():
-	#secret_id=SPELLS.GIFT_ENHANCING
-
-#func _ready():
-	#if player_spell_slot==null:
-		#is_ready=false
-	#else:
-		#player_spell_slot.set_meta("alt_gift",id)
+func _use():
+	do_battle_start_transformation([])
 
 func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -> Dictionary:
 	var pool=CoOp.SPELL_WEIGHTS
@@ -20,6 +14,9 @@ func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -
 			pool.erase(spell.id)
 
 	return pool
+
+func get_tooltip_context() -> Dictionary:
+	return {alt_title=rng.spell.randf()<0.01}
 
 func do_battle_start_transformation(exclude_spells):
 	transform_spell(rng.reroll.weighted_random(get_gift_reroll_pool(exclude_spells)))
