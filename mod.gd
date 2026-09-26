@@ -5,7 +5,7 @@ const ID="co-op"
 const id=ID
 const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
-const COOP_VERSION="1.1.7beta2 - 9/23"
+const COOP_VERSION="1.2 - 9/26"
 
 signal updated_extra_time(value:bool)
 
