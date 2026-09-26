@@ -190,6 +190,7 @@ func player_disconnected(id:int)->void:
 		if attack.submitted:
 			submitted_count-=1
 		peer_attacks.erase(id)
+	if id in damage_indecators:
 		damage_indecators[id].queue_free()
 		damage_indecators.erase(id)
 	if submitted_count+main.dead_players.size()>=len(Game.players)-1:
