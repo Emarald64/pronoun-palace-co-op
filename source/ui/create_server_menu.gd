@@ -40,6 +40,7 @@ func host_pressed():
 		var responce=await Steam.lobby_created
 		if responce[0]==Steam.Result.RESULT_OK:
 			Game.steam_lobby_id=responce[1]
+			Steam.setLobbyData(Game.steam_lobby_id,"co-op_version",CoOp.COOP_VERSION)
 			Steam.setLobbyData(Game.steam_lobby_id,"difficulty",str(Game.difficulty))
 			Steam.setLobbyData(Game.steam_lobby_id,"seed"," ")
 			print("sucessfully created lobby with id ",Game.steam_lobby_id)
