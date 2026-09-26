@@ -91,6 +91,7 @@ func time_out():
 	await tile.word_builder.remove_tiles()
 	var tile_board=tile.tile_board
 	await tile_board.wait_for_idle_tiles()
+	await tile_board.wait_for_idle()
 	#if tile.has_status(TileStatus.BOMB):
 		#await tile.get_status(TileStatus.BOMB).explode()
 	tile_board.remove_tile(tile)
