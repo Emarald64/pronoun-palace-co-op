@@ -22,7 +22,7 @@
 
 :phone_a_friend_recive_cursed:
 	:name:
-		Curse Recived Tiles
+		Curse Received Tiles
 
 	:description:
 		Up to {count} of the tiles sent from {partner} will be cursed
