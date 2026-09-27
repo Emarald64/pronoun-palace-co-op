@@ -170,7 +170,7 @@ func load_run_save_data(data: Dictionary) -> void:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
-	extra_hate_time=data.extra_hate_time
+	#extra_hate_time=data.extra_hate_time
 
 func get_options_save_data() -> Dictionary:
 	return {
