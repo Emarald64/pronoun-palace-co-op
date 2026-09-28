@@ -82,10 +82,10 @@
 		Send tile
 
 	:charge_category:
-		uncommon
+		very_common
 
 	:max_charge:
-		3
+		4
 
 	:banner:
 		{:banner_tile: if selecting_tile}{:banner_player: not selecting_tile}
