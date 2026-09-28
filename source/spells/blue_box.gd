@@ -1,5 +1,4 @@
-extends Spell
-
+extends CoopSpell
 
 func _use():
 	var target_id= await player.get_selection(3)
@@ -8,18 +7,3 @@ func _use():
 		return
 	main.blue_box_effect.rpc_id(target_id,rng.spell.seed)
 	_post_use()
-
-func post_generate_tooltip(tooltip:GameTooltip):
-	var group=StringManager.get_string_group("mod/co-op/names")
-	tooltip.add_subtooltip(group.strings.values().pick_random())
-
-func do_battle_end_transformation():
-	super()
-	if secret_id in CoOp.GIFT_SPELLS:
-		transform_spell(secret_id)
-
-func player_turn_started(is_battle_start: bool) -> void :
-	super(is_battle_start)
-	if not is_battle_start and secret_id == CoOp.SPELLS.MIRACLE_CACHE_COOP:
-		var spell_id=rng.spell.weighted_random(CoOp.SPELL_WEIGHTS)
-		transform_spell(spell_id)
