@@ -6,7 +6,7 @@ var frame:=-1
 func _use():
 	var condition=func (peer_id:int)->bool:
 		return Game.players[peer_id].steam_id!=last_ssn or Game.players.size()<=2
-	var selected_player= await player.get_selection(3,condition)
+	var selected_player= await player.get_selection(CoOp.PEER_SELECTION_TYPE,condition)
 	if selected_player==null:
 		_end_use()
 		return

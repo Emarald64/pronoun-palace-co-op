@@ -208,7 +208,7 @@ func resend_submitted():
 	if waiting_for_peers_to_submit:
 		peer_submitted_word.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),player.health,words_list.words,bruise)
 	else:
-		peer_stats_updated.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense,can_submit(),false,player.health,bruise)
+		peer_stats_updated.rpc_id(multiplayer.get_remote_sender_id(),get_attack_value(),defense+player.defense,can_submit(),false,player.health,bruise)
 
 func get_repeat_word(word_list: WordList) -> String:
 	var own_repeat_word=super(word_list)

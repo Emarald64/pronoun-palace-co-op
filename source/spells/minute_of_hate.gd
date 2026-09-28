@@ -37,9 +37,9 @@ func _use_old():
 	_post_use()
 
 func _use():
-	main.apply_tile_overlay.rpc("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
+	main.coop_spell_effects.apply_tile_overlay.rpc("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
 	main.coop_notifications.add_spell_notification.rpc(id,{letter=letter})
-	await main.apply_tile_overlay("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
+	await main.coop_spell_effects.apply_tile_overlay("res://mods/co-op/source/effects/minute_of_hate_effect.tscn",{amount=1,effect_priority=EFFECT_PRIORITY.STATUS_ONLY},0.1,{letter=letter})
 
 	_post_use()
 

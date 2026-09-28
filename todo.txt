@@ -1,0 +1,1 @@
+[] playing a word on a phone a friend send, then rerolling on the next one causes the last sent word to be sent again

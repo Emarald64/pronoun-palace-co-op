@@ -288,7 +288,9 @@ func swap_big():
 		for cord in recived_board_piece:
 			var tile=tile_board.create_tile()
 			main.add_child(tile)
-			tile.load_save_data(recived_board_piece[cord])
+			var tile_data=recived_board_piece[cord]
+			InputSanity.process_tile_data(tile_data)
+			tile.load_save_data(tile_data)
 			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100))
 			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			tile.impacted.connect(_on_projectile_impacted)
@@ -388,6 +390,7 @@ func send_spell():
 	#var new_spell_data=
 	await animate_attack()
 	if not recived_spell_save.is_empty():
+		InputSanity.process_spell_data(recived_spell_save)
 		var new_spell=Spell.create_from_save(recived_spell_save)
 		var new_notification=load("res://mods/co-op/source/ui/menu/nobody_notification.tscn").instantiate()
 		new_notification.get_node("%Description").text= \
@@ -407,6 +410,7 @@ func send_spell():
 	else:
 		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
 	get_tree().create_timer(20).timeout.connect(func ():sending_spell_data.clear())
+
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
 	super(words,_damage,_ending_turn)
 	if next_move=="phone_a_friend_send":
@@ -500,7 +504,9 @@ func phone_a_friend_recive():
 			var cord=Vector2i(i%5,3-(i/5))
 			var tile=tile_board.create_tile()
 			main.add_child(tile)
-			tile.load_save_data(recived_phone_a_friend_data[i])
+			var tile_data=recived_phone_a_friend_data[i]
+			InputSanity.process_tile_data(tile_data)
+			tile.load_save_data(tile_data)
 			#if tile in cursed_tiles:
 				#tile.add_status(Globals.TileStatus.CURSED)
 			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)

@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="5_h7udt"]
 [ext_resource type="PackedScene" uid="uid://i22cj8xh1npk" path="res://mods/co-op/source/ui/menu/coop_notifications.tscn" id="7_2w87v"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
+[ext_resource type="Script" uid="uid://rb07pgduhbcu" path="res://mods/co-op/source/coop_spell_effects.gd" id="9_o8jme"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
 atlas = ExtResource("5_1hx8r")
@@ -101,6 +102,9 @@ offset_right = 479.0
 offset_bottom = 167.0
 text = "Stop fucking desyncing"
 use_string_key = false
+
+[node name="CoopSpellEffects" type="Node" parent="." index="9" unique_id=2116904675]
+script = ExtResource("9_o8jme")
 
 [connection signal="game_state_updated" from="." to="GameUILayer/PeersUI" method="_on_game_state_updated"]
 [connection signal="pressed" from="MenuLayer/PauseMenu/FixDesync" to="." method="fix_desyncs"]

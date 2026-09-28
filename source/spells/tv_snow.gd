@@ -10,7 +10,7 @@ func set_status_tooltips():
 	status_tooltips = [TileStatus.FROZEN]
 
 func _use():
-	main.apply_tile_overlay.rpc(
+	main.coop_spell_effects.apply_tile_overlay.rpc(
 		"res://mods/co-op/source/effects/tv_snow_effect.tscn",
 		{amount=2,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
 	)

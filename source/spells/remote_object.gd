@@ -7,13 +7,13 @@ func _use():
 	var my_index:=spell_container.player_spells.find(player_spell_slot)
 	var old_spells_save_data=spell_container.get_save_data()
 	selecting_spell=false
-	var peer_id = await player.get_selection(3)
+	var peer_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
 	if peer_id==null:
 		_end_use()
 		return
 	
 	main.using_remote_object=true
-	main.request_set_spells.rpc_id(peer_id)
+	main.coop_spell_effects.request_set_spells.rpc_id(peer_id)
 	player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
 	var timeout_result=await main.peer_set_spells
 	#main.allow_set_spells=false
@@ -48,7 +48,7 @@ func _use():
 	my_save_data.laced_deactivated=true
 	if has_curse(CURSE.FRAGILE) and rng.fragile.randf() <= FRAGILE_BREAK_CHANCE:
 		my_save_data.max_charge=maxi(0,max_charge)
-	main.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
+	main.coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
 	main.coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	remove_all_player_spells()
 	spell_container.load_save_data(old_spells_save_data)

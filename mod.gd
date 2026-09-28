@@ -7,6 +7,8 @@ const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.2 - 9/26"
 
+const PEER_SELECTION_TYPE:=3
+
 signal updated_extra_time(value:bool)
 
 var version_number:String
@@ -34,7 +36,8 @@ const SPELLS:Dictionary[StringName,String]={
 	MIRACLE_CACHE_COOP=NAMESPACE+"miracle_cache_coop",
 	MINUTE_OF_HATE=NAMESPACE+"minute_of_hate",
 	SSN_PRINTER=NAMESPACE+"ssn_printer",
-	PRINTED_SSN=NAMESPACE+"printed_ssn"
+	PRINTED_SSN=NAMESPACE+"printed_ssn",
+	SNEAKERNET=NAMESPACE+"sneakernet",
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
@@ -105,7 +108,6 @@ func _ready()->void:
 			push_error("error joining lobby, code: ",lobby_joined_response)
 	
 	Steam.join_requested.connect(_on_join_lobby_requested)
-	
 	
 
 func _on_join_lobby_requested(lobby_id:int, _friend_id:int):

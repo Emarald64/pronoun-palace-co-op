@@ -4,7 +4,7 @@ var selecting_tile:=false
 
 func _use():
 	selecting_tile=false
-	var player_id= await player.get_selection(3)
+	var player_id= await player.get_selection(CoOp.PEER_SELECTION_TYPE)
 	if player_id==null:
 		_end_use()
 		return
@@ -41,7 +41,7 @@ func _use():
 	tile_save.get_or_add("status_data",{}).stamped=stamped_save
 	tile_save.as_save=true
 	#send tile
-	main.queue_tile.rpc_id(player_id,tile_save)
+	main.coop_spell_effects.queue_tile.rpc_id(player_id,tile_save)
 	
 	# send notification
 	# get status to be named in the notification

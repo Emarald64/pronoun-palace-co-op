@@ -39,13 +39,13 @@ func set_dead(dead:bool):
 	%Dead.visible=dead
 
 func _on_button_pressed() -> void:
-	if Game.main.player.is_selecting(3):
+	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
 		Game.main.player.selected.emit(peer_id)
 		AudioManager.play_sound(Sounds.SPELLS.SPELL_CLICK)
 
 func update_selecting()->void:
 	#var selecting_player:bool=Game.main.player.is_selecting(3)
-	if Game.main.player.is_selecting(3):
+	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
 		var selection_valid=Game.player.passes_selection_condition(peer_id)
 		$Button.disabled=not selection_valid
 		$HoverHandler.set_disabled(not selection_valid)
