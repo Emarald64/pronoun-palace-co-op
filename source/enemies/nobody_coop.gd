@@ -88,26 +88,7 @@ func _init():
 			},
 			next="swap_big"
 		},
-		solo_a={
-			next="solo_c",
-			damage={
-				0:4,
-				1:5,
-				2:6,
-				3:7
-			},
-		},
-		solo_b={
-			#echo
-			cursed_num={
-				0:3,
-				1:4,
-				2:6,
-				3:10
-			},
-			next="solo_a"
-		},
-		solo_c={
+		solo_concentration={
 			# npcs like attack
 			damage={
 				0:6,
@@ -118,7 +99,26 @@ func _init():
 				0:3,
 				2:4
 			},
-			next="solo_b"
+			next="solo_echo"
+		},
+		solo_echo={
+			#echo
+			cursed_num={
+				0:3,
+				1:4,
+				2:6,
+				3:10
+			},
+			next="solo_attack"
+		},
+		solo_attack={
+			next="solo_concentration",
+			damage={
+				0:4,
+				1:5,
+				2:6,
+				3:7
+			},
 		},
 		fishing = {
 			cursed_odds = { # copied from the fisher nobody fight
@@ -143,7 +143,7 @@ func _ready():
 	else:
 		if player_num==ids.size()-1:
 			swap_partner=-1
-			next_move="solo_c"
+			next_move="solo_concentration"
 		else:
 			swap_partner=ids[player_num+1]
 			next_move="swap_big"
@@ -152,7 +152,7 @@ func _ready():
 	Game.player_disconnected.connect(_on_player_died_or_dc)
 	
 	word_builder.peer_attack_updated.connect(func (_id:int,submitted:bool):
-		if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and not submitted and next_move=="solo_c":
+		if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and not submitted and next_move=="solo_concentration":
 			update_intents()
 		)
 	
@@ -167,39 +167,44 @@ func _ready():
 func add_partnerless_player():
 	var peer_id=multiplayer.get_remote_sender_id()
 	partnerless_players.append(peer_id)
+	print(peer_id," is partnerless")
 	if swap_partner==-1:
+		print("asking ",peer_id," to partner")
 		ask_set_partner.rpc_id(peer_id)
 
 @rpc("any_peer")
 func ask_set_partner():
+	var peer_id=multiplayer.get_remote_sender_id()
+	print(peer_id," asked to be partners")
 	if swap_partner==-1:
-		var peer_id=multiplayer.get_remote_sender_id()
+		print("becoming partners with ", peer_id)
 		ask_set_partner.rpc_id(peer_id)
 		swap_partner=peer_id
-		#const solo_moves=["solo_c","solo_b","solo_a"]
+		#const solo_moves=["solo_c","solo_echo","solo_attack"]
 		#var partner_moves
-		#if first:
+		#if multiplayer.get_unique_id()<peer_id:
 			#partner_moves=["swap_big","phone_a_friend_recive","attack_big"]
 		#else:
 			#partner_moves=["swap_small","phone_a_friend_send","attack_small"]
 		#next_move=partner_moves[solo_moves.find(next_move)]
+		#update_intents()
 
 func _on_player_died_or_dc(peer_id:int):
 	if peer_id==swap_partner:
 		print("swap partner died")
 		swap_partner=-1
-		add_partnerless_player.rpc()
 		regular_board=true
 		await wait_for_idle()
 		await get_tree().process_frame
 		#await tile_board.set_size()
 		if next_move in ["swap_big","swap_small"]:
-			next_move="solo_c"
+			next_move="solo_concentration"
 		elif next_move in ["phone_a_friend_recive","phone_a_friend_send"]:
-			next_move="solo_b"
+			next_move="solo_echo"
 		else:
-			next_move="solo_a"
+			next_move="solo_attack"
 		update_intents()
+		add_partnerless_player.rpc()
 
 func display_intent():
 	match next_move:
@@ -223,22 +228,22 @@ func display_intent():
 			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
 		"attack_small":
 			add_intent(Intent.ATTACK, {damage=moves.attack_small.damage})
-		"solo_a":
-			add_intent(Intent.ATTACK, {damage=moves.solo_a.damage})
+		"solo_attack":
+			add_intent(Intent.ATTACK, {damage=moves.solo_attack.damage})
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
-		"solo_b":
+		"solo_echo":
 			add_intent("echo",{first_time=echo_tiles.is_empty()})
-			#add_intent("echo_cursed", {count=moves.solo_b.cursed,status=TileStatus.CURSED})
-			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",description_override="echo_cursed",count=moves.solo_b.cursed_num,status=TileStatus.CURSED})
+			#add_intent("echo_cursed", {count=moves.solo_echo.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",description_override="echo_cursed",count=moves.solo_echo.cursed_num,status=TileStatus.CURSED})
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
-		"solo_c":
+		"solo_concentration":
 			add_intent(Intent.CONCENTRATION,{
 				damage=get_multitude_attack_damage(),
-				original_damage=moves.solo_c.damage,
+				original_damage=moves.solo_concentration.damage,
 				reduce_by = 1, 
-				per_health = moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
+				per_health = moves.solo_concentration.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
 			})
 			if Game.players.size()>main.dead_players.size()+1:
 				add_intent("spell_swap")
@@ -278,6 +283,7 @@ func swap_big():
 		await tile_board.set_size(5, 4,null,0)
 		AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 		await Game.timeout(1.2)
+		# set top half of board to recived tiles
 		num_projectiles=recived_board_piece.size()
 		for cord in recived_board_piece:
 			var tile=tile_board.create_tile()
@@ -294,7 +300,8 @@ func swap_big():
 		await tile_board.settle_board()
 	await tile_board.set_size(5, 4)
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
-	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,0),5)
+	if smoke.position.y<0:
+		smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,0),5)
 	regular_board=false
 	await wait_for_idle()
 
@@ -310,8 +317,14 @@ func swap_small():
 	await tile_board.set_size(5,2)
 	dooming_rows.clear()
 	regular_board=false
+	
+	# move smoke down
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
 	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,50),5)
+	
+	# 1 free defense tile
+	tile_board.top_up_bag(TileType.DEFENSE, 1)
+	
 	await wait_for_idle()
 
 var sending_spell_data:Dictionary
@@ -348,7 +361,7 @@ func send_spell():
 					if defense_spell==null:
 						defense_spell=spell
 					else:
-						# more than 1 direct deffense spell, dont protect
+						# more than 1 direct defense spell, dont protect
 						defense_spell=null
 						break
 			if defense_spell!=null:
@@ -412,7 +425,7 @@ func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> vo
 		await Game.timeout(.2)
 		for tile_copy in tile_copies:
 			tile_copy.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(tile_copy,"position",tile_copy.position+Vector2(0,30),.5)
-	elif next_move == "solo_b":
+	elif next_move == "solo_echo":
 		echo_tiles=last_move_tiles
 		last_move_tiles=word_builder.tiles.map(func (tile:Tile):return tile.get_save_data())
 
@@ -525,15 +538,42 @@ func attack_small():
 	attack_check_for_missing_partner()
 	await wait_for_idle()
 
-func solo_a():
-	await animate_attack()
-	hit_player(moves.solo_a.damage)
-	if tile_board.num_columns!=4:
-		await tile_board.set_size()
-		regular_board=true
-	await wait_for_idle()
 
-func solo_b():
+func get_multitude_damage_taken():
+	var taken = damage_taken
+	if main.is_player_turn or word_builder.waiting_for_peers_to_submit:
+		taken += word_builder.damage
+	for peer_id:int in word_builder.peer_attacks:
+		taken+=word_builder.peer_attacks[peer_id].damage
+
+	return taken
+
+func get_multitude_attack_damage():
+	return max(0, moves.solo_concentration.damage - get_multitude_damage_taken()/(moves.solo_concentration.reduce_by_per_player*(Game.players.size()-main.dead_players.size())))
+
+func solo_concentration():
+	if Game.players.size()<=main.dead_players.size()+1:
+		await animate_attack()
+	else:
+		await send_spell()
+	if get_multitude_attack_damage()>0:
+		#await animate_attack()
+		hit_player(get_multitude_attack_damage())
+		await wait_for_idle()
+		#if swap_partner!=-1:
+			#if swap_partner>multiplayer.get_unique_id():
+				#next_move_override="swap_big"
+			#else:
+				#next_move_override="swap_small"
+	else:
+		if tile_board.num_columns!=4:
+			#await animate_attack()
+			await tile_board.set_size()
+			regular_board=true
+		await wait_for_idle()
+		await Game.timeout(0.5)
+
+func solo_echo():
 	#echo
 	if echo_tiles.is_empty():
 		given_word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
@@ -547,7 +587,7 @@ func solo_b():
 	cursed_tiles.sort_custom(func (a,b)->bool:
 		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
 	)
-	for tile_data in cursed_tiles.slice(0,moves.solo_b.cursed_num):
+	for tile_data in cursed_tiles.slice(0,moves.solo_echo.cursed_num):
 		if "statuses" in tile_data:
 			tile_data.statuses.append(TileStatus.CURSED)
 		else:
@@ -574,43 +614,22 @@ func solo_b():
 	damage_taken=0
 	await wait_for_idle()
 
-func get_multitude_damage_taken():
-	var taken = damage_taken
-	if main.is_player_turn or word_builder.waiting_for_peers_to_submit:
-		taken += word_builder.damage
-	for peer_id:int in word_builder.peer_attacks:
-		taken+=word_builder.peer_attacks[peer_id].damage
-
-	return taken
-
-func get_multitude_attack_damage():
-	return max(0, moves.solo_c.damage - get_multitude_damage_taken()/(moves.solo_c.reduce_by_per_player*(Game.players.size()-main.dead_players.size())))
-
-func solo_c():
-	if Game.players.size()<=main.dead_players.size()+1:
-		await animate_attack()
-	else:
-		await send_spell()
-	if get_multitude_attack_damage()>0:
-		#await animate_attack()
-		hit_player(get_multitude_attack_damage())
-		await wait_for_idle()
-		if swap_partner!=-1:
-			if swap_partner>multiplayer.get_unique_id():
-				next_move_override="swap_big"
-			else:
-				next_move_override="swap_small"
-	else:
-		if tile_board.num_columns!=4:
-			#await animate_attack()
-			await tile_board.set_size()
-			regular_board=true
-		await wait_for_idle()
-		await Game.timeout(0.5)
+func solo_attack():
+	await animate_attack()
+	hit_player(moves.solo_attack.damage)
+	if tile_board.num_columns!=4:
+		await tile_board.set_size()
+		regular_board=true
+	if swap_partner!=-1:
+		if multiplayer.get_unique_id()<swap_partner:
+			next_move_override="swap_big"
+		else:
+			next_move_override="swap_small"
+	await wait_for_idle()
 
 func attack_check_for_missing_partner():
 	if swap_partner==-1:
-		next_move_override="solo_a"
+		next_move_override="solo_concentration"
 
 func flinch_lethal(amount: int):
 	super(amount)
@@ -618,7 +637,7 @@ func flinch_lethal(amount: int):
 		tile_copy.queue_free()
 
 func _on_finished_updating_stats(_words):
-	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and next_move=="solo_c":
+	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and next_move=="solo_concentration":
 		update_intents()
 
 func apply_fish(tile: Tile, fish: Fish) -> void:
