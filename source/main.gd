@@ -13,7 +13,6 @@ signal player_died(id:int)
 var reviving:=false
 var candy_round:=false
 
-
 @onready var coop_notifications:CoopNotifications=%CoopNotifications
 @onready var coop_spell_effects:CoopSpellEffects=$CoopSpellEffects
 

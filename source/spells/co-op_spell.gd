@@ -1,6 +1,14 @@
 class_name CoopSpell
 extends Spell
 
+var coop_notifications:CoopNotifications=main.coop_notifications
+var coop_spell_effects:CoopSpellEffects=main.coop_spell_effects
+
+
+func wait_for_reply_with_timeout(timeout:=10.0)->bool:
+	main.get_tree().create_timer(timeout).timeout.connect(coop_spell_effects.request_replied.emit.bind(false))
+	return await coop_spell_effects.request_replied
+
 func post_generate_tooltip(tooltip:GameTooltip):
 	var name_group=StringManager.get_string_group("mod/co-op/names")
 	var credit:=""

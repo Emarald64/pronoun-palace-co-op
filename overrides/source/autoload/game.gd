@@ -155,6 +155,11 @@ func _on_peer_disconnected(id:int)->void:
 	else:
 		print(id, " disconnected, but was already removed from the player list")
 
+func get_player_name(id:int)->String:
+	if id in players:
+		return players[id].name
+	return "???"
+
 @rpc("any_peer")
 func register_player(other_player_info)->void:
 	var id=multiplayer.get_remote_sender_id()

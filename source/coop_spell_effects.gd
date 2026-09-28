@@ -15,6 +15,7 @@ var coop_notifications:CoopNotifications
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
 	#print(tiles)
+	in_coop_spell_animation=true
 	await tile_board.wait_for_idle()
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
@@ -32,6 +33,7 @@ func recive_word(tiles:Array)->void:
 			tile_board.insert_tile(new_tile,cord)
 			new_tile.add_poofcloud(new_tile.get_poof_color())
 			await get_tree().create_timer(0.16).timeout
+	in_coop_spell_animation=false
 
 @rpc("any_peer")
 func blue_box_effect(rng_seed:int):
@@ -51,16 +53,16 @@ func blue_box_effect(rng_seed:int):
 func request_set_spells():
 	if using_remote_object:
 		push_warning(Game.players[multiplayer.get_remote_sender_id()]," tried to use remote object on me while I was already using it")
-		set_spells([],false)
+		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to use remote object while the other player was using remote object")
 	else:
 		set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
 
 @rpc("any_peer")
-func set_spells(spells:Array,success:=true):
-	if not success:
-		request_replied.emit(false)
-		push_warning("tried to use remote object while the ",Game.players[multiplayer.get_remote_sender_id()]," was using remote object")
-		return
+func set_spells(spells:Array):
+	#if not success:
+		#request_replied.emit(false)
+		#push_warning("tried to use remote object while the ",Game.players[multiplayer.get_remote_sender_id()]," was using remote object")
+		#return
 	if using_remote_object:
 		for player_spell in spell_container.player_spells:
 			player_spell.queue_free()
@@ -124,8 +126,28 @@ func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1,o
 @rpc("any_peer")
 func swap_board(board_data:Dictionary,reply:bool):
 	if main.is_player_turn:
+		in_coop_spell_animation=true
 		await word_builder.remove_tiles()
 		await tile_board.wait_for_idle_tiles()
 		if reply:
 			swap_board.rpc_id(multiplayer.get_remote_sender_id(),tile_board.get_tile_state_save_data(),false)
-		tile_board.load_tile_state_save_data(board_data)
+			coop_notifications.add_spell_notification("co-op:sneakernet",{success=true})
+		await tile_board.slide_out()
+		if randf()<.1:
+			tile_board.load_tile_state_save_data(board_data)
+			await tile_board.slide_in()
+			get_tree().create_timer(0.3).timeout.connect(AudioManager.play_sound.bind(Sounds.BRUTALIST.RETREAT))
+			await tile_board.settle_board()
+		else:
+			tile_board.load_tile_state_save_data(board_data,true)
+			await tile_board.slide_in()
+		in_coop_spell_animation=false
+		if not reply:
+			request_replied.emit(true)
+	else:
+		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to swap board when it wasn't the other player's turn")
+
+@rpc("any_peer")
+func failed_request(reason:String):
+	push_warning(reason)
+	request_replied.emit(false)

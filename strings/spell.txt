@@ -244,4 +244,33 @@
 
 	:max_charge:
 		{:spell/ssn/max_charge:}
+
+:sneakernet:
+	:name:
+		Sneakernet
 	
+	:description:
+		Swap boards with another player who hasn't submitted.
+	
+	:label:
+		Swap Boards
+	
+	:banner:
+		Select a player to swap boards with
+	
+	:charge_category:
+		auto
+	
+	:max_charge:
+		1
+	
+	:flags:
+		removes_word
+	
+	:effect_notification:
+		{:notification_success: if success}{:notification_failed: not success}
+	
+	:notification_success:
+		swapped boards with you.
+	:notification_failed:
+		Failed to swap boards with {name}.
