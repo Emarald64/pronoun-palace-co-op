@@ -105,8 +105,16 @@ func apply_status(status,search_parameters:Dictionary={},delay:=0.1):
 		await Game.timeout(delay)
 	in_coop_spell_animation=false
 
+var allowed_overlays=[
+	"res://mods/co-op/source/effects/tv_snow_effect.tscn",
+	"res://mods/co-op/source/effects/minute_of_hate_effect.tscn",
+]
+
 @rpc("any_peer")
 func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1,overlay_parameters=null):
+	if path not in allowed_overlays:
+		push_error(Game.all_player_names[multiplayer.get_remote_sender_id()],"tried to apply an invalid effect: ",path)
+		return
 	in_coop_spell_animation=true
 	await tile_board.wait_for_idle()
 	search_parameters.merge(default_tile_parameters)

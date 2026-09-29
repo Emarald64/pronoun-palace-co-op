@@ -16,10 +16,6 @@ var candy_round:=false
 @onready var coop_notifications:CoopNotifications=%CoopNotifications
 @onready var coop_spell_effects:CoopSpellEffects=$CoopSpellEffects
 
-func _init():
-	super()
-	print_debug("set main scene on game")
-
 func _ready():
 	super()
 	Game.player_disconnected.connect(_on_peer_disconnected)

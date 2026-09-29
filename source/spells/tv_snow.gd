@@ -12,7 +12,7 @@ func set_status_tooltips():
 func _use():
 	main.coop_spell_effects.apply_tile_overlay.rpc(
 		"res://mods/co-op/source/effects/tv_snow_effect.tscn",
-		{amount=2,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
+		{amount=1,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}
 	)
 	main.coop_notifications.add_spell_notification.rpc(id)
 	_post_use()
