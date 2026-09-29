@@ -211,18 +211,18 @@ func display_intent():
 		"swap_big":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 4, size_y = 5})
 			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_big.second_damage)})
-			add_intent("spell_swap")
+			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 2, size_y = 5})
 			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
-			add_intent("spell_swap")
+			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"phone_a_friend_recive":
-			add_intent("phone_a_friend_recive", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_recive_cursed",description_override="phone_a_friend_recive_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(CoOp.INTENTS.PHONE_A_FRIEND_RECEIVE, {partner=Game.players[swap_partner].name})
+			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,description_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.PREPARING)
 		"phone_a_friend_send":
-			add_intent("phone_a_friend_send", {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override="phone_a_friend_send_cursed",description_override="phone_a_friend_send_cursed",count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(CoOp.INTENTS.PHONE_A_FRIEND_SEND, {partner=Game.players[swap_partner].name})
+			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,description_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
 			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
@@ -233,9 +233,9 @@ func display_intent():
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_echo":
-			add_intent("echo",{first_time=echo_tiles.is_empty()})
+			add_intent(CoOp.INTENTS.ECHO,{first_time=echo_tiles.is_empty()})
 			#add_intent("echo_cursed", {count=moves.solo_echo.cursed,status=TileStatus.CURSED})
-			add_intent(Intent.APPLY_STATUS, {name_override="echo_cursed",description_override="echo_cursed",count=moves.solo_echo.cursed_num,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.ECHO_CURSED,description_override=CoOp.INTENTS.ECHO_CURSED,count=moves.solo_echo.cursed_num,status=TileStatus.CURSED})
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_concentration":
@@ -246,7 +246,7 @@ func display_intent():
 				per_health = moves.solo_concentration.reduce_by_per_player*(Game.players.size()-main.dead_players.size()),
 			})
 			if Game.players.size()>main.dead_players.size()+1:
-				add_intent("spell_swap")
+				add_intent(CoOp.INTENTS.SPELL_SWAP)
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 

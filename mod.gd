@@ -15,15 +15,16 @@ var version_number:String
 var extra_hate_time:=false
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
-const intent_icons:Dictionary[String,String]={
-	"spell_swap.png":"spell_swap",
-	"pronounpalace-sendtilesx-px.png":"phone_a_friend_send",
-	"pronounpalace-receivetiles-px.png":"phone_a_friend_recive",
-	"pronounpalace-sendtilescursed-px.png":"phone_a_friend_send_cursed",
-	"pronounpalace-receivetilescursed-px.png":"phone_a_friend_recive_cursed",
-	"echo.png":"echo",
-	"echo_cursed.png":"echo_cursed",
-	"candy_round_healing.png":"candy_round_healing"
+
+const INTENTS={
+	SPELL_SWAP="spell_swap",
+	PHONE_A_FRIEND_SEND="send_tiles",
+	PHONE_A_FRIEND_RECEIVE="receive_tiles",
+	PHONE_A_FRIEND_SEND_CURSED="send_tiles_cursed",
+	PHONE_A_FRIEND_RECIVE_CURSED="receive_tiles_cursed",
+	ECHO="echo",
+	ECHO_CURSED="echo_cursed",
+	CANDY_ROUND_HEALING="candy_round_healing",
 }
 
 const SPELLS:Dictionary[StringName,String]={
@@ -60,18 +61,18 @@ const SPELL_UPGRADES={
 	SPELLS.GIFT_COOP:SPELLS.MIRACLE_CACHE_COOP
 }
 
-var unloaded_intents:Array[String]=intent_icons.keys()
+var unloaded_intents:Array[String]=INTENTS.values()
 
 func _process(_delta: float) -> void:
-	for file_name in unloaded_intents:
-		var path=intent_icon_path+file_name
+	for intent in unloaded_intents:
+		var path=intent_icon_path+intent+".png"
 		var status=ResourceLoader.load_threaded_get_status(path)
 		if status==ResourceLoader.THREAD_LOAD_LOADED:
-			CustomIntent.custom_intent_icons[intent_icons[file_name]]=ResourceLoader.load_threaded_get(path)
-			unloaded_intents.erase(file_name)
+			CustomIntent.custom_intent_icons[intent]=ResourceLoader.load_threaded_get(path)
+			unloaded_intents.erase(intent)
 		elif status!=ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			push_error("Error threaded loading ",path," code: ",status)
-			unloaded_intents.erase(file_name)
+			unloaded_intents.erase(intent)
 
 func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
@@ -85,15 +86,17 @@ func _ready()->void:
 	print("coop mod version:",COOP_VERSION)
 	#var scene_tree=get_tree()
 		
-	for file_name in intent_icons:
-		ResourceLoader.load_threaded_request(intent_icon_path+file_name)
+	for intent in INTENTS.values():
+		ResourceLoader.load_threaded_request(intent_icon_path+intent+".png")
+	
+	await get_tree().process_frame
+	Game.coop=self
 
 	var cmdline_args:=OS.get_cmdline_args()
 	var connect_arg_pos:=cmdline_args.find("+connect_lobby")
 	if connect_arg_pos>=0 and cmdline_args.size()>connect_arg_pos+1:
 		#connect to steam lobby
 		var steam_lobby_id=int(cmdline_args[connect_arg_pos+1])
-		await get_tree().process_frame
 		Game.steam_lobby_id=steam_lobby_id
 		Steam.joinLobby(steam_lobby_id)
 		var lobby_joined=await Steam.lobby_joined

@@ -1,5 +1,4 @@
 class_name InputSanity
-extends Object
 
 const REPLACEMENT_SPELLS=[
 	"proverbpalace:datamosh",

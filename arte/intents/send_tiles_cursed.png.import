@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmgmqelixy1h0"
-path="res://.godot/imported/pronounpalace-receivetiles-px.png-a4a444ac9bff3ccfd48ec801830662c7.ctex"
+uid="uid://bfdjbilpx8eq2"
+path="res://.godot/imported/send_tiles_cursed.png-f075abf51facfffd5f8f4c477c1f584f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/co-op/arte/intents/pronounpalace-receivetiles-px.png"
-dest_files=["res://.godot/imported/pronounpalace-receivetiles-px.png-a4a444ac9bff3ccfd48ec801830662c7.ctex"]
+source_file="res://mods/co-op/arte/intents/send_tiles_cursed.png"
+dest_files=["res://.godot/imported/send_tiles_cursed.png-f075abf51facfffd5f8f4c477c1f584f.ctex"]
 
 [params]
 

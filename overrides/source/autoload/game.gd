@@ -11,6 +11,7 @@ var all_player_names:Dictionary[int,String]={}
 var upnp:UPNP
 var sync_start:=false
 var steam_lobby_id:=0
+var coop:CoOp
 signal player_connected(peer_id:int,player_info)
 signal player_disconnected(peer_id:int)
 

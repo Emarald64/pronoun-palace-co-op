@@ -1,11 +1,11 @@
-:phone_a_friend_send:
+:send_tiles:
 	:name:
 		Phone A Friend
 
 	:description:
 		All played tiles will be sent to {partner}'s board
 
-:phone_a_friend_send_cursed:
+:send_tiles_cursed:
 	:name:
 		Curse Sent Tiles
 
@@ -13,14 +13,14 @@
 		{count} of the tiles you send to {partner} will be cursed.
 		If you send less then {count} tiles, the remainder will be applied to your board.
 
-:phone_a_friend_recive:
+:receive_tiles:
 	:name:
 		Phone A Friend
 
 	:description:
 		{partner}'s played tiles will be sent to the top of your board
 
-:phone_a_friend_recive_cursed:
+:receive_tiles_cursed:
 	:name:
 		Curse Received Tiles
 
