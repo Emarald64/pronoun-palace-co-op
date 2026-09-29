@@ -79,8 +79,9 @@ func _process(_delta:float):
 func get_time_text()->String:
 	if tile.is_indestructible():
 		return "∞"
-	else:
-		return str(timer.get_remaining_time(time_left)/1000)
+	if not Game.main.is_player_turn:
+		return str(time_left/1000)
+	return str(timer.get_remaining_time(time_left)/1000)
 
 func update_label():
 	timer_label.text=get_time_text()
