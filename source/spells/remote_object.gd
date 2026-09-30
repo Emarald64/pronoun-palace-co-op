@@ -12,15 +12,15 @@ func _use():
 		_end_use()
 		return
 	
-	main.using_remote_object=true
-	main.coop_spell_effects.request_set_spells.rpc_id(peer_id)
-	player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
-	var timeout_result=await main.peer_set_spells
+	coop_spell_effects.using_remote_object=true
+	coop_spell_effects.request_set_spells.rpc_id(peer_id)
+	#player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
+	var timeout_result=await wait_for_reply_with_timeout()
 	#main.allow_set_spells=false
 	if not timeout_result:
-		main.coop_notification.add_spell_notification(id,{failed=true})
+		coop_notifications.add_spell_notification(id,{failed=true},peer_id)
 		push_warning("remote object request set spells failed")
-		main.using_remote_object=false
+		coop_spell_effects.using_remote_object=false
 		_end_use()
 		return
 	
@@ -34,11 +34,11 @@ func _use():
 	if new_spell == null:
 		remove_all_player_spells()
 		spell_container.load_save_data(old_spells_save_data)
-		main.using_remote_object=false
+		coop_spell_effects.using_remote_object=false
 		_end_use()
 		return
 		
-	var new_spell_index:=main.spell_container.player_spells.find(new_spell.player_spell_slot)
+	var new_spell_index:=spell_container.player_spells.find(new_spell.player_spell_slot)
 	#var new_spell_save_data=new_spell.get_save_data()
 	#player_spell_slot.set_spell(new_spell)
 	remove_all_player_spells()
@@ -48,20 +48,20 @@ func _use():
 	my_save_data.laced_deactivated=true
 	if has_curse(CURSE.FRAGILE) and rng.fragile.randf() <= FRAGILE_BREAK_CHANCE:
 		my_save_data.max_charge=maxi(0,max_charge)
-	main.coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
-	main.coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
+	coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
+	coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	remove_all_player_spells()
 	spell_container.load_save_data(old_spells_save_data)
-	main.using_remote_object=false
+	coop_spell_effects.using_remote_object=false
 	_end_use()
 
-func wait_with_timeout(sig:Signal,timeout:=5.0)->bool:
-	var dummy_obj=RefCounted.new()
-	dummy_obj.add_user_signal("result",[{name="result",type=TYPE_BOOL}])
-	var result_signal=Signal(dummy_obj,"result")
-	sig.connect(result_signal.emit.bind(true),CONNECT_ONE_SHOT)
-	main.get_tree().create_timer(timeout).timeout.connect(result_signal.emit.bind(false),CONNECT_ONE_SHOT)
-	return await result_signal
+#func wait_with_timeout(sig:Signal,timeout:=5.0)->bool:
+	#var dummy_obj=RefCounted.new()
+	#dummy_obj.add_user_signal("result",[{name="result",type=TYPE_BOOL}])
+	#var result_signal=Signal(dummy_obj,"result")
+	#sig.connect(result_signal.emit.bind(true),CONNECT_ONE_SHOT)
+	#main.get_tree().create_timer(timeout).timeout.connect(result_signal.emit.bind(false),CONNECT_ONE_SHOT)
+	#return await result_signal
 
 func get_tooltip_context():
 	return {selecting_spell=selecting_spell}

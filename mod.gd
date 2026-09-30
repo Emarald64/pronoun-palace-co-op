@@ -16,7 +16,7 @@ var extra_hate_time:=false
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 
-const INTENTS={
+const INTENTS:Dictionary[String,String]={
 	SPELL_SWAP="spell_swap",
 	PHONE_A_FRIEND_SEND="send_tiles",
 	PHONE_A_FRIEND_RECEIVE="receive_tiles",

@@ -6,8 +6,12 @@ var coop_spell_effects:CoopSpellEffects=main.coop_spell_effects
 
 
 func wait_for_reply_with_timeout(timeout:=10.0)->bool:
-	main.get_tree().create_timer(timeout).timeout.connect(coop_spell_effects.request_replied.emit.bind(false))
-	return await coop_spell_effects.request_replied
+	var timer:=main.get_tree().create_timer(timeout)
+	var request_timeout=coop_spell_effects.request_replied.emit.bind(false)
+	timer.timeout.connect(request_timeout)
+	var result=await coop_spell_effects.request_replied
+	timer.timeout.disconnect(request_timeout)
+	return result
 
 func post_generate_tooltip(tooltip:GameTooltip):
 	var name_group=StringManager.get_string_group("mod/co-op/names")

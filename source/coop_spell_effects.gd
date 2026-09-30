@@ -9,8 +9,12 @@ var in_coop_spell_animation:=false
 var tile_board:TileBoard=Game.tile_board
 var main:Main=Game.main
 var word_builder = Game.word_builder 
-var spell_container: = Game.spell_container
+var spell_container: SpellContainer
 var coop_notifications:CoopNotifications
+
+func _ready():
+	await Game.main_scene_loaded
+	spell_container = Game.spell_container
 
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
@@ -55,7 +59,7 @@ func request_set_spells():
 		push_warning(Game.players[multiplayer.get_remote_sender_id()]," tried to use remote object on me while I was already using it")
 		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to use remote object while the other player was using remote object")
 	else:
-		set_spells.rpc_id(multiplayer.get_remote_sender_id(),spell_container.get_save_data())
+		set_spells.rpc_id(multiplayer.get_remote_sender_id(),main.spell_container.get_save_data())
 
 @rpc("any_peer")
 func set_spells(spells:Array):
