@@ -51,13 +51,14 @@ func update_selecting()->void:
 		$HoverHandler.set_disabled(not selection_valid)
 		modulate=Color.WHITE if selection_valid else Color.GRAY
 		$TooltipCollision.enabled=Game.player.active_spell.has_method("_generate_peer_tooltip")
-		print("tooltip enabled: ",$TooltipCollision.enabled)
+		#print("tooltip enabled: ",$TooltipCollision.enabled)
 	else:
 		$TooltipCollision.enabled=false
+		$TooltipCollision.clear_tooltip()
 		$Button.disabled=true
 		$HoverHandler.set_disabled(true)
 		modulate=Color.WHITE
 
 func _on_generate_tooltip(tooltip:GameTooltip):
-	print("peer ui tried making tooltip")
+	#print("peer ui tried making tooltip")
 	Game.player.active_spell._generate_peer_tooltip(tooltip,peer_id)

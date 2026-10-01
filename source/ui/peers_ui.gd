@@ -71,7 +71,7 @@ func update_total_damage_counter(total_damage:int):
 	total_attack_container.show()
 	total_attack_label.text=str(total_damage)
 
-func clear_peers():
+func hide_peers():
 	for indecator in damage_indecators.values():
 		indecator.hide()
 	total_attack_container.hide()

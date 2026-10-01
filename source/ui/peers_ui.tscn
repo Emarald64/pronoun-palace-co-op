@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://d268ojbynpbue"]
+
+[ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="1_3omnc"]
+[ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="2_l4340"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]
+atlas = ExtResource("2_l4340")
+region = Rect2(73, 91, 16, 16)
+
+[node name="PeersUI" type="VBoxContainer" unique_id=925131084]
+offset_top = 2.0
+offset_right = 112.0
+offset_bottom = 22.0
+script = ExtResource("1_3omnc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1851761039]
+custom_maximum_size = Vector2(-1, 168)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 5
+
+[node name="DamageIndecatorHolder" type="VBoxContainer" parent="ScrollContainer" unique_id=461443477]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TotalAttackContainer" type="HBoxContainer" parent="." unique_id=2114215239]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="TotalAttackContainer" unique_id=1899074300]
+layout_mode = 2
+theme_type_variation = &"BoldOutlineLabel"
+text = "Total:"
+
+[node name="TextureRect" type="TextureRect" parent="TotalAttackContainer" unique_id=1293556676]
+layout_mode = 2
+texture = SubResource("AtlasTexture_xp132")
+flip_h = true
+
+[node name="TotalAttackLabel" type="Label" parent="TotalAttackContainer/TextureRect" unique_id=877064812]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -17.0
+offset_top = 7.0
+offset_right = 2.0
+offset_bottom = 22.000021
+theme_type_variation = &"BoldOutlineLabel"
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2

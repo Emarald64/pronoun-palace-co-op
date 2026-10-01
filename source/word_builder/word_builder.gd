@@ -4,8 +4,8 @@ var peer_attacks:Dictionary[int,Dictionary]={}
 #var damage_indecators:Dictionary[int,Control]={}
 var player_total_damage:Dictionary[int,int]={}
 #@export var damage_indecator_holder:Control
-@export var total_attack_label:Label
-@export var total_attack_container:Control
+#@export var total_attack_label:Label
+#@export var total_attack_container:Control
 var submitted_count:=0
 
 var heighest_candy_round_value:=0
@@ -113,7 +113,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 			#damage_indecators[id].hide()
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
-	total_attack_container.hide()
+	main.peers_ui.hide_peers()
 	others_queued_words.clear()
 	submitted_count=0
 	#if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
