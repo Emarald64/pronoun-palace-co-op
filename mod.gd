@@ -5,7 +5,7 @@ const ID="co-op"
 const id=ID
 const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
-const COOP_VERSION="1.2 - 9/26"
+const COOP_VERSION="1.3-beta 1 - 10/1"
 
 const PEER_SELECTION_TYPE:=3
 
