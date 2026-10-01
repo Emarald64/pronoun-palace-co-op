@@ -204,7 +204,7 @@
 
 :ssn_printer:
 	:name:
-		Card Printer
+		SSN Printer
 	
 	:label:
 		Make SSN
@@ -226,12 +226,12 @@
 	
 :printed_ssn:
 	:name:
-		Counterfit {:spell/ssn/name:}
+		Counterfeit {:spell/ssn/name:}
 
 	:description:
 		{:spell/ssn/description:}
 		
-		Transforms back to the {:ssn_printer/name:} after all the charges are used.
+		Transforms back to the {:ssn_printer/name:} after all the charges have been used.
 
 	:label:
 		{:spell/ssn/label:}
