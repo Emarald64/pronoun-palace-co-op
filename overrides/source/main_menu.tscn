@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://dit6w1p5gk6f8" path="res://mods/co-op/source/main_menu.gd" id="2_le0k0"]
 [ext_resource type="PackedScene" uid="uid://ca42grsrjw13r" path="res://source/ui/menu/buttons/menu_label_button_tall.tscn" id="3_f3mtu"]
 [ext_resource type="PackedScene" uid="uid://benomodipcosy" path="res://mods/co-op/source/ui/join_menu.tscn" id="3_le0k0"]
-[ext_resource type="Script" uid="uid://bkj57xrdfqerd" path="res://mods/co-op/overrides/source/ui/menu/character_select/character_select.gd" id="4_le0k0"]
 [ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/lobby.tscn" id="4_sfbee"]
 [ext_resource type="Script" uid="uid://drhqtq2pm08ot" path="res://mods/co-op/source/ui/join_button.gd" id="4_ubdpl"]
 [ext_resource type="PackedScene" uid="uid://d1xbhbxo8rq8k" path="res://mods/co-op/source/ui/create_server_menu.tscn" id="5_f3mtu"]
@@ -44,9 +43,6 @@ disabled_theme = &""
 visible = false
 offset_left = 339.0
 offset_right = 339.0
-
-[node name="CharacterSelect" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="8" unique_id=423486846]
-script = ExtResource("4_le0k0")
 
 [node name="Join Menu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="15" unique_id=1499490309 node_paths=PackedStringArray("lobby") instance=ExtResource("3_le0k0")]
 offset_top = 1000.0

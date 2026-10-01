@@ -19,32 +19,6 @@ func add_spell_notification(spell_id:String,description_context:={},sender_id:=m
 	new_notification.set_spell(spell_id,description_context)
 	add_notification(new_notification)
 
-#@rpc("any_peer")
-#func add_notification_direct(description_key:String,player_name:String,description_context:={},icon_texture_path:="res://arte/spells/missing.png",icon_reigon=Rect2(0,0,32,32),player_texture_path:="res://arte/spells/missing.png",player_reigon=Rect2(0,0,32,32)):
-	#var new_notification:Control=notifiction_scene.instantiate()
-	#var icon_texture:=AtlasTexture.new()
-	#if ResourceLoader.exists(icon_texture_path):
-		#icon_texture.atlas=load(icon_texture_path)
-		#icon_texture.region=icon_reigon
-	#else:
-		#push_error("tried to create a notification with an invalid texture")
-		#icon_texture.atlas=load("res://arte/spells/missing.png")
-		#icon_texture.region=Rect2(0,0,32,32)
-	#new_notification.get_node("%SpellIcon").texture=icon_texture
-	#
-	#var player_texture:=AtlasTexture.new()
-	#if ResourceLoader.exists(player_texture_path):
-		#player_texture.atlas=load(player_texture_path)
-		#player_texture.region=player_reigon
-	#else:
-		#push_error("tried to create a notification with an invalid texture")
-		#player_texture.atlas=load("res://arte/spells/missing.png")
-		#player_texture.region=Rect2(0,0,32,32)
-	#new_notification.get_node("%PlayerIcon").texture=player_texture
-	#
-	#new_notification.get_node("%Description").text=StringManager.get_string(description_key,description_context)
-	#add_notification(new_notification)
-
 func add_notification(new_notification:CoopNotification):
 	notification_queue.push_back(new_notification)
 	if cooldown.is_stopped() or cooldown.time_left<=queue_notification_cooldown:
