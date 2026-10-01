@@ -72,8 +72,8 @@ func get_peer_priority(peer_id:int)->int:
 
 
 
-func send_attack_and_wait(reroll:bool=false)->void:
-	peer_submitted_word.rpc(get_attack_value(),defense,not reroll,player.health,words_list.words,bruise)
+func send_attack_and_wait()->void:
+	peer_submitted_word.rpc(get_attack_value(),defense,is_submitting,player.health,words_list.words,bruise)
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
@@ -123,23 +123,18 @@ func send_attack_and_wait(reroll:bool=false)->void:
 	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		var health_scaling=main.enemy._get_health_scaling()
 		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
-	if reroll:
+	if not is_submitting:
 		await player.attack(enemy,damage)
 	if bite_healing>0 and damage<enemy.health:
 		enemy.heal(bite_healing)
 
 func submit_word() -> void :
 	if not main.candy_round:
-		is_submitting = true
-		await main.start_ending_player_turn(true)
-		await send_attack_and_wait(false)
-		await confirm_word()
-	
-func end_turn(reroll = false):
-	if not main.candy_round:
-		if reroll:
-			await send_attack_and_wait(true)
-		await super(reroll)
+		await super()
+
+func on_player_turn_ending() -> void :
+	await send_attack_and_wait()
+	await super()
 
 func player_disconnected(id:int)->void:
 	if id in peer_attacks:

@@ -77,5 +77,5 @@ func _on_name_changed(new_text: String) -> void:
 		Game.player_info.name=new_text
 
 
-func select_lexicographer() -> void:
-	%IconSelector.select(Globals.CHARACTER_ORDER.find(Game.player_info.character))
+#func select_lexicographer() -> void:
+	#%IconSelector.select(Globals.CHARACTER_ORDER.find(Game.player_info.character))

@@ -147,8 +147,7 @@ func get_spell_pool(category: String = "") -> Dictionary[String, float]:
 
 const REMOVED_SPELLS:PackedStringArray=[
 	Globals.SPELLS.MBA,
-	Globals.SPELLS.PANIC_BUTTON,
-	Globals.SPELLS.RED_TAPE
+	Globals.SPELLS.RED_TAPE,
 ]
 
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
