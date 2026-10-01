@@ -47,16 +47,16 @@ func disappear(instant: bool = false)->void:
 	for player_block in %Players.get_children():
 		player_block.queue_free()
 	player_blocks.clear()
-	Game.players.clear()
-	if Game.steam_lobby_id and multiplayer.is_server():
-		Game.steam_lobby_id=0
-		Steam.leaveLobby(Game.steam_lobby_id)
-	if Game.upnp!=null:
-		Game.upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
-	multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new()
+	if Game.steam_lobby_id:
+		menu_controller.menu_path.back()
+	Game.kill_peer()
 	super(instant)
 
 func leave()->void:
+	var in_steam_lobby=Game.steam_lobby_id!=0
+	if in_steam_lobby:
+		menu_controller.menu_path.pop_back()
+		#await menu_controller.back()
 	menu_controller.back()
 
 

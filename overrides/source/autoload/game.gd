@@ -157,8 +157,8 @@ func _on_peer_disconnected(id:int)->void:
 		print(id, " disconnected, but was already removed from the player list")
 
 func get_player_name(id:int)->String:
-	if id in players:
-		return players[id].name
+	if id in all_player_names:
+		return all_player_names[id]
 	return "???"
 
 @rpc("any_peer")
