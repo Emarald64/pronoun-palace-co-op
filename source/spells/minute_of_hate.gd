@@ -5,12 +5,14 @@ var coop:CoOp=ModLoader.get_node("coop")
 
 func set_status_tooltips():
 	#status_tooltips = [{status = TileStatus.ENHANCED, plastic = true}]
-	status_tooltips = [{status = TileStatus.BOMB, bomb_turns = 1},{status="timed", time=120 if coop.extra_hate_time else 60, bomb=true}]
+	status_tooltips = [
+		{status = TileStatus.CRIT},
+		{status="timed", time=60, bomb=false}]
 
-func _init(_id: String):
-	super(_id)
-	coop.updated_extra_time.connect(set_status_tooltips.unbind(1))
-	coop.updated_extra_time.connect(frame_updated.emit.unbind(1))
+#func _init(_id: String):
+	#super(_id)
+	#coop.updated_extra_time.connect(set_status_tooltips.unbind(1))
+	#coop.updated_extra_time.connect(frame_updated.emit.unbind(1))
 
 func _use_old():
 	const PARAMETERS={
@@ -44,13 +46,13 @@ func _use():
 	_post_use()
 
 func get_tooltip_context():
-	var context={extra_time=coop.extra_hate_time}
+	var context={}
 	if not letter.is_empty():
 		context.letter=letter
 	return context
 
 func get_frame() -> int:
-	return 1 if coop.extra_hate_time else 0
+	return 0
 
 func get_hv_frames() -> Vector2i:
 	return Vector2i(2,1)
@@ -59,5 +61,5 @@ func player_turn_started(is_battle_start: bool) -> void :
 	super(is_battle_start)
 	if is_owned():
 		# change applied letter
-		letter=Letters.pick_from_pool(Letters.LETTERS,rng.spell,{min_weight=3.0})
+		letter=Letters.pick_from_pool(Letters.LETTERS,rng.spell)
 		description_updated.emit()

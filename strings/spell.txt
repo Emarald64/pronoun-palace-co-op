@@ -172,7 +172,7 @@
 
 :minute_of_hate:
 	:name:
-		{:name_extra_time: if extra_time}{:name_normal_time: not extra_time}
+		{:name_normal_time:}
 
 	:name_extra_time:
 		Two Minutes Hate
@@ -181,20 +181,17 @@
 		Minute of Hate
 
 	:description:
-		Convert a tile on all players' board to a {:time:}-second timed bomb {letter upper} with a 1-turn fuse.
+		Convert a tile on all players' board to a 60-second timed crit {:letter:}.
 		Letter changes after every turn.
 
-	:time:
-		{120 if extra_time}{60 not extra_time}
+	:letter:
+		{:upper_letter: if letter}{"letter" not letter}
+
+	:upper_letter:
+		{letter upper}
 
 	:label:
-		{:letter_label: if letter}{:select_label: not letter}
-	
-	:letter_label:
-		Timed bomb {letter upper} for all
-	
-	:select_label:
-		Timed bomb letter for all
+		Timed crit {:letter:} for all
 	
 	:charge_category:
 		rare
@@ -203,7 +200,7 @@
 		1
 	
 	:effect_notification:
-		made one of your tiles a timed bomb {letter upper}.
+		made one of your tiles a timed crit {letter upper}.
 
 :ssn_printer:
 	:name:

@@ -12,7 +12,7 @@ const PEER_SELECTION_TYPE:=3
 signal updated_extra_time(value:bool)
 
 var version_number:String
-var extra_hate_time:=false
+#var extra_hate_time:=false
 
 const intent_icon_path:="res://mods/co-op/arte/intents/"
 
@@ -75,7 +75,7 @@ func _process(_delta: float) -> void:
 			unloaded_intents.erase(intent)
 
 func _ready()->void:
-	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true)
+	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true) # not sure if this actually does anything
 	
 	version_number=mod_data.json.data.version
 	if mod_data.json.data.author!=AUTHOR:
@@ -178,17 +178,17 @@ func load_run_save_data(data: Dictionary) -> void:
 	Game.all_player_names.merge(data.all_player_names)
 	#extra_hate_time=data.extra_hate_time
 
-func get_options_save_data() -> Dictionary:
-	return {
-		extra_hate_time=extra_hate_time,
-	}
-
-func load_options_save_data(data: Dictionary) -> void:
-	extra_hate_time=data.extra_hate_time
-
-func set_extra_hate_time(value:bool):
-	extra_hate_time=value
-	updated_extra_time.emit(value)
+#func get_options_save_data() -> Dictionary:
+	#return {
+		#extra_hate_time=extra_hate_time,
+	#}
+#
+#func load_options_save_data(data: Dictionary) -> void:
+	#extra_hate_time=data.extra_hate_time
+#
+#func set_extra_hate_time(value:bool):
+	#extra_hate_time=value
+	#updated_extra_time.emit(value)
 
 const BANNED_CURSES_SPELL_DATA=[
 	SPELLS.SSN_PRINTER
