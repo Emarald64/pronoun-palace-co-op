@@ -25,7 +25,7 @@ func _on_start_appearing()->void:
 		var selector_icons: Array[SelectorIcon] = []
 		selector_icons.assign(icons)
 		%IconSelector.set_icons(selector_icons)
-	%IconSelector.select(Globals.CHARACTER_ORDER.find(Game.player_info.character))
+	%IconSelector.select(Globals.CHARACTER_ORDER.find(SaveManager.get_save_data().selected_character))
 
 
 func connect_to_server() -> void:
@@ -58,6 +58,7 @@ func connection_ok()->void:
 
 
 func _on_icon_selector_selected(icon: SelectorIcon) -> void:
+	SaveManager.get_save_data().selected_character = icon.character
 	%CharacterTitle.key="character/%s/select_title" % icon.character
 	if icon.character==Globals.CHARACTERS.ADDICT:
 		$AddictDeselectTimer.start()
