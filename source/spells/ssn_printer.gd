@@ -47,5 +47,7 @@ func load_save_data(save):
 func _generate_peer_tooltip(tooltip:GameTooltip,peer_id:int):
 	var preview_ssn=Spell._instantiate_spell(CoOp.SPELLS.PRINTED_SSN)
 	preview_ssn.steam_id=peer_id
-	tooltip.add_subtooltip(preview_ssn.get_title(),preview_ssn.get_description())
-	preview_ssn.post_generate_tooltip(tooltip)
+	preview_ssn._setup_ssn(peer_id)
+	preview_ssn.generate_player_spell_tooltip(tooltip)
+	#tooltip.add_subtooltip(preview_ssn.get_title(),preview_ssn.get_description())
+	#preview_ssn.post_generate_tooltip(tooltip)

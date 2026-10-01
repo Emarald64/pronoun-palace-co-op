@@ -10,11 +10,12 @@ signal all_players_compleated_floor
 signal player_died(id:int)
 #signal peer_set_spells(success:bool)
 
-var reviving:=false
+#var reviving:=false
 var candy_round:=false
 
 @onready var coop_notifications:CoopNotifications=%CoopNotifications
 @onready var coop_spell_effects:CoopSpellEffects=$CoopSpellEffects
+@onready var peers_ui=%PeersUI
 
 func _ready():
 	super()
@@ -135,10 +136,10 @@ func log_compleated_floor():
 	print(multiplayer.get_remote_sender_id()," compleated floor: ",act_events[0])
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
 	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
-		print("reviving")
+		#print("reviving")
 		stop_waiting_for_death(true)
 		await get_tree().process_frame
-		reviving=false
+		#reviving=false
 	if players_compleated_floor.size()>=Game.players.size()-1:
 		print("all players compleated floor")
 		all_players_compleated_floor.emit()

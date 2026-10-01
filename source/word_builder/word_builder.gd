@@ -1,9 +1,9 @@
 extends WordBuilder
 
 var peer_attacks:Dictionary[int,Dictionary]={}
-var damage_indecators:Dictionary[int,Control]={}
+#var damage_indecators:Dictionary[int,Control]={}
 var player_total_damage:Dictionary[int,int]={}
-@export var damage_indecator_holder:Control
+#@export var damage_indecator_holder:Control
 @export var total_attack_label:Label
 @export var total_attack_container:Control
 var submitted_count:=0
@@ -50,39 +50,9 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 	else:
 		print_verbose("attack: ",attack_info)
 	peer_attacks[id]=attack_info
-	var damage_indecator:Control
-	if id in damage_indecators:
-		damage_indecator=damage_indecators[id]
-		damage_indecator.show()
-	else:
-		#create new damage indecator
-		damage_indecator=preload("res://mods/co-op/source/ui/peer_damage_indecator.tscn").instantiate()
-		damage_indecators[id]=damage_indecator
-		damage_indecator_holder.add_child(damage_indecator)
-		damage_indecator.setup(id)
-	damage_indecator.update(attack_info)
 	
-	# move damage indecator to match attack
-	@warning_ignore("confusable_local_declaration")
-	var ordered_damage_indecators=damage_indecator_holder.get_children()
-	ordered_damage_indecators.erase(damage_indecator)
-	var index=ordered_damage_indecators.bsearch_custom(damage_indecator,
-		func (a,b)->bool:
-			if not a.visible:
-				return false
-			if not b.visible:
-				return true
-			return get_peer_priority(a.peer_id)>get_peer_priority(b.peer_id)
-	)
-	if index>damage_indecator.get_index():
-		index+=1
-	#if multiplayer.is_server():
-		#print(index," ",peer_damage)
-		#print(damage_indecator_holder.get_children().map(func (damage_indecator):
-			#return peer_attacks[damage_indecator.peer_id].damage))
-	damage_indecator_holder.move_child(damage_indecator,index)
-	
-	update_total_damage_counter()
+	main.peers_ui.update_damage_indecator(id,attack_info)
+	main.peers_ui.update_total_damage_counter(damage)
 	
 	if submitted:
 		submitted_count+=1
@@ -100,20 +70,7 @@ func get_peer_priority(peer_id:int)->int:
 		priority-=2000000
 	return priority
 
-func update_total_damage_counter():
-	var total_damage=damage
-	if main.enemy!=null and main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
-		var health_scaling=main.enemy._get_health_scaling()
-		total_damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
-	
-	total_damage=peer_attacks.values().reduce(
-		func (accum:int,peer_attack)->int:
-			return accum+peer_attack.damage
-	,total_damage)
-	
-	if total_damage>0:
-		total_attack_container.show()
-	total_attack_label.text=str(total_damage)
+
 
 func send_attack_and_wait(reroll:bool=false)->void:
 	peer_submitted_word.rpc(get_attack_value(),defense,not reroll,player.health,words_list.words,bruise)
@@ -153,7 +110,7 @@ func send_attack_and_wait(reroll:bool=false)->void:
 
 			if enemy.next_move=="bite" and enemy.moves.bite.damage>peer_attack.defense:
 				bite_healing+=enemy.moves.bite.damage-peer_attack.defense+peer_attack.bruise
-			damage_indecators[id].hide()
+			#damage_indecators[id].hide()
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
 	total_attack_container.hide()
@@ -190,9 +147,7 @@ func player_disconnected(id:int)->void:
 		if attack.submitted:
 			submitted_count-=1
 		peer_attacks.erase(id)
-	if id in damage_indecators:
-		damage_indecators[id].queue_free()
-		damage_indecators.erase(id)
+	main.peers_ui.remove_peer(id)
 	if submitted_count+main.dead_players.size()>=len(Game.players)-1:
 		all_peers_submitted.emit()
 
@@ -266,7 +221,7 @@ func update_stats() -> void :
 			heighest_cany_round_tiles=tiles.filter(func (tile:Tile)->bool:return TileStatus.CANDY in tile.statuses)
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health,bruise)
-		update_total_damage_counter()
+		main.peers_ui.update_total_damage_counter(damage)
 
 func _on_finished_updating_stats(_words):
 	if main.candy_round:

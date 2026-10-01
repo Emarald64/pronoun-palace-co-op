@@ -24,9 +24,8 @@ offset_right = 156.0
 [node name="TileBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="2" unique_id=1619504647]
 script = ExtResource("3_hfx5h")
 
-[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("damage_indecator_holder", "total_attack_label", "total_attack_container")]
+[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895 node_paths=PackedStringArray("total_attack_label", "total_attack_container")]
 script = ExtResource("2_rhwav")
-damage_indecator_holder = NodePath("../PeersUI/ScrollContainer/Damage Indecator Holder")
 total_attack_label = NodePath("../PeersUI/TotalAttackContainer/TextureRect/TotalAttackLabel")
 total_attack_container = NodePath("../PeersUI/TotalAttackContainer")
 
@@ -47,7 +46,8 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 5
 
-[node name="Damage Indecator Holder" type="VBoxContainer" parent="GameUILayer/PeersUI/ScrollContainer" index="0" unique_id=1099706273]
+[node name="DamageIndecatorHolder" type="VBoxContainer" parent="GameUILayer/PeersUI/ScrollContainer" index="0" unique_id=1099706273]
+unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3

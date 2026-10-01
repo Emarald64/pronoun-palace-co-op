@@ -219,7 +219,7 @@
 		1
 	
 	:banned_curses:
-		laced fragile
+		fragile
 	
 	:banner:
 		Select a player to copy the SSN of
@@ -230,7 +230,6 @@
 
 	:description:
 		{:spell/ssn/description:}
-		
 		Transforms back to the {:ssn_printer/name:} after all the charges have been used.
 
 	:label:
