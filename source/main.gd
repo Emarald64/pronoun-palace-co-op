@@ -71,6 +71,8 @@ func player_death():
 	#else:
 	#player.is_dead=false
 	#player.hide_sprite_on_death=false
+	if candy_round:
+		return 
 	peer_died.rpc()
 	word_builder.submitted_count=0
 	print("I died")
@@ -129,7 +131,7 @@ func peer_died():
 		player_died.emit(id)
 		if dead_players.size()==Game.players.size()-1:
 			stop_waiting_for_death()
-		word_builder.damage_indecators[id].set_dead(true)
+		peers_ui.set_dead(id)
 
 @rpc("any_peer")
 func log_compleated_floor():
@@ -150,9 +152,7 @@ func increment_floor():
 	if players_compleated_floor.size()<Game.players.size()-1:
 		print("waiting for other players to compleate floor")
 		await all_players_compleated_floor
-	for id in dead_players:
-		word_builder.damage_indecators[id].set_dead(false)
-		word_builder.damage_indecators[id].hide()
+	peers_ui.reset_peers()
 	player.sprite.show()
 	dead_players.clear()
 	players_compleated_floor.clear()

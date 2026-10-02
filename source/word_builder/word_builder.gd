@@ -113,7 +113,7 @@ func send_attack_and_wait()->void:
 			#damage_indecators[id].hide()
 	print("attacking for ",damage," id: ",multiplayer.get_unique_id())
 	peer_attacks.clear()
-	main.peers_ui.hide_peers()
+	main.peers_ui.reset_peers()
 	others_queued_words.clear()
 	submitted_count=0
 	#if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
@@ -133,7 +133,8 @@ func submit_word() -> void :
 		await super()
 
 func on_player_turn_ending() -> void :
-	await send_attack_and_wait()
+	if not main.candy_round and player.health>0:
+		await send_attack_and_wait()
 	await super()
 
 func player_disconnected(id:int)->void:

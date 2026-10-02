@@ -71,10 +71,14 @@ func update_total_damage_counter(total_damage:int):
 	total_attack_container.show()
 	total_attack_label.text=str(total_damage)
 
-func hide_peers():
+func reset_peers():
 	for indecator in damage_indecators.values():
+		indecator.set_dead(false)
 		indecator.hide()
 	total_attack_container.hide()
+
+func set_dead(id:int,dead:bool=true):
+	damage_indecators[id].set_dead(dead)
 
 func remove_peer(id:int):
 	damage_indecators[id].queue_free()
