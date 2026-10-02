@@ -255,10 +255,10 @@
 		Select a player to swap boards with
 	
 	:charge_category:
-		auto
+		uncommon
 	
 	:max_charge:
-		1
+		2
 	
 	:flags:
 		removes_word
