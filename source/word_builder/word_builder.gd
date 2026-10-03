@@ -70,8 +70,6 @@ func get_peer_priority(peer_id:int)->int:
 		priority-=2000000
 	return priority
 
-
-
 func send_attack_and_wait()->void:
 	peer_submitted_word.rpc(get_attack_value(),defense,is_submitting,player.health,words_list.words,bruise)
 	var enemy=main.enemy
@@ -222,6 +220,3 @@ func update_stats() -> void :
 func _on_finished_updating_stats(_words):
 	if main.candy_round:
 		add_intent(CoOp.INTENTS.CANDY_ROUND_HEALING,{heal=heighest_candy_round_value},heighest_cany_round_tiles.filter(func (tile):return is_instance_valid(tile)))
-
-#func _on_submit_button_pressed():
-	#await super()

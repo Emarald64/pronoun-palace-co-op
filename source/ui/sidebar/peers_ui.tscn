@@ -32,7 +32,6 @@ offset_bottom = 168.0
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1851761039]
 custom_maximum_size = Vector2(-1, 168)
 layout_mode = 2
-size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 5
 

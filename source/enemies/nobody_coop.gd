@@ -45,7 +45,8 @@ func _init():
 			second_damage={
 				0:5,
 				1:6,
-				2:8,
+				2:7,
+				3:8
 			},
 			next="phone_a_friend_send"
 		},
@@ -270,11 +271,11 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 
 func swap_big():
 	await send_spell()
-	var swapping_board:bool=tile_board.num_columns==5
-	if regular_board:
-		hit_player(moves.swap.first_damage)
-	else:
+	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==2
+	if swapping_board:
 		hit_player(moves.swap_big.second_damage)
+	else:
+		hit_player(moves.swap.first_damage)
 	if recived_board_piece.is_empty() and swapping_board:
 		get_tree().create_timer(10).timeout.connect(recived_swap_info.emit)
 		await recived_swap_info
@@ -291,7 +292,7 @@ func swap_big():
 			var tile_data=recived_board_piece[cord]
 			InputSanity.process_tile_data(tile_data)
 			tile.load_save_data(tile_data)
-			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100))
+			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),rng.move.randf_range(80,100))
 			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
 			tile.impacted.connect(_on_projectile_impacted)
 			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
@@ -308,7 +309,7 @@ func swap_big():
 	await wait_for_idle()
 
 func swap_small():
-	var swapping_board:bool=tile_board.num_columns==5
+	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==4
 	if swapping_board:
 		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
 	await send_spell()
@@ -476,9 +477,7 @@ func phone_a_friend_recive():
 			})
 	var cursed_tiles=recived_phone_a_friend_data.duplicate()
 	rng.move.shuffle(cursed_tiles)
-	cursed_tiles.sort_custom(func (a:Dictionary,b:Dictionary)->bool:
-		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
-	)
+	order_tile_data(cursed_tiles)
 	for tile_data in cursed_tiles.slice(0,moves.phone_a_friend_recive.cursed_num):
 		if "statuses" in tile_data:
 			tile_data.statuses.append(TileStatus.CURSED)
@@ -518,7 +517,23 @@ func phone_a_friend_recive():
 	await Game.tile_board.settle_board()
 	await wait_for_idle()
 
-static func get_effect_priority(tile_effects,priority_list: Array=Globals.EFFECT_PRIORITY.ENEMY.STATUS_ONLY) -> int:
+static func order_tile_data(tile_datas:Array)->Array:
+	tile_datas=tile_datas.filter(func (tile_data:Dictionary)->bool:
+		if not "statuses" in tile_data:
+			return false
+		
+		for status_id in tile_data.statuses:
+			if status_id in EFFECT_PRIORITY.STATUS_ONLY[-1]:
+				return false
+		return true
+	)
+	
+	tile_datas.sort_custom(func (a,b)->bool:
+		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
+	)
+	return tile_datas
+
+static func get_effect_priority(tile_effects,priority_list: Array=EFFECT_PRIORITY.STATUS_ONLY) -> int:
 	if tile_effects==null:
 		return 999
 	for priority in range(priority_list.size() - 1, -1, -1):
@@ -531,19 +546,27 @@ static func get_effect_priority(tile_effects,priority_list: Array=Globals.EFFECT
 	return 999
 
 func attack_big():
-	await animate_attack()
-	for i in moves.attack_big.count:
-		hit_player(moves.attack_big.damage, i==moves.attack_big.count-1)
-		await Game.timeout(0.24)
-	attack_check_for_missing_partner()
-	await wait_for_idle()
+	await Game.timeout(0.24)
 
 func attack_small():
-	await animate_attack()
-	hit_player(moves.attack_small.damage)
-	attack_check_for_missing_partner()
-	await wait_for_idle()
+	await general_attack()
 
+func general_attack():
+	await animate_attack()
+	var damage:int
+	if tile_board.num_rows==2:
+		damage=moves.attack_small.damage
+	else:
+		damage=moves.attack_big.damage
+	var count:=1
+	if tile_board.num_rows>=4 and tile_board.num_columns>=5:
+		count=moves.attack_big.count
+	for i in count:
+		hit_player(moves.attack_small.damage)
+		await Game.timeout(0.24)
+	if swap_partner==-1:
+		next_move_override="solo_concentration"
+	await wait_for_idle()
 
 func get_multitude_damage_taken():
 	var taken = damage_taken
@@ -590,9 +613,7 @@ func solo_echo():
 			})
 	var cursed_tiles=echo_tiles.duplicate()
 	rng.move.shuffle(cursed_tiles)
-	cursed_tiles.sort_custom(func (a,b)->bool:
-		return get_effect_priority(a.get("statuses",[]))>get_effect_priority(b.get("statuses",[]))
-	)
+	order_tile_data(cursed_tiles)
 	for tile_data in cursed_tiles.slice(0,moves.solo_echo.cursed_num):
 		if "statuses" in tile_data:
 			tile_data.statuses.append(TileStatus.CURSED)
@@ -632,10 +653,6 @@ func solo_attack():
 		else:
 			next_move_override="swap_small"
 	await wait_for_idle()
-
-func attack_check_for_missing_partner():
-	if swap_partner==-1:
-		next_move_override="solo_concentration"
 
 func flinch_lethal(amount: int):
 	super(amount)
