@@ -5,7 +5,7 @@ var selecting_spell:=false
 func _use():
 	# display other player's spells
 	var my_index:=spell_container.player_spells.find(player_spell_slot)
-	var old_spells_save_data=spell_container.get_save_data()
+	var old_spells=spell_container.get_spells()
 	selecting_spell=false
 	var peer_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
 	if peer_id==null:
@@ -31,9 +31,11 @@ func _use():
 	var condition = func(spell): return not spell.spell_data.character_specific and spell.is_owned()
 	var new_spell:Spell = await player.get_selection(Player.Selection.SPELL,condition)
 	selecting_spell=false
+	remove_all_player_spells()
 	if new_spell == null:
-		remove_all_player_spells()
-		spell_container.load_save_data(old_spells_save_data)
+		for i in old_spells.size():
+			spell_container.add_spell(old_spells[i])
+		#spell_container.load_save_data(old_spells_save_data)
 		coop_spell_effects.using_remote_object=false
 		_end_use()
 		return
@@ -41,7 +43,7 @@ func _use():
 	var new_spell_index:=spell_container.player_spells.find(new_spell.player_spell_slot)
 	#var new_spell_save_data=new_spell.get_save_data()
 	#player_spell_slot.set_spell(new_spell)
-	remove_all_player_spells()
+	#remove_all_player_spells()
 	
 	var my_save_data=get_save_data()
 	my_save_data.charge-=1
@@ -51,7 +53,8 @@ func _use():
 	coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
 	coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	remove_all_player_spells()
-	spell_container.load_save_data(old_spells_save_data)
+	for i in old_spells.size():
+		spell_container.add_spell(old_spells[i])
 	coop_spell_effects.using_remote_object=false
 	_end_use()
 
