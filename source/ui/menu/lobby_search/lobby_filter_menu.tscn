@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://caf4hybwcdrm1"]
 
-[ext_resource type="Script" uid="uid://b0awmo81226p3" path="res://mods/co-op/source/ui/lobby_filter_menu.gd" id="1_apbov"]
+[ext_resource type="Script" uid="uid://b0awmo81226p3" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_filter_menu.gd" id="1_apbov"]
 [ext_resource type="Script" uid="uid://drgtw8sp4tp8n" path="res://source/library/anim_player.gd" id="2_7as0y"]
 [ext_resource type="Script" uid="uid://cfpkpmdehkp8u" path="res://source/ui/generic/shadow_cloner.gd" id="2_7ktls"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="2_j06b6"]
@@ -92,7 +92,7 @@ anchor_bottom = 0.5
 offset_left = -133.0
 offset_top = -97.0
 offset_right = 7.999817
-offset_bottom = 77.0
+offset_bottom = 3.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_type_variation = &"MenuTicketRight"
@@ -164,29 +164,6 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Control" type="Control" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=1106626145]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RefreshButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" unique_id=491160695]
-layout_mode = 2
-text = " "
-
-[node name="StringKeyLabel" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/RefreshButton" unique_id=1119018535]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("2_j06b6")
-key = "/mod/co-op/menu/refresh"
-metadata/_custom_type_script = "uid://blxt2xfbu02t5"
-
 [node name="ShadowCloner" type="Node2D" parent="PositionRoot/Panel" unique_id=508375791]
 position = Vector2(2, 2)
 script = ExtResource("2_7ktls")
@@ -196,5 +173,3 @@ metadata/_custom_type_script = "uid://cfpkpmdehkp8u"
 libraries/ = SubResource("AnimationLibrary_mu8uq")
 script = ExtResource("2_7as0y")
 metadata/_custom_type_script = "uid://drgtw8sp4tp8n"
-
-[connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/RefreshButton" to="." method="apply_filters"]

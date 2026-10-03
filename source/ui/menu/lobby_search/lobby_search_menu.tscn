@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://ca1lq3w2bh23"]
+
+[ext_resource type="Script" uid="uid://6kaa1qkcj7ak" path="res://mods/co-op/overrides/source/lobby_search_menu.gd" id="1_1vkev"]
+[ext_resource type="PackedScene" uid="uid://bd1kelblt38w4" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_list.tscn" id="2_gltn2"]
+[ext_resource type="PackedScene" uid="uid://caf4hybwcdrm1" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_filter_menu.tscn" id="3_jb2nq"]
+[ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="4_gltn2"]
+
+[node name="LobbySearchMenu" type="Control" unique_id=501848588]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1vkev")
+full_screen_menu = true
+metadata/_custom_type_script = "uid://bsqibr4dgehl3"
+
+[node name="LobbySearch" parent="." unique_id=1499490309 instance=ExtResource("2_gltn2")]
+layout_mode = 1
+offset_left = -20.0
+offset_right = -20.0
+
+[node name="LobbyFilterMenu" parent="." unique_id=1526431567 instance=ExtResource("3_jb2nq")]
+layout_mode = 1
+
+[node name="RefreshButton" parent="." unique_id=159128984 groups=["multipanel_position_exclude"] instance=ExtResource("4_gltn2")]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 71.0
+offset_bottom = 71.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "/mod/co-op/menu/refresh"
+
+[connection signal="refresh" from="LobbyFilterMenu" to="LobbySearch" method="refresh_lobbies"]
+[connection signal="pressed" from="RefreshButton" to="LobbyFilterMenu" method="apply_filters"]

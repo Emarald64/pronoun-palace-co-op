@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dvx2rlq4ph0lh"]
 
-[ext_resource type="Script" uid="uid://dkg0g441tk014" path="res://mods/co-op/source/ui/steam_lobby_entry.gd" id="1_mnnfb"]
+[ext_resource type="Script" uid="uid://dkg0g441tk014" path="res://mods/co-op/source/ui/menu/lobby_search/steam_lobby_entry.gd" id="1_mnnfb"]
 [ext_resource type="PackedScene" uid="uid://bmihv37bkvnyh" path="res://source/ui/icons/difficulty_icon.tscn" id="2_gge1b"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="3_yekkh"]
 

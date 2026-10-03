@@ -9,9 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://d1xbhbxo8rq8k" path="res://mods/co-op/source/ui/create_server_menu.tscn" id="5_f3mtu"]
 [ext_resource type="PackedScene" uid="uid://b0ic6lvqrr2a2" path="res://mods/co-op/source/ui/steam_join_menu.tscn" id="8_sfbee"]
 [ext_resource type="Script" uid="uid://dfwgxqa7kl7hi" path="res://source/ui/menu/generic/multi_panel_menu.gd" id="9_f3mtu"]
-[ext_resource type="PackedScene" uid="uid://bd1kelblt38w4" path="res://mods/co-op/source/ui/lobby_search.tscn" id="9_ujukc"]
-[ext_resource type="PackedScene" uid="uid://caf4hybwcdrm1" path="res://mods/co-op/source/ui/lobby_filter_menu.tscn" id="11_0y8nw"]
-[ext_resource type="Script" uid="uid://6kaa1qkcj7ak" path="res://mods/co-op/overrides/source/lobby_search_menu.gd" id="11_4o2ty"]
+[ext_resource type="PackedScene" uid="uid://bd1kelblt38w4" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_list.tscn" id="9_ujukc"]
+[ext_resource type="PackedScene" uid="uid://ca1lq3w2bh23" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_menu.tscn" id="12_4o2ty"]
 [ext_resource type="PackedScene" uid="uid://g4eausffcst3" path="res://source/ui/menu/buttons/menu_label_button_small.tscn" id="12_jervs"]
 
 [node name="MainMenu" unique_id=1522416414 instance=ExtResource("1_5oid8")]
@@ -66,10 +65,9 @@ offset_top = 1000.0
 offset_bottom = 1000.0
 lobby = NodePath("../Lobby")
 
-[node name="LobbySearch" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=1874066626 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("9_ujukc")]
+[node name="LobbySearch" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=1874066626 instance=ExtResource("9_ujukc")]
 offset_top = 1000.0
 offset_bottom = 1000.0
-steam_join_menu = NodePath("../Steam Join Menu")
 
 [node name="JoinSelectionMenu" type="Control" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="20" unique_id=356725616]
 layout_mode = 3
@@ -79,7 +77,7 @@ offset_bottom = 40.0
 script = ExtResource("9_f3mtu")
 metadata/_custom_type_script = "uid://dfwgxqa7kl7hi"
 
-[node name="MenuLabelButton" parent="HUD/JoinSelectionMenu" index="0" unique_id=1460177404 node_paths=PackedStringArray("opens_menu") instance=ExtResource("12_jervs")]
+[node name="IPButton" parent="HUD/JoinSelectionMenu" index="0" unique_id=1460177404 node_paths=PackedStringArray("opens_menu") instance=ExtResource("12_jervs")]
 layout_mode = 0
 offset_left = 726.0
 offset_top = 559.0
@@ -88,7 +86,7 @@ offset_bottom = 559.0
 text = "mod/co-op/menu/ip"
 opens_menu = NodePath("../../Join Menu")
 
-[node name="MenuLabelButton2" parent="HUD/JoinSelectionMenu" index="1" unique_id=281408703 node_paths=PackedStringArray("opens_menu") instance=ExtResource("12_jervs")]
+[node name="SteamLobbiesButton" parent="HUD/JoinSelectionMenu" index="1" unique_id=281408703 node_paths=PackedStringArray("opens_menu") instance=ExtResource("12_jervs")]
 layout_mode = 0
 offset_left = 806.0
 offset_top = 559.0
@@ -97,32 +95,11 @@ offset_bottom = 559.0
 text = "mod/co-op/menu/lobbies"
 opens_menu = NodePath("../../LobbySearchMenu")
 
-[node name="LobbySearchMenu" type="Control" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="21" unique_id=757276223]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 577.0
-offset_top = 594.0
-offset_right = 577.0
-offset_bottom = 594.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("11_4o2ty")
-full_screen_menu = true
-metadata/_custom_type_script = "uid://bsqibr4dgehl3"
-
-[node name="LobbySearch" parent="HUD/LobbySearchMenu" index="0" unique_id=59213356 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("9_ujukc")]
-layout_mode = 1
-offset_left = -20.0
-offset_right = -20.0
-steam_join_menu = NodePath("../../Steam Join Menu")
-
-[node name="LobbyFilterMenu" parent="HUD/LobbySearchMenu" index="1" unique_id=1526431567 instance=ExtResource("11_0y8nw")]
-layout_mode = 1
-
-[connection signal="refresh" from="HUD/LobbySearchMenu/LobbyFilterMenu" to="HUD/LobbySearchMenu/LobbySearch" method="refresh_lobbies"]
+[node name="LobbySearchMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="21" unique_id=501848588 instance=ExtResource("12_4o2ty")]
+offset_left = 515.0
+offset_top = 621.0
+offset_right = 515.0
+offset_bottom = 621.0
 
 [editable path="HUD/PlayMenu/NewRunButton"]
 [editable path="HUD/CharacterSelect"]
