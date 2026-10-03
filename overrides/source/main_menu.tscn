@@ -95,11 +95,12 @@ offset_bottom = 559.0
 text = "mod/co-op/menu/lobbies"
 opens_menu = NodePath("../../LobbySearchMenu")
 
-[node name="LobbySearchMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="21" unique_id=501848588 instance=ExtResource("12_4o2ty")]
+[node name="LobbySearchMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="21" unique_id=501848588 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("12_4o2ty")]
 offset_left = 515.0
 offset_top = 621.0
 offset_right = 515.0
 offset_bottom = 621.0
+steam_join_menu = NodePath("../Steam Join Menu")
 
 [editable path="HUD/PlayMenu/NewRunButton"]
 [editable path="HUD/CharacterSelect"]

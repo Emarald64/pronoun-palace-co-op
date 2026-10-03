@@ -2,6 +2,7 @@ extends MenuPanel
 
 var lobby_entries:Array[Control]=[]
 var lobby_entry_scene:PackedScene=load("res://mods/co-op/source/ui/menu/lobby_search/steam_lobby_entry.tscn")
+signal go_to_join_menu
 
 #signal apply_filters
 
@@ -49,6 +50,6 @@ func join_lobby(lobby_id:int):
 	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
 		print("joined lobby ",lobby_id," successfuly")
 		AudioManager.play_sound(Sounds.UI.FORWARD_PAPER)
-		
+		go_to_join_menu.emit()
 	else:
 		push_error("error joining lobby, code: ",lobby_joined_response)

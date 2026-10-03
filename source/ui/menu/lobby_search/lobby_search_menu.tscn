@@ -38,5 +38,6 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "/mod/co-op/menu/refresh"
 
+[connection signal="go_to_join_menu" from="LobbySearch" to="." method="open_steam_join_menu"]
 [connection signal="refresh" from="LobbyFilterMenu" to="LobbySearch" method="refresh_lobbies"]
 [connection signal="pressed" from="RefreshButton" to="LobbyFilterMenu" method="apply_filters"]

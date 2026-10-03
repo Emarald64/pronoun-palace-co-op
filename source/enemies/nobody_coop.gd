@@ -228,26 +228,26 @@ func display_intent():
 			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"phone_a_friend_recive":
 			add_intent(CoOp.INTENTS.PHONE_A_FRIEND_RECEIVE, {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,description_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {
+				name_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,
+				description_override=CoOp.INTENTS.PHONE_A_FRIEND_RECIVE_CURSED,
+				count=moves.phone_a_friend_recive.cursed_num,
+				status=TileStatus.CURSED
+			})
 			add_intent(Intent.PREPARING)
 		"phone_a_friend_send":
 			add_intent(CoOp.INTENTS.PHONE_A_FRIEND_SEND, {partner=Game.players[swap_partner].name})
-			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,description_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {
+				name_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,
+				description_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,
+				count=moves.phone_a_friend_recive.cursed_num,
+				status=TileStatus.CURSED
+			})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
 			add_intent(Intent.ATTACK, get_general_attack_intent_context())
 		"attack_small":
 			add_intent(Intent.ATTACK, get_general_attack_intent_context())
-		"solo_attack":
-			add_intent(Intent.ATTACK, {damage=moves.solo_attack.damage})
-			if tile_board.num_columns!=4:
-				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
-		"solo_echo":
-			add_intent(CoOp.INTENTS.ECHO,{first_time=echo_tiles.is_empty()})
-			#add_intent("echo_cursed", {count=moves.solo_echo.cursed,status=TileStatus.CURSED})
-			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.ECHO_CURSED,description_override=CoOp.INTENTS.ECHO_CURSED,count=moves.solo_echo.cursed_num,status=TileStatus.CURSED})
-			if tile_board.num_columns!=4:
-				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_concentration":
 			add_intent(Intent.CONCENTRATION,{
 				damage=get_multitude_attack_damage(),
@@ -257,6 +257,21 @@ func display_intent():
 			})
 			if Game.players.size()>main.dead_players.size()+1:
 				add_intent(CoOp.INTENTS.SPELL_SWAP)
+			if tile_board.num_columns!=4:
+				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
+		"solo_echo":
+			add_intent(CoOp.INTENTS.ECHO,{first_time=echo_tiles.is_empty()})
+			#add_intent("echo_cursed", {count=moves.solo_echo.cursed,status=TileStatus.CURSED})
+			add_intent(Intent.APPLY_STATUS, {
+				name_override=CoOp.INTENTS.ECHO_CURSED,
+				description_override=CoOp.INTENTS.ECHO_CURSED,
+				count=moves.solo_echo.cursed_num,
+				status=TileStatus.CURSED
+			})
+			if tile_board.num_columns!=4:
+				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
+		"solo_attack":
+			add_intent(Intent.ATTACK, {damage=moves.solo_attack.damage})
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 
