@@ -214,7 +214,9 @@ func start_ending_player_turn(ignore_spell_use: bool = false, submit_word_builde
 
 func fix_desyncs():
 	if enemy==null or enemy.id!=Enemies.NOBODY:
-		merge_and_load_save.rpc({metadata=get_save_metadata(),data=get_save_data()})
+		var save_data=get_save_data()
+		save_data.forfeit=false
+		merge_and_load_save.rpc({metadata=get_save_metadata(),data=save_data})
 		#dead_players.clear()
 		players_compleated_floor.clear()
 		candy_round=false
@@ -224,6 +226,7 @@ func fix_desyncs():
 @rpc
 func merge_and_load_save(host_save:Dictionary):
 	Game.loading_run_save=Game.merge_saves(host_save,{metadata=get_save_metadata(),data=get_save_data()})
+	Game.loading_run_save.data.forfeit=true
 	#screen_wipe.wipe_in()
 	#await screen_wipe.screen_covered
 	Game.sync_start=true

@@ -1,1 +1,3 @@
 [] playing a word on a phone a friend send, then rerolling on the next one causes the last sent word to be sent again
+[x] using remote object causes panic button and salt to lose their charges
+[x] test rejoining co-op game/ stop desyncing as addict
