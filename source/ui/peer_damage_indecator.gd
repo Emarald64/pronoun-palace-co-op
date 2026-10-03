@@ -11,8 +11,8 @@ func _ready() -> void:
 
 
 func setup(id:int)->void:
-	Game.player.selection_started.connect(update_selecting)
-	Game.player.selection_finished.connect(update_selecting)
+	Game.player.selection_started.connect(start_selecting)
+	Game.player.selection_finished.connect(stop_selecting)
 	set_character(Game.players[id].character)
 	%Name.text=Game.players[id].name
 	peer_id=id
@@ -44,21 +44,21 @@ func _on_button_pressed() -> void:
 		Game.main.player.selected.emit(peer_id)
 		AudioManager.play_sound(Sounds.SPELLS.SPELL_CLICK)
 
-func update_selecting()->void:
-	#var selecting_player:bool=Game.main.player.is_selecting(3)
+func start_selecting()->void:
 	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
 		var selection_valid=Game.player.passes_selection_condition(peer_id)
 		$Button.disabled=not selection_valid
 		$HoverHandler.set_disabled(not selection_valid)
 		modulate=Color.WHITE if selection_valid else Color.GRAY
 		$TooltipCollision.enabled=Game.player.active_spell.has_method("_generate_peer_tooltip")
-		#print("tooltip enabled: ",$TooltipCollision.enabled)
-	else:
-		$TooltipCollision.enabled=false
-		$TooltipCollision.clear_tooltip()
-		$Button.disabled=true
-		$HoverHandler.set_disabled(true)
-		modulate=Color.WHITE
+
+
+func stop_selecting():
+	$TooltipCollision.enabled=false
+	$TooltipCollision.clear_tooltip()
+	$Button.disabled=true
+	$HoverHandler.set_disabled(true)
+	modulate=Color.WHITE
 
 func _on_generate_tooltip(tooltip:GameTooltip):
 	#print("peer ui tried making tooltip")

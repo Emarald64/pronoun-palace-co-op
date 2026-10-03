@@ -5,11 +5,17 @@ const TILES_TO_MOVE=12
 var tween:Tween
 
 var damage_indecators:Dictionary[int,Control]={}
+var disable_sorting:=false
 
 @onready var word_builder=Game.word_builder
 @onready var total_attack_label=%TotalAttackLabel
 @onready var damage_indecator_holder=%DamageIndecatorHolder
 @onready var total_attack_container=%TotalAttackContainer
+
+func _ready():
+	await get_tree().process_frame
+	Game.player.selection_started.connect(start_selecting)
+	Game.player.selection_finished.connect(stop_selecting)
 
 func _on_game_state_updated():
 	if word_builder.tiles.size()>=TILES_TO_MOVE and not pushed_off:
@@ -40,21 +46,14 @@ func update_damage_indecator(id:int,data:Dictionary):
 		damage_indecator.setup(id)
 	damage_indecator.update(data)
 	
-	# move damage indecator to match attack
-	@warning_ignore("confusable_local_declaration")
-	var ordered_damage_indecators=damage_indecator_holder.get_children()
-	ordered_damage_indecators.erase(damage_indecator)
-	var index=ordered_damage_indecators.bsearch_custom(damage_indecator,
-		func (a,b)->bool:
-			if not a.visible:
-				return false
-			if not b.visible:
-				return true
-			return word_builder.get_peer_priority(a.peer_id)>word_builder.get_peer_priority(b.peer_id)
-	)
-	if index>damage_indecator.get_index():
-		index+=1
-	damage_indecator_holder.move_child(damage_indecator,index)
+	if not disable_sorting:
+		# move damage indecator to match attack
+		var ordered_damage_indecators=damage_indecator_holder.get_children()
+		ordered_damage_indecators.erase(damage_indecator)
+		var index=ordered_damage_indecators.bsearch_custom(damage_indecator,order_peer_ui)
+		if index>damage_indecator.get_index():
+			index+=1
+		damage_indecator_holder.move_child(damage_indecator,index)
 
 func update_total_damage_counter(total_damage:int):
 	#var total_damage=damage
@@ -83,3 +82,25 @@ func set_dead(id:int,dead:bool=true):
 func remove_peer(id:int):
 	damage_indecators[id].queue_free()
 	damage_indecators.erase(id)
+
+func start_selecting():
+	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
+		disable_sorting=true
+
+func stop_selecting():
+	if disable_sorting:
+		sort_peers()
+		disable_sorting=false
+
+func sort_peers():
+	var sorted_idecators=damage_indecators.values()
+	sorted_idecators.sort_custom(order_peer_ui)
+	for i in sorted_idecators.size():
+		damage_indecator_holder.move_child(sorted_idecators[i],i)
+
+func order_peer_ui(a,b)->bool:
+	if not a.visible:
+		return false
+	if not b.visible:
+		return true
+	return word_builder.get_peer_priority(a.peer_id)>word_builder.get_peer_priority(b.peer_id)
