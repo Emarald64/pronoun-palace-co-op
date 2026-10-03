@@ -13,6 +13,10 @@ offset_right = 112.0
 offset_bottom = 22.0
 script = ExtResource("1_3omnc")
 
+[node name="ShadowGroup" type="CanvasGroup" parent="." unique_id=190152862]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.23921569)
+
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1851761039]
 custom_maximum_size = Vector2(-1, 168)
 layout_mode = 2

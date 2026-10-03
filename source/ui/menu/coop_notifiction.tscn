@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://d1hrcojaw1lpk" path="res://mods/co-op/source/ui/character_icon_texture.tres" id="2_c3dy0"]
 [ext_resource type="Texture2D" uid="uid://dmofi0m21sgho" path="res://arte/spells/letter_opener.png" id="4_484hd"]
 [ext_resource type="PackedScene" uid="uid://dat3nkol372xh" path="res://source/ui/menu/generic/menu_page_shadow.tscn" id="4_bt5iu"]
+[ext_resource type="Script" uid="uid://cfpkpmdehkp8u" path="res://source/ui/generic/shadow_cloner.gd" id="6_g8emi"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bt5iu"]
 texture = ExtResource("1_484hd")
@@ -72,3 +73,7 @@ layout_mode = 2
 size_flags_vertical = 3
 autowrap_mode = 2
 text_overrun_behavior = 1
+
+[node name="ShadowCloner" type="Node2D" parent="." unique_id=81638256]
+script = ExtResource("6_g8emi")
+metadata/_custom_type_script = "uid://cfpkpmdehkp8u"

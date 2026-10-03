@@ -47,7 +47,7 @@ theme_type_variation = &"MenuTicketLeft"
 [node name="ShadowCloner" type="Node2D" parent="Panel" unique_id=1669253373]
 position = Vector2(2, 2)
 script = ExtResource("4_dt3se")
-local_shadow = true
+local_shadow_group = true
 metadata/_custom_type_script = "uid://cfpkpmdehkp8u"
 
 [node name="Panel" type="ColorRect" parent="Panel" unique_id=952433256]

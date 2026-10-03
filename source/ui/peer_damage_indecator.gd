@@ -7,6 +7,7 @@ var peer_id:=0
 func _ready() -> void:
 	%AttackSprite.texture=%AttackSprite.texture.duplicate()
 	$HoverHandler.disabled=true
+	$TooltipCollision.enabled=false
 
 
 func setup(id:int)->void:
