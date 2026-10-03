@@ -211,10 +211,19 @@ func display_intent():
 	match next_move:
 		"swap_big":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 4, size_y = 5})
-			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_big.second_damage)})
+			var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==2
+			if swapping_board:
+				add_intent(Intent.ATTACK, {damage=moves.swap_big.second_damage})
+			else:
+				add_intent(Intent.ATTACK, {damage=moves.swap.first_damage})
+			#add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_big.second_damage)})
 			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 2, size_y = 5})
+			if tile_board.num_columns==5 and tile_board.num_columns==4:
+				hit_player(moves.swap_small.second_damage)
+			else:
+				hit_player(moves.swap.first_damage)
 			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
 			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"phone_a_friend_recive":
@@ -226,9 +235,9 @@ func display_intent():
 			add_intent(Intent.APPLY_STATUS, {name_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,description_override=CoOp.INTENTS.PHONE_A_FRIEND_SEND_CURSED,count=moves.phone_a_friend_recive.cursed_num,status=TileStatus.CURSED})
 			add_intent(Intent.ATTACK, {damage=moves.phone_a_friend_send.damage})
 		"attack_big":
-			add_intent(Intent.ATTACK, {damage=moves.attack_big.damage, count=moves.attack_big.count})
+			add_intent(Intent.ATTACK, get_general_attack_intent_context())
 		"attack_small":
-			add_intent(Intent.ATTACK, {damage=moves.attack_small.damage})
+			add_intent(Intent.ATTACK, get_general_attack_intent_context())
 		"solo_attack":
 			add_intent(Intent.ATTACK, {damage=moves.solo_attack.damage})
 			if tile_board.num_columns!=4:
@@ -313,10 +322,10 @@ func swap_small():
 	if swapping_board:
 		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
 	await send_spell()
-	if regular_board:
-		hit_player(moves.swap.first_damage)
-	else:
+	if swapping_board:
 		hit_player(moves.swap_small.second_damage)
+	else:
+		hit_player(moves.swap.first_damage)
 	await tile_board.set_size(5,2)
 	dooming_rows.clear()
 	regular_board=false
@@ -568,6 +577,15 @@ func general_attack():
 		next_move_override="solo_concentration"
 	await wait_for_idle()
 
+func get_general_attack_intent_context()->Dictionary:
+	var context={}
+	if tile_board.num_rows==2:
+		context.damage=moves.attack_small.damage
+	else:
+		context.damage=moves.attack_big.damage
+		context.count=moves.attack_big.count
+	return context
+
 func get_multitude_damage_taken():
 	var taken = damage_taken
 	if main.is_player_turn or word_builder.waiting_for_peers_to_submit:
@@ -660,7 +678,7 @@ func flinch_lethal(amount: int):
 		tile_copy.queue_free()
 
 func _on_finished_updating_stats(_words):
-	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) and next_move=="solo_concentration":
+	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit):
 		update_intents()
 
 func apply_fish(tile: Tile, fish: Fish) -> void:
