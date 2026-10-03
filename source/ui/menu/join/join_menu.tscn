@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://benomodipcosy"]
 
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_vpni1"]
-[ext_resource type="Script" uid="uid://2rpgq65ubnhu" path="res://mods/co-op/source/ui/join_menu.gd" id="2_7a7fu"]
+[ext_resource type="Script" uid="uid://2rpgq65ubnhu" path="res://mods/co-op/source/ui/menu/join/join_menu.gd" id="2_7a7fu"]
 [ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_uh8xk"]
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="3_fj880"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="4_10pla"]

@@ -1,4 +1,4 @@
-extends "res://mods/co-op/source/ui/join_menu.gd"
+extends "res://mods/co-op/source/ui/menu/join/join_menu.gd"
 
 var joining_game:=false
 

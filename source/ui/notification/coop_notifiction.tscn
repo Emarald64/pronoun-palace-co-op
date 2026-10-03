@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://de0ujkvckdxih"]
 
 [ext_resource type="Texture2D" uid="uid://b2ny68c6flnrm" path="res://arte/ui/menu_paper/menu_ticket_right.png" id="1_484hd"]
-[ext_resource type="Script" uid="uid://c1qi456enge2p" path="res://mods/co-op/source/ui/menu/coop_notifiction.gd" id="1_w43n7"]
+[ext_resource type="Script" uid="uid://c1qi456enge2p" path="res://mods/co-op/source/ui/notification/coop_notifiction.gd" id="1_w43n7"]
 [ext_resource type="Texture2D" uid="uid://d1hrcojaw1lpk" path="res://mods/co-op/source/ui/character_icon_texture.tres" id="2_c3dy0"]
 [ext_resource type="Texture2D" uid="uid://dmofi0m21sgho" path="res://arte/spells/letter_opener.png" id="4_484hd"]
 [ext_resource type="PackedScene" uid="uid://dat3nkol372xh" path="res://source/ui/menu/generic/menu_page_shadow.tscn" id="4_bt5iu"]

@@ -4,7 +4,7 @@ extends Control
 const max_notifications=1
 const queue_notification_cooldown=5
 const clear_notification_cooldown=10
-var notifiction_scene:PackedScene=load("res://mods/co-op/source/ui/menu/coop_notifiction.tscn")
+var notifiction_scene:PackedScene=load("res://mods/co-op/source/ui/notification/coop_notifiction.tscn")
 var notifications:Array[Control]=[]
 var notification_queue:Array[Control]=[]
 @onready var cooldown:Timer=$NotifictionCooldown

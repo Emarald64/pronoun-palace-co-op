@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://i22cj8xh1npk"]
 
-[ext_resource type="Script" uid="uid://bkta74lirtbu" path="res://mods/co-op/source/ui/menu/coop_notifications.gd" id="1_3sy4h"]
+[ext_resource type="Script" uid="uid://bkta74lirtbu" path="res://mods/co-op/source/ui/notification/coop_notifications.gd" id="1_3sy4h"]
 
 [node name="CoopNotifications" type="Control" unique_id=1613358473]
 custom_minimum_size = Vector2(135, 0)

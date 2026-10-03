@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bysnwiws7a24d"]
 
-[ext_resource type="PackedScene" uid="uid://de0ujkvckdxih" path="res://mods/co-op/source/ui/menu/coop_notifiction.tscn" id="1_f38wx"]
+[ext_resource type="PackedScene" uid="uid://de0ujkvckdxih" path="res://mods/co-op/source/ui/notification/coop_notifiction.tscn" id="1_f38wx"]
 [ext_resource type="Texture2D" uid="uid://i7gug4rimjhl" path="res://arte/ui/enemy_icons.png" id="2_kewd4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kewd4"]

@@ -23,14 +23,14 @@ func _use():
 	# make data for stamped
 	const STAMP_CORNERS=[
 		#Vector2i(7,7),
-		Vector2i(7,-7),#bottom right
+		#Vector2i(7,-7),#bottom right
 		Vector2i(-7,7),#top right
 		Vector2i(-7,-7),#top left
 	]
 	var illegal_tile=tile.has_harmful_status() or tile.has_any_status([TileStatus.HOLE,TileStatus.SCREW])
 	var stamped_save={
 		frame=4 if illegal_tile else rng.spell.randi_range(0,2),
-		rotation=maxi(rng.spell.randi_range(-4,3),0)*PI/2,
+		rotation=maxi(rng.spell.randi_range(-12,3),0)*PI/2,
 		pos=rng.spell.pick_random(STAMP_CORNERS)+Vector2i(rng.spell.randi_range(-1,1),rng.spell.randi_range(-1,1)),
 		name=Game.player_info.name
 	}
@@ -45,26 +45,31 @@ func _use():
 	
 	# send notification
 	# get status to be named in the notification
-	var named_tile_status:=""
+	# get face to be displayed in the notificaton
+	var notification_context={
+			wooden=tile_save.type==TileType.DAMAGE,
+			plastic=tile_save.type==TileType.DEFENSE
+		}
 	for status in tile_save.statuses:
 		var group: = StringManager.get_string_group("status/" + status)
 		if "shared" not in group.get_string("flags"):
-			named_tile_status=group.get_string("name")+" "
+			notification_context.status=group.get_string("name")+" "
 			break
-	# get face to be displayed in the notificaton
-	var notification_face:String=tile_save.faces[0]
 	if TileStatus.MYSTERY in tile_save.statuses:
-		notification_face="?".repeat(notification_face.length())
+		notification_context.face="?".repeat(tile_save.faces[0].length())
 	elif TileStatus.MONEY in tile_save.statuses:
-		notification_face=notification_face.replace_char("*".unicode_at(0),"$".unicode_at(0))
+		notification_context.face=tile_save.faces[0].replace_char("*".unicode_at(0),"$".unicode_at(0))
+	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StringManager.get_string_at_path(["statuses",status_id,"flags"]).split(" ")):
+		notification_context.face=tile_save.faces[0]
+	
+	if "face" in notification_context:
+		if TileStatus.PERIOD in tile_save.statuses:
+			notification_context.face+="."
+		elif TileStatus.CAPITAL in tile_save.statuses:
+			notification_context.face=notification_context.face.to_upper()
+	
 	# send notification
-	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,
-		{
-			face=notification_face,
-			status=named_tile_status,
-			wooden=tile_save.type==TileType.DAMAGE,
-			plastic=tile_save.type==TileType.DEFENSE
-		})
+	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,notification_context)
 	
 	# launch tile to spell icon
 	tile_board.remove_tile(tile,{delete_tiles = false,ignore_status=true})

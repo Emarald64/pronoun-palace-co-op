@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_vnwub"]
 [ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_eupno"]
-[ext_resource type="Script" uid="uid://b2kq08fa40dkm" path="res://mods/co-op/source/ui/steam_join_menu.gd" id="3_vnwub"]
+[ext_resource type="Script" uid="uid://b2kq08fa40dkm" path="res://mods/co-op/source/ui/menu/join/steam_join_menu.gd" id="3_vnwub"]
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="4_yycis"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="5_3e76r"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="6_xcvp0"]

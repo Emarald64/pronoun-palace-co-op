@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d268ojbynpbue"]
 
-[ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/peers_ui.gd" id="1_3omnc"]
+[ext_resource type="Script" uid="uid://cfib3je6auavs" path="res://mods/co-op/source/ui/sidebar/peers_ui.gd" id="1_3omnc"]
 [ext_resource type="Texture2D" uid="uid://cvccvhijw625p" path="res://arte/ui/intents.png" id="2_l4340"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xp132"]

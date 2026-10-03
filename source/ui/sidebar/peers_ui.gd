@@ -1,7 +1,9 @@
 extends Control
 
-var pushed_off:=false
 const TILES_TO_MOVE=12
+const DAMAGE_INDECATOR_SCENE=preload("res://mods/co-op/source/ui/sidebar/peer_damage_indecator.tscn")
+
+var pushed_off:=false
 var tween:Tween
 
 var damage_indecators:Dictionary[int,Control]={}
@@ -40,7 +42,7 @@ func update_damage_indecator(id:int,data:Dictionary):
 		damage_indecator.show()
 	else:
 		#create new damage indecator
-		damage_indecator=preload("res://mods/co-op/source/ui/peer_damage_indecator.tscn").instantiate()
+		damage_indecator=DAMAGE_INDECATOR_SCENE.instantiate()
 		damage_indecators[id]=damage_indecator
 		damage_indecator_holder.add_child(damage_indecator)
 		damage_indecator.setup(id)

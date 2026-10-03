@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://7yaxnry66h85"]
 
 [ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="1_q67cv"]
-[ext_resource type="Script" uid="uid://3aq0up4tmbdo" path="res://mods/co-op/source/ui/lobby_player.gd" id="1_tjqa4"]
+[ext_resource type="Script" uid="uid://3aq0up4tmbdo" path="res://mods/co-op/source/ui/menu/lobby/lobby_player.gd" id="1_tjqa4"]
 
 [node name="Panel" type="Panel" unique_id=1008252444]
 custom_minimum_size = Vector2(0, 32)

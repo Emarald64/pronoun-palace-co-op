@@ -1,23 +1,23 @@
 [gd_scene format=3 uid="uid://d1xbhbxo8rq8k"]
 
-[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_y0u7g"]
-[ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/source/ui/create_server_menu.gd" id="2_i4ivu"]
-[ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_kvote"]
-[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="4_xb03o"]
-[ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="5_nywm6"]
-[ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="6_dveqe"]
+[ext_resource type="PackedScene" uid="uid://c6vvnk61vcc48" path="res://source/ui/menu/generic/big_menu_panel.tscn" id="1_6kfhv"]
+[ext_resource type="Theme" uid="uid://qdmbpmrdx538" path="res://mods/co-op/connection_menu_theme.tres" id="2_w4nqm"]
+[ext_resource type="Script" uid="uid://vja0vdfaur6k" path="res://mods/co-op/source/ui/menu/host/host_menu.gd" id="3_yl7w0"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="4_040ac"]
+[ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="5_ualr1"]
+[ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="6_8mq6c"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_a6585"]
 
 [sub_resource type="Resource" id="Resource_aecc4"]
-script = ExtResource("6_dveqe")
+script = ExtResource("6_8mq6c")
 groups = PackedStringArray("UI")
 sound = "UI/CHAR_SELECT"
 metadata/_custom_type_script = "uid://c17dcnicbtc1a"
 
-[node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_y0u7g")]
-theme = ExtResource("2_kvote")
-script = ExtResource("2_i4ivu")
+[node name="CreateServerMenu" unique_id=1499490309 instance=ExtResource("1_6kfhv")]
+theme = ExtResource("2_w4nqm")
+script = ExtResource("3_yl7w0")
 
 [node name="MarginContainer" type="MarginContainer" parent="PositionRoot/Panel" parent_id_path=PackedInt32Array(1955025572) index="1" unique_id=1193323887]
 layout_mode = 1
@@ -49,7 +49,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 horizontal_alignment = 1
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/host"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
@@ -59,7 +59,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2" index="0" unique_id=717161970]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/name"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
@@ -75,7 +75,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="0" unique_id=1457768145]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/max_players"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
@@ -116,7 +116,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="0" unique_id=497268185]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/port"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
@@ -195,11 +195,11 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=38857167]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/visibility"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="VisibilitySelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="1" unique_id=1130161940 instance=ExtResource("5_nywm6")]
+[node name="VisibilitySelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="1" unique_id=1130161940 instance=ExtResource("5_ualr1")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -214,7 +214,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 horizontal_alignment = 1
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/lobby_type/friends_only/name"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
@@ -227,7 +227,7 @@ theme_override_constants/line_spacing = 1
 theme_override_constants/paragraph_spacing = -2
 theme_override_font_sizes/font_size = 8
 horizontal_alignment = 1
-script = ExtResource("4_xb03o")
+script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/lobby_type/friends_only/description"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 

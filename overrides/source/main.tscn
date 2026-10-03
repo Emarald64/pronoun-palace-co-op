@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/source/main.gd" id="2_8s84c"]
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Script" uid="uid://dlpnjmg71lnya" path="res://mods/co-op/source/tile/tile_board.gd" id="3_hfx5h"]
-[ext_resource type="PackedScene" uid="uid://d268ojbynpbue" path="res://mods/co-op/source/ui/peers_ui.tscn" id="5_2w87v"]
-[ext_resource type="PackedScene" uid="uid://i22cj8xh1npk" path="res://mods/co-op/source/ui/menu/coop_notifications.tscn" id="7_2w87v"]
+[ext_resource type="PackedScene" uid="uid://d268ojbynpbue" path="res://mods/co-op/source/ui/sidebar/peers_ui.tscn" id="5_2w87v"]
+[ext_resource type="PackedScene" uid="uid://i22cj8xh1npk" path="res://mods/co-op/source/ui/notification/coop_notifications.tscn" id="7_2w87v"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
 [ext_resource type="Script" uid="uid://rb07pgduhbcu" path="res://mods/co-op/source/coop_spell_effects.gd" id="9_o8jme"]
 

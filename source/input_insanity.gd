@@ -6,7 +6,7 @@ const REPLACEMENT_SPELLS=[
 	Globals.SPELLS.REPLACEMENT_CHARACTER,
 ]
 
-const ALL_CHARACTERS=Letters.ALPHABET+Letters.WILDCARD_CHARACTERS
+const ALL_CHARACTERS=Letters.ALPHABET+Letters.WILDCARD_CHARACTERS+[" "]
 
 static func is_valid_face(face:String)->bool:
 	for letter in face:
@@ -18,12 +18,11 @@ static func add_status_to_tile_data(tile_data:Dictionary,status:String):
 	tile_data.get_or_add("statuses",[]).append(status)
 
 static func process_tile_data(tile_data:Dictionary):
+	if "statuses" in tile_data:
+		# remove non-exisitant statuses
+		tile_data.statuses=tile_data.statuses.filter(func (status_id:String)->bool:return StringManager.has_string_group_at_path(["status",status_id]))
 	if "faces" in tile_data:
-		if tile_data.faces.is_empty():
-			add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
-		elif tile_data.faces.any(func (face:String)->bool:return face.is_empty()):
-			add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
-		elif not tile_data.faces.all(is_valid_face):
+		if not tile_data.faces.all(is_valid_face):
 			add_status_to_tile_data(tile_data,Globals.TileStatus.ASH)
 	elif "slashed_faces" in tile_data:
 		if tile_data.slashed_faces.is_empty():
@@ -49,3 +48,6 @@ static func get_mod_or_null(mod_id:String)->Mod:
 		if mod.mod_data.id==mod_id:
 			return mod
 	return null
+
+static func data_has_status(tile_data:Dictionary,status:String)->bool:
+	return "statuses" in tile_data and status in tile_data.statuses

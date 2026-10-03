@@ -392,7 +392,7 @@ func send_spell():
 	if not recived_spell_save.is_empty():
 		InputSanity.process_spell_data(recived_spell_save)
 		var new_spell=Spell.create_from_save(recived_spell_save)
-		var new_notification=load("res://mods/co-op/source/ui/menu/nobody_notification.tscn").instantiate()
+		var new_notification=load("res://mods/co-op/source/ui/notification/nobody_notification.tscn").instantiate()
 		new_notification.get_node("%Description").text= \
 			StringManager.get_string(
 				"/mod/co-op/enemy/nobody/spell_swap_notification",
