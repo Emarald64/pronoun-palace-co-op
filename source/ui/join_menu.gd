@@ -26,7 +26,12 @@ func _on_start_appearing()->void:
 		selector_icons.assign(icons)
 		%IconSelector.set_icons(selector_icons)
 	%IconSelector.select(Globals.CHARACTER_ORDER.find(SaveManager.get_save_data().selected_character))
-
+	%Name.clear()
+	if Bridge.steam_initialized:
+		Game.player_info.name=Bridge.get_username(Bridge.own_user_id)
+	else:
+		Game.player_info.name="Client"
+	%Name.placeholder_text=Game.player_info.name
 
 func connect_to_server() -> void:
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)

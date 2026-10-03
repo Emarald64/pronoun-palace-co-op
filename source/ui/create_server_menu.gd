@@ -23,6 +23,8 @@ func _ready() -> void:
 
 func _on_start_appearing():
 	%Steam.disabled=not Bridge.steam_initialized
+	
+	# create lobby visibility icons
 	if Bridge.steam_initialized and not created_icons:
 		var icons:Array[SelectorIcon]=[]
 		for lobby_type in lobby_type_order:
@@ -32,6 +34,16 @@ func _on_start_appearing():
 		%VisibilitySelector.set_icons(icons)
 		%VisibilitySelector.selected_index=1
 		created_icons=true
+	
+	if Bridge.steam_initialized:
+			%Name.placeholder_text=Bridge.get_username(Bridge.own_user_id)
+	else:
+		%Name.placeholder_text="Host"
+	
+	if %Name.text.is_empty():
+		Game.player_info.name=%Name.placeholder_text
+	else:
+		Game.player_info.name=%Name.text
 
 func host_pressed():
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
