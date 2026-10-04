@@ -77,6 +77,11 @@ func _process(_delta: float) -> void:
 func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true) # not sure if this actually does anything
 	
+	# unbind z so you can use it in your name
+	var z_key=InputEventKey.new()
+	z_key.physical_keycode=KEY_Z
+	InputMap.action_erase_event("ui_accept",z_key)
+	
 	version_number=mod_data.json.data.version
 	if mod_data.json.data.author!=AUTHOR:
 		push_error("some shenanagens are afoot >:(\n Please don't remove my name from the mod!")
