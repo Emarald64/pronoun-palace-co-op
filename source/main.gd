@@ -95,6 +95,7 @@ func player_death():
 func stop_waiting_for_death(revive=false):
 	if candy_round:
 		if revive:
+			print("reviving")
 			is_player_turn=false
 			candy_round=false
 			#reviving=false
@@ -106,14 +107,14 @@ func stop_waiting_for_death(revive=false):
 			await word_builder.intent_container.clear_intents()
 			word_builder.submitted_count=0
 			word_builder.update()
-			player.heal(maxi(word_builder.heighest_candy_round_value,1))
+			await player.heal(maxi(word_builder.heighest_candy_round_value,1))
 			word_builder.heighest_candy_round_value=0
-			tile_board.reroll_board()
+			await tile_board.reroll_board()
 			player.sprite.show()
 			is_player_turn=true
 			player.anim_player.clear_queue()
 			player.anim_player.play("idle")
-			player.health_bar.appear()
+			await player.health_bar.appear()
 			end_battle()
 		else:
 			super.player_death()

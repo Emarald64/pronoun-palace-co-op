@@ -58,7 +58,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 max_length = 16
-virtual_keyboard_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="3" unique_id=1698835746]
 layout_mode = 2
@@ -121,4 +120,5 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 
 [connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/IconSelector" to="." method="_on_icon_selector_selected"]
 [connection signal="text_changed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="_on_name_changed"]
+[connection signal="text_submitted" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="connect_to_server" unbinds=1]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="connect_to_server"]
