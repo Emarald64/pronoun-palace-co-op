@@ -221,10 +221,10 @@ func display_intent():
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 2, size_y = 5})
 			if tile_board.num_columns==5 and tile_board.num_columns==4:
-				hit_player(moves.swap_small.second_damage)
+				add_intent(Intent.ATTACK,{damage=moves.swap_small.second_damage})
 			else:
-				hit_player(moves.swap.first_damage)
-			add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
+				add_intent(Intent.ATTACK,{damage=moves.swap.first_damage})
+			#add_intent(Intent.ATTACK, {damage=(moves.swap.first_damage if regular_board else moves.swap_small.second_damage)})
 			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"phone_a_friend_recive":
 			add_intent(CoOp.INTENTS.PHONE_A_FRIEND_RECEIVE, {partner=Game.players[swap_partner].name})
