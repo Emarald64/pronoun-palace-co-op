@@ -50,9 +50,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Invite Friends"
 
-[node name="Players" type="GridContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=436813728]
+[node name="ScrollContainer" type="ScrollContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1537939960]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Players" type="GridContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer" index="0" unique_id=436813728]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
