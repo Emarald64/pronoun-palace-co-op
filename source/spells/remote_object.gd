@@ -31,8 +31,8 @@ func _use():
 	var condition = func(spell): return not spell.spell_data.character_specific and spell.is_owned()
 	var new_spell:Spell = await player.get_selection(Player.Selection.SPELL,condition)
 	selecting_spell=false
-	remove_all_player_spells()
 	if new_spell == null:
+		remove_all_player_spells()
 		for i in old_spells.size():
 			spell_container.add_spell(old_spells[i])
 		#spell_container.load_save_data(old_spells_save_data)
@@ -41,18 +41,15 @@ func _use():
 		return
 		
 	var new_spell_index:=spell_container.player_spells.find(new_spell.player_spell_slot)
-	#var new_spell_save_data=new_spell.get_save_data()
-	#player_spell_slot.set_spell(new_spell)
-	#remove_all_player_spells()
-	
+
 	var my_save_data=get_save_data()
 	my_save_data.charge-=1
 	my_save_data.laced_deactivated=true
 	if has_curse(CURSE.FRAGILE) and rng.fragile.randf() <= FRAGILE_BREAK_CHANCE:
 		my_save_data.max_charge=maxi(0,max_charge)
+	remove_all_player_spells()
 	coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
 	coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
-	remove_all_player_spells()
 	for i in old_spells.size():
 		spell_container.add_spell(old_spells[i])
 	coop_spell_effects.using_remote_object=false
