@@ -586,10 +586,12 @@ func general_attack():
 	if tile_board.num_rows>=4 and tile_board.num_columns>=5:
 		count=moves.attack_big.count
 	for i in count:
-		hit_player(moves.attack_small.damage)
-		await Game.timeout(0.24)
-	if swap_partner==-1:
-		next_move_override="solo_concentration"
+		var continuing=i<count-1
+		hit_player(moves.attack_small.damage,not continuing)
+		if continuing:
+			await Game.timeout(0.24)
+	#if swap_partner==-1:
+		#next_move_override="solo_concentration"
 	await wait_for_idle()
 
 func get_general_attack_intent_context()->Dictionary:
@@ -693,7 +695,8 @@ func flinch_lethal(amount: int):
 		tile_copy.queue_free()
 
 func _on_finished_updating_stats(_words):
-	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit):
+	if (main.is_player_turn or word_builder.waiting_for_peers_to_submit) \
+	and intent_container.intent_instances.all(func (intent)->bool:return not intent.anim_player.is_playing()):
 		update_intents()
 
 func apply_fish(tile: Tile, fish: Fish) -> void:

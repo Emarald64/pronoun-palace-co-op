@@ -82,8 +82,9 @@ func set_dead(id:int,dead:bool=true):
 	damage_indecators[id].set_dead(dead)
 
 func remove_peer(id:int):
-	damage_indecators[id].queue_free()
-	damage_indecators.erase(id)
+	if id in damage_indecators:
+		damage_indecators[id].queue_free()
+		damage_indecators.erase(id)
 
 func start_selecting():
 	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
