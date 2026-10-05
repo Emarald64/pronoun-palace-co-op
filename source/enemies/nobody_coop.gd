@@ -717,3 +717,5 @@ func _on_sprite_event(event:String)->void:
 func unique_end_player_action() -> void :
 	if next_move=="swap_small":
 		dooming_rows = [2,3,4]
+	if next_move in ["phone_a_friend_recive","solo_echo"]:
+		dooming_rows = [2,3]
