@@ -100,7 +100,10 @@
 		removes_word
 	
 	:effect_notification:
-		sent you a {type} {status lower}{:notification_face: if face}.
+		sent you a {:status/default/name: lower} {:notification_status: if status}{:notification_face: if face}.
+	
+	:notification_status:
+		{status lower}
 	
 	:notification_face:
 		{" " if status}tile with the face {face}

@@ -9,7 +9,7 @@
 	:approved:
 		Approved by the Bureau of Information.
 	:illegal:
-		The party has been notified of your possession of this contraband and will take swift action to conatin it.
+		The party has been notified of your possession of this contraband and will take swift action to contain it.
 
 :timed:
 	:name:
