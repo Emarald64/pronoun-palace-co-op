@@ -5,7 +5,7 @@ func _use():
 	do_battle_start_transformation([])
 
 func get_gift_reroll_pool(_exclude_spells = [], allow_player_repeats: = false) -> Dictionary:
-	var pool=CoOp.SPELL_WEIGHTS
+	var pool=CoOp.SPELL_WEIGHTS.duplicate()
 	#for spell_id in base_pool:
 		#pool["co-op:"+spell_id]=base_pool[spell_id]
 	
