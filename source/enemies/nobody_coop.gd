@@ -570,7 +570,7 @@ static func get_effect_priority(tile_effects,priority_list: Array=EFFECT_PRIORIT
 	return 999
 
 func attack_big():
-	await Game.timeout(0.24)
+	await general_attack()
 
 func attack_small():
 	await general_attack()
