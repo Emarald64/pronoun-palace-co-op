@@ -341,16 +341,18 @@ func swap_small():
 		hit_player(moves.swap_small.second_damage)
 	else:
 		hit_player(moves.swap.first_damage)
-	tile_board.top_up_bag(TileType.DEFENSE, 1)
-	await tile_board.set_size(5,2)
+	
+	# 1 free defense tile
 	dooming_rows.clear()
+	tile_board.top_up_bag(TileType.DEFENSE, 1)
+	
+	await tile_board.set_size(5,2)
 	regular_board=false
 	
 	# move smoke down
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
 	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,50),5)
 	
-	# 1 free defense tile
 	
 	await wait_for_idle()
 
@@ -490,6 +492,7 @@ func phone_a_friend_send():
 	await wait_for_idle()
 
 func phone_a_friend_recive():
+	dooming_rows.clear()
 	if recived_phone_a_friend_data.is_empty():
 		get_tree().create_timer(10).timeout.connect(recived_swap_info.emit)
 		await recived_swap_info
@@ -540,6 +543,7 @@ func phone_a_friend_recive():
 		recived_phone_a_friend_data.clear()
 		await all_projectiles_impacted
 	await Game.tile_board.settle_board()
+	await Game.tile_board.fill_board()
 	await wait_for_idle()
 
 static func order_tile_data(tile_datas:Array)->Array:
@@ -586,6 +590,7 @@ func general_attack():
 	var count:=1
 	if tile_board.num_rows>=4 and tile_board.num_columns>=5:
 		count=moves.attack_big.count
+	print("board size ",tile_board.num_columns,tile_board.num_rows," damage: ",damage,"x",count)
 	for i in count:
 		var continuing=i<count-1
 		hit_player(moves.attack_small.damage,not continuing)
@@ -635,11 +640,13 @@ func solo_concentration():
 			#await animate_attack()
 			await tile_board.set_size()
 			regular_board=true
+			dooming_columns.clear()
 		await wait_for_idle()
 		await Game.timeout(0.5)
 
 func solo_echo():
 	#echo
+	dooming_rows.clear()
 	if echo_tiles.is_empty():
 		given_word=WordUtility.dictionary.pick_random_flag_word(WordDictionary.WordFlags.COMMON, 6, rng.move)
 		for letter in given_word:
@@ -662,6 +669,7 @@ func solo_echo():
 	if tile_board.num_columns!=4:
 		await tile_board.set_size()
 		regular_board=true
+		dooming_columns.clear()
 	if not echo_tiles.is_empty():
 		for i in echo_tiles.size():
 			var cord=Vector2i(i%4,3-(i/4))
@@ -683,6 +691,7 @@ func solo_attack():
 	if tile_board.num_columns!=4:
 		await tile_board.set_size()
 		regular_board=true
+		dooming_columns.clear()
 	if swap_partner!=-1:
 		if multiplayer.get_unique_id()<swap_partner:
 			next_move_override="swap_big"
@@ -716,7 +725,7 @@ func _on_sprite_event(event:String)->void:
 	super(event)
 
 func unique_end_player_action() -> void :
-	if next_move=="swap_small":
-		dooming_rows = [2,3,4]
-	if next_move in ["phone_a_friend_recive","solo_echo"]:
+	if next_move in ["swap_small","phone_a_friend_recive","solo_echo"]:
 		dooming_rows = [2,3]
+	if next_move in ["solo_concentration","solo_echo","solo_attack"] and tile_board.num_columns>4:
+		dooming_columns=[4]

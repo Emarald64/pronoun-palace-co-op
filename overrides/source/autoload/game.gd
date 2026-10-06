@@ -204,4 +204,4 @@ func kill_peer():
 	all_player_names.clear()
 
 func is_playtester(id:int):
-	return id==1 or players[id].steam_id in PLAYTESTERS
+	return players[id].steam_id in PLAYTESTERS
