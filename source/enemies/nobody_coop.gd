@@ -211,7 +211,7 @@ func display_intent():
 	match next_move:
 		"swap_big":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 4, size_y = 5})
-			var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==2
+			var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_rows==2
 			if swapping_board:
 				add_intent(Intent.ATTACK, {damage=moves.swap_big.second_damage})
 			else:
@@ -220,7 +220,7 @@ func display_intent():
 			add_intent(CoOp.INTENTS.SPELL_SWAP)
 		"swap_small":
 			add_intent(Intent.EXPAND_BOARD, {size_x = 2, size_y = 5})
-			if tile_board.num_columns==5 and tile_board.num_columns==4:
+			if tile_board.num_columns==5 and tile_board.num_rows==4:
 				add_intent(Intent.ATTACK,{damage=moves.swap_small.second_damage})
 			else:
 				add_intent(Intent.ATTACK,{damage=moves.swap.first_damage})
@@ -295,7 +295,7 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 
 func swap_big():
 	await send_spell()
-	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==2
+	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_rows==2
 	if swapping_board:
 		hit_player(moves.swap_big.second_damage)
 	else:
@@ -333,7 +333,7 @@ func swap_big():
 	await wait_for_idle()
 
 func swap_small():
-	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_columns==4
+	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_rows==4
 	if swapping_board:
 		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
 	await send_spell()
@@ -341,6 +341,7 @@ func swap_small():
 		hit_player(moves.swap_small.second_damage)
 	else:
 		hit_player(moves.swap.first_damage)
+	tile_board.top_up_bag(TileType.DEFENSE, 1)
 	await tile_board.set_size(5,2)
 	dooming_rows.clear()
 	regular_board=false
@@ -350,7 +351,6 @@ func swap_small():
 	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,50),5)
 	
 	# 1 free defense tile
-	tile_board.top_up_bag(TileType.DEFENSE, 1)
 	
 	await wait_for_idle()
 
