@@ -191,3 +191,6 @@ func kill_peer():
 		upnp.delete_port_mapping(multiplayer.multiplayer_peer.host.get_local_port())
 	players.clear()
 	all_player_names.clear()
+
+func is_playtester():
+	print(Steam.getNumBetas())

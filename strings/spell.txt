@@ -232,7 +232,7 @@
 	
 :printed_ssn:
 	:name:
-		Counterfeit {:spell/ssn/name:}
+		{:spell/ssn/name:}
 
 	:description:
 		{:spell/ssn/description:}

@@ -17,7 +17,7 @@ script = ExtResource("1_3omnc")
 clip_contents = true
 anchors_preset = 0
 offset_right = 110.0
-offset_bottom = 170.0
+offset_bottom = 172.0
 
 [node name="ShadowGroup" type="CanvasGroup" parent="Control" unique_id=190152862]
 unique_name_in_owner = true
@@ -30,7 +30,7 @@ offset_right = 109.0
 offset_bottom = 168.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1851761039]
-custom_maximum_size = Vector2(-1, 168)
+custom_maximum_size = Vector2(-1, 170)
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 5

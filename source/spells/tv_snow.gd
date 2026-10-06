@@ -1,4 +1,4 @@
-extends Spell
+extends CoopSpell
 
 var frame:=0
 

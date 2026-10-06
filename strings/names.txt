@@ -12,3 +12,5 @@
 	Co-Op
 ::
 	Coop
+::
+	Polycule Mod
