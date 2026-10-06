@@ -33,9 +33,7 @@ func update(damage_info:Dictionary):
 	
 	#print(damage_info)
 	$Panel.self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
-	var shadow_color=Color("74b054") if damage_info.submitted else Color("c4a1a1")
-	for shadow_cloner in color_changing_shadow_cloners:
-		shadow_cloner.solid_shadow_color=shadow_color
+	update_shadow_color()
 	#get_tree().set_group(&"shadow_cloner_change_color","solid_shadow_color",)
 
 func set_character(character:String)->void:
@@ -44,19 +42,33 @@ func set_character(character:String)->void:
 func set_dead(dead:bool):
 	%Dead.visible=dead
 
+func update_shadow_color():
+	var shadow_color= Color("c4a1a1")
+	if Game.word_builder.peer_attacks[peer_id].submitted:
+		shadow_color=Color("74b054")
+	elif (Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE) or Game.main.force_allow_select_player) \
+	and not Game.player.passes_selection_condition(peer_id):
+		shadow_color= Color("735e5eff")
+	
+	for shadow_cloner in color_changing_shadow_cloners:
+		shadow_cloner.solid_shadow_color=shadow_color
+
 func _on_button_pressed() -> void:
-	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
+	if is_selecting_players():
 		Game.main.player.selected.emit(peer_id)
 		AudioManager.play_sound(Sounds.SPELLS.SPELL_CLICK)
 
 func start_selecting()->void:
-	if Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE):
+	if is_selecting_players():
 		var selection_valid=Game.player.passes_selection_condition(peer_id)
 		$Button.disabled=not selection_valid
 		$HoverHandler.set_disabled(not selection_valid)
 		modulate=Color.WHITE if selection_valid else Color.GRAY
 		$TooltipCollision.enabled=Game.player.active_spell.has_method("_generate_peer_tooltip")
+		update_shadow_color()
 
+static func is_selecting_players()->bool:
+	return Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE) or Game.main.force_allow_select_player
 
 func stop_selecting():
 	$TooltipCollision.enabled=false
@@ -64,6 +76,7 @@ func stop_selecting():
 	$Button.disabled=true
 	$HoverHandler.set_disabled(true)
 	modulate=Color.WHITE
+	update_shadow_color()
 
 func _on_generate_tooltip(tooltip:GameTooltip):
 	#print("peer ui tried making tooltip")

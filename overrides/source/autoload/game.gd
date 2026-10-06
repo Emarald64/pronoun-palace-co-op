@@ -8,6 +8,7 @@ const PLAYTESTERS=[
 	76561198150996567,#Finley
 	76561198025169706,#SeaCharmeleon
 	76561198796950574,#Pearl
+	#76561198984198927,#Xanderath
 ]
 
 var players:Dictionary[int,Dictionary]={}
@@ -203,4 +204,4 @@ func kill_peer():
 	all_player_names.clear()
 
 func is_playtester(id:int):
-	return players[id].steam_id in PLAYTESTERS
+	return id==1 or players[id].steam_id in PLAYTESTERS

@@ -2,3 +2,4 @@
 [x] using remote object causes panic button and salt to lose their charges
 [x] test rejoining co-op game/ stop desyncing as addict
 [] health bar doesn't reappear after reviving sometimes?
+[x] nobody swap attack always thinks its the first time

@@ -276,3 +276,20 @@
 		swapped boards with you.
 	:notification_failed:
 		Failed to swap boards with {name}.
+
+:bug_spray:
+	:name:
+		Bug Spray
+
+	:description:
+		Clear the statuses of a tile and any tiles adjacent.
+		Deals one damage to bug characters.
+
+	:label:
+		Clear statuses
+
+	:charge_category:
+		common
+
+	:max_charge:
+		3

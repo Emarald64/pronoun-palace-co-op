@@ -39,6 +39,7 @@ const SPELLS:Dictionary[StringName,String]={
 	SSN_PRINTER=NAMESPACE+"ssn_printer",
 	PRINTED_SSN=NAMESPACE+"printed_ssn",
 	SNEAKERNET=NAMESPACE+"sneakernet",
+	BUG_SPRAY=NAMESPACE+"bug_spray",
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
@@ -158,6 +159,10 @@ const REMOVED_SPELLS:PackedStringArray=[
 func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	for removed_spell in REMOVED_SPELLS:
 		pool.erase(removed_spell)
+	
+	if category.is_empty() and Game.players.keys().any(func (player_id:int)->bool:return Game.is_playtester(player_id)):
+		pool.erase(Globals.SPELLS.BUG_SPRAY)
+		pool[SPELLS.BUG_SPRAY]=100
 	
 	pool.merge(get_spell_pool(category))
 	

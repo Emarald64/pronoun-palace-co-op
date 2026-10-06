@@ -164,6 +164,13 @@ func swap_board(board_data:Dictionary,reply:bool):
 		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to swap board when it wasn't the other player's turn")
 
 @rpc("any_peer")
+func damage_player(amount:=1):
+	in_coop_spell_animation=true
+	main.player.hurt(amount)
+	await main.player.recompose()
+	in_coop_spell_animation=false
+
+@rpc("any_peer")
 func failed_request(reason:String):
 	push_warning(reason)
 	request_replied.emit(false)

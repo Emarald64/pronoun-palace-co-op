@@ -4,6 +4,7 @@ var dead_players:Array[int]=[]
 var players_compleated_floor:Array[int]=[]
 var original_id:=0
 var strawman_taps:Dictionary[int,int]
+var force_allow_select_player:=false
 #var waiting_to_be_revived:=false
 signal all_players_compleated_floor
 #signal stop_dieing
