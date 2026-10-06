@@ -26,7 +26,7 @@ func _on_start_appearing()->void:
 func add_player(id:int,player_info:Dictionary)->void:
 	if id not in player_blocks:
 		var block=lobby_player_scene.instantiate()
-		block.set_player_info(player_info)
+		block.set_player_info(player_info,id)
 		%Players.add_child(block)
 		player_blocks[id]=block
 

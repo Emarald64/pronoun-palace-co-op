@@ -13,7 +13,12 @@ func _ready() -> void:
 func setup(id:int)->void:
 	Game.player.selection_started.connect(start_selecting)
 	Game.player.selection_finished.connect(stop_selecting)
-	set_character(Game.players[id].character)
+	if Game.is_playtester(id):
+		%CharacterIcon.texture=load("res://mods/co-op/arte/ui/bug.png")
+		%CharacterIcon.hframes=1
+		%CharacterIcon.vframes=1
+	else:
+		set_character(Game.players[id].character)
 	%Name.text=Game.players[id].name
 	peer_id=id
 
