@@ -1,7 +1,7 @@
 extends CoopSpell
 
 var letter:=""
-var coop:CoOp=ModLoader.get_node("coop")
+#var coop:CoOp=ModLoader.get_node("coop")
 
 func set_status_tooltips():
 	#status_tooltips = [{status = TileStatus.ENHANCED, plastic = true}]
@@ -56,6 +56,15 @@ func get_frame() -> int:
 
 func get_hv_frames() -> Vector2i:
 	return Vector2i(2,1)
+
+func get_save_data():
+	var save=super()
+	save.letter=letter
+	return save
+
+func load_save_data(save):
+	super(save)
+	letter=save.letter
 
 func player_turn_started(is_battle_start: bool) -> void :
 	super(is_battle_start)
