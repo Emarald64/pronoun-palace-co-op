@@ -139,11 +139,13 @@ func apply_tile_overlay(path:String,search_parameters:Dictionary={},delay:=0.1,o
 func swap_board(board_data:Dictionary,reply:bool):
 	if main.is_player_turn:
 		in_coop_spell_animation=true
+		var sender_id=multiplayer.get_remote_sender_id()
 		await word_builder.remove_tiles()
 		await tile_board.wait_for_idle_tiles()
+		print_debug(sender_id,reply)
 		if reply:
-			swap_board.rpc_id(multiplayer.get_remote_sender_id(),tile_board.get_tile_state_save_data(),false)
-			coop_notifications.add_spell_notification("co-op:sneakernet",{success=true})
+			swap_board.rpc_id(sender_id,tile_board.get_tile_state_save_data(),false)
+			coop_notifications.add_spell_notification("co-op:sneakernet",{success=true},sender_id)
 		await tile_board.slide_out()
 		if randf()<.1:
 			tile_board.load_tile_state_save_data(board_data)

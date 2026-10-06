@@ -369,11 +369,12 @@ func recive_spell(swapped_spell:Dictionary):
 
 @rpc("any_peer")
 func ask_send_spell():
-	print("asked to send spell to ",multiplayer.get_remote_sender_id())
+	var sender_id=multiplayer.get_remote_sender_id()
+	print("asked to send spell to ",sender_id)
 	if sending_spell_data.is_empty():
 		print("waiting to determine which spell to send")
 		await sending_spell_data_set
-	recive_spell.rpc_id(multiplayer.get_remote_sender_id(),sending_spell_data)
+	recive_spell.rpc_id(sender_id,sending_spell_data)
 
 
 func send_spell():
