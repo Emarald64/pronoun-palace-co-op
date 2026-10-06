@@ -144,7 +144,9 @@ func swap_board(board_data:Dictionary,reply:bool):
 		await tile_board.wait_for_idle_tiles()
 		print_debug(sender_id,reply)
 		if reply:
-			swap_board.rpc_id(sender_id,tile_board.get_tile_state_save_data(),false)
+			var tile_state=tile_board.get_tile_state_save_data()
+			tile_state.size.preview_rows=null
+			swap_board.rpc_id(sender_id,tile_state,false)
 			coop_notifications.add_spell_notification("co-op:sneakernet",{success=true},sender_id)
 		await tile_board.slide_out()
 		if randf()<.1:

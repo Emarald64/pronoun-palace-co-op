@@ -6,7 +6,8 @@ const PLAYTESTERS=[
 	76561198172774482,#DeadInfinity
 	76561198273453230,#RENREN
 	76561198150996567,#Finley
-	#76561198984198927,#Xanderath (for testing)
+	76561198025169706,#SeaCharmeleon
+	76561198796950574,#Pearl
 ]
 
 var players:Dictionary[int,Dictionary]={}
