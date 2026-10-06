@@ -140,13 +140,15 @@ func swap_board(board_data:Dictionary,reply:bool):
 	if main.is_player_turn:
 		in_coop_spell_animation=true
 		var sender_id=multiplayer.get_remote_sender_id()
-		await word_builder.remove_tiles()
-		await tile_board.wait_for_idle_tiles()
-		print_debug(sender_id,reply)
 		if reply:
 			var tile_state=tile_board.get_tile_state_save_data()
 			tile_state.size.preview_rows=null
 			swap_board.rpc_id(sender_id,tile_state,false)
+		else:
+			request_replied.emit(true)
+		await word_builder.remove_tiles()
+		await tile_board.wait_for_idle_tiles()
+		if reply:
 			coop_notifications.add_spell_notification("co-op:sneakernet",{success=true},sender_id)
 		await tile_board.slide_out()
 		if randf()<.1:
@@ -158,8 +160,6 @@ func swap_board(board_data:Dictionary,reply:bool):
 			tile_board.load_tile_state_save_data(board_data,true)
 			await tile_board.slide_in()
 		in_coop_spell_animation=false
-		if not reply:
-			request_replied.emit(true)
 	else:
 		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to swap board when it wasn't the other player's turn")
 

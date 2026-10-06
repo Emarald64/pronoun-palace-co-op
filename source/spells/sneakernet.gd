@@ -14,4 +14,6 @@ func _use():
 	coop_spell_effects.swap_board.rpc_id(peer_id,tile_state,true)
 	if not await wait_for_reply_with_timeout():
 		coop_notifications.add_spell_notification(id,{success=false,name=Game.get_player_name(peer_id)})
+	await tile_board.wait_for_idle()
+	await tile_board.wait_for_idle_tiles()
 	_post_use()
