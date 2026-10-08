@@ -46,6 +46,7 @@ func recive_word(tiles:Array)->void:
 			new_tile.launch(Vector2(-50,150),tile_board.get_coord_position(coord),randf_range(40,80))
 			new_tile.impacted.connect(func ():
 				projectile_impacted()
+				AudioManager.play_sound(Sounds.PROLE_SERVICE.TONE)
 				tile_board.insert_tile(new_tile,coord,false)
 				new_tile.reparent(main.tile_container)
 				new_tile.add_poofcloud(new_tile.get_poof_color())

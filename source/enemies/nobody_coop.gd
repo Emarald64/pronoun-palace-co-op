@@ -527,8 +527,10 @@ func phone_a_friend_recive():
 			#await Game.timeout(.1)
 		pass
 	else:
-		for i in recived_phone_a_friend_data.size():
-			var cord=Vector2i(i%5,3-(i/5))
+		var width=tile_board.num_columns
+		var height=tile_board.num_rows
+		for i in mini(recived_phone_a_friend_data.size(),width*height):
+			var cord=Vector2i(i%width,height-(i/width)-1)
 			var tile=tile_board.create_tile()
 			main.add_child(tile)
 			var tile_data=recived_phone_a_friend_data[i]
@@ -671,8 +673,10 @@ func solo_echo():
 		regular_board=true
 		dooming_columns.clear()
 	if not echo_tiles.is_empty():
-		for i in echo_tiles.size():
-			var cord=Vector2i(i%4,3-(i/4))
+		var width=tile_board.num_columns
+		var height=tile_board.num_rows
+		for i in mini(echo_tiles.size(),width*height):
+			var cord=Vector2i(i%width,height-(i/width)-1)
 			var tile=tile_board.create_tile()
 			main.add_child(tile)
 			tile.load_save_data(echo_tiles[i])
