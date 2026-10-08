@@ -1,6 +1,7 @@
 <div align=center>
 <img src=".readme_assets/coop_title.png">
 </div>
+
 # Pronoun Palace Co-Op
 
 ### Stop back seating your friends, and get in on the action youself!
