@@ -41,6 +41,10 @@ static func process_spell_data(spell_data:Dictionary):
 		for replacement_spell_id in REPLACEMENT_SPELLS:
 			if replacement_spell_id in SpellData.spell_data:
 				spell_data.id=replacement_spell_id
+				if replacement_spell_id=="proverbpalace:datamosh":
+					spell_data.faking_out=true
+					spell_data.post_fakeout_charge=spell_data.max_charge
+					spell_data.max_charge=0
 				break
 
 static func get_mod_or_null(mod_id:String)->Mod:
