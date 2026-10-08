@@ -2,9 +2,11 @@ class_name CoopSpellEffects
 extends Node
 
 signal request_replied(sucess:bool)
+signal all_projectiles_impacted
 
 var using_remote_object:=false
 var in_coop_spell_animation:=false
+var projectile_count:=0
 
 var tile_board:TileBoard=Game.tile_board
 var main:Main=Game.main
@@ -16,6 +18,11 @@ func _ready():
 	await Game.main_scene_loaded
 	spell_container = Game.spell_container
 
+func projectile_impacted():
+	projectile_count-=1
+	if projectile_count<=0:
+		all_projectiles_impacted.emit()
+
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
 	#print(tiles)
@@ -23,20 +30,28 @@ func recive_word(tiles:Array)->void:
 	await tile_board.wait_for_idle()
 	var width=tile_board.num_columns
 	var height=tile_board.num_rows
+	var offset=((tiles.size()-1)/4)+1
 	for i in height*width:
-		var cord:=Vector2i(i%width,height-(i/width)-1)
-		var existing_tile=tile_board.get_tile_at(cord)
+		var coord:=Vector2i(i/width-offset,height-(i%height)-1)
+		var existing_tile=tile_board.get_tile_at(coord)
+		var tile_data =tiles.pop_front()
+		if tile_data==null:
+			break
 		if existing_tile==null or not existing_tile.in_word():
-			var tile_data =tiles.pop_front()
-			if tile_data==null:
-				break
+			projectile_count+=1
 			InputSanity.process_tile_data(tile_data)
 			var new_tile=tile_board.create_tile()
-			add_child(new_tile)
+			main.add_child(new_tile)
 			new_tile.load_save_data(tile_data)
-			tile_board.insert_tile(new_tile,cord)
-			new_tile.add_poofcloud(new_tile.get_poof_color())
-			await get_tree().create_timer(0.16).timeout
+			new_tile.launch(Vector2(-50,150),tile_board.get_coord_position(coord),randf_range(40,80))
+			new_tile.impacted.connect(func ():
+				projectile_impacted()
+				tile_board.insert_tile(new_tile,coord,false)
+				new_tile.reparent(main.tile_container)
+				new_tile.add_poofcloud(new_tile.get_poof_color())
+				)
+		await get_tree().create_timer(0.16).timeout
+	await all_projectiles_impacted
 	in_coop_spell_animation=false
 
 @rpc("any_peer")
