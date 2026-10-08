@@ -17,6 +17,7 @@ var player_info = {
 	name="Client",
 	character="lexicographer",
 	steam_id=0,
+	dont_bug_me=false,
 }
 var all_player_names:Dictionary[int,String]={}
 var upnp:UPNP
@@ -204,4 +205,4 @@ func kill_peer():
 	all_player_names.clear()
 
 func is_playtester(id:int):
-	return players[id].steam_id in PLAYTESTERS
+	return players[id].steam_id in PLAYTESTERS and not players[id].dont_bug_me

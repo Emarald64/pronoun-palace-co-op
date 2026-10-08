@@ -46,9 +46,8 @@ func update_shadow_color():
 	var shadow_color= Color("c4a1a1")
 	if Game.word_builder.peer_attacks[peer_id].submitted:
 		shadow_color=Color("74b054")
-	elif (Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE) or Game.main.force_allow_select_player) \
-	and not Game.player.passes_selection_condition(peer_id):
-		shadow_color= Color("735e5eff")
+	elif is_selecting_players() and not Game.player.passes_selection_condition(peer_id):
+		shadow_color= Color("735e5e")
 	
 	for shadow_cloner in color_changing_shadow_cloners:
 		shadow_cloner.solid_shadow_color=shadow_color
@@ -68,7 +67,7 @@ func start_selecting()->void:
 		update_shadow_color()
 
 static func is_selecting_players()->bool:
-	return Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE) or Game.main.force_allow_select_player
+	return (Game.main.player.is_selecting(CoOp.PEER_SELECTION_TYPE) or Game.main.force_allow_select_player) and Game.main.player.is_selecting()
 
 func stop_selecting():
 	$TooltipCollision.enabled=false

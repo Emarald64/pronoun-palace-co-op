@@ -187,14 +187,14 @@ func load_run_save_data(data: Dictionary) -> void:
 	Game.all_player_names.merge(data.all_player_names)
 	#extra_hate_time=data.extra_hate_time
 
-#func get_options_save_data() -> Dictionary:
-	#return {
-		#extra_hate_time=extra_hate_time,
-	#}
-#
-#func load_options_save_data(data: Dictionary) -> void:
-	#extra_hate_time=data.extra_hate_time
-#
+func get_options_save_data() -> Dictionary:
+	return {
+		dont_bug_me=Game.player_info.dont_bug_me
+	}
+
+func load_options_save_data(data: Dictionary) -> void:
+	Game.player_info.dont_bug_me=data.dont_bug_me
+
 #func set_extra_hate_time(value:bool):
 	#extra_hate_time=value
 	#updated_extra_time.emit(value)
