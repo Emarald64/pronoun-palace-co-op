@@ -88,7 +88,10 @@ func player_death():
 		await super()
 	elif dead_players.size()+1<Game.players.size():
 		candy_round=true
+		tile_board.unlock_restock()
+		await tile_board.fill_board()
 		for tile in tile_board.get_tiles():
+			tile.randomize_if_faceless(rng.mod)
 			tile.add_status(Globals.TileStatus.CANDY)
 			await Game.timeout(0.1)
 		start_player_action()
