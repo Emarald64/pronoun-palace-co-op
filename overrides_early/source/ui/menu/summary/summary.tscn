@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ltlfocltly3h" path="res://source/ui/menu/summary/summary.tscn" id="1_l0cin"]
 [ext_resource type="Script" uid="uid://dl05snyx228b0" path="res://mods/co-op/source/ui/menu/summary/summary.gd" id="2_roion"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="3_qp8bk"]
 
 [node name="SectionedPanel" unique_id=1400204219 instance=ExtResource("1_l0cin")]
 script = ExtResource("2_roion")
@@ -19,20 +20,24 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Title" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="0" unique_id=1626304936 groups=["always_base_panel"]]
+[node name="Title" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="0" unique_id=577263962 groups=["always_base_panel"]]
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
 theme_override_font_sizes/font_size = 13
-text = "Coop"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("3_qp8bk")
+key = "/mod/co-op/menu/summary/co-op"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="TotalDamage" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="1" unique_id=2141415637 groups=["always_base_panel"]]
+[node name="TotalDamage" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="1" unique_id=145947881 groups=["always_base_panel"]]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
-text = "Total Damage:"
 vertical_alignment = 1
+script = ExtResource("3_qp8bk")
+key = "/mod/co-op/menu/summary/damage"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="MarginContainer" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="2" unique_id=28679783]
 layout_mode = 2
@@ -43,12 +48,14 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="LongestWord" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="3" unique_id=2067240966 groups=["always_base_panel"]]
+[node name="LongestWord" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="3" unique_id=1879194278 groups=["always_base_panel"]]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
-text = "Longest Word:"
 vertical_alignment = 1
+script = ExtResource("3_qp8bk")
+key = "/mod/co-op/menu/summary/word"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="4" unique_id=202615937]
 layout_mode = 2

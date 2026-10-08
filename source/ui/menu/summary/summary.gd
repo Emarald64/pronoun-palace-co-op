@@ -47,6 +47,9 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 			var label=SUMMARY_LABEL.instantiate()
 			%CoopLongestWordStats.add_child(label)
 			label.text="• %s: %s" % longest_word_stat
-	
+		
+		%Coop.reset_size()
+		await get_tree().process_frame
+		update_panels.call_deferred()
 	else:
 		%Coop.hide()

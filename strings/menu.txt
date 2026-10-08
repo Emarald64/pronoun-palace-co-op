@@ -1,3 +1,10 @@
+:summary:
+	:co-op:
+		Co-Op
+	:damage:
+		Total Damage:
+	:word:
+		Longest Word:
 :join:
 	Join
 :ip:
