@@ -80,7 +80,7 @@ func set_original_id(original_id:int):
 	word_builder.others_submitted_words.erase(original_id)
 	word_builder.player_total_damage.erase(original_id)
 	
-	main.strawman_taps[id]=main.strawman_taps.get(original_id,0)
+	#main.strawman_taps[id]=main.strawman_taps.get(original_id,0)
 
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
 	if host_save.metadata.seed==local_save.metadata.seed or (Input.is_key_pressed(KEY_PAGEDOWN) and Bridge.is_debug_build()):
@@ -183,6 +183,8 @@ func register_player(other_player_info)->void:
 
 func tag_screenshot(screenshot_handle:int,result:Steam.Result):
 	if result==Steam.Result.RESULT_OK and multiplayer.has_multiplayer_peer():
+		if is_in_run():
+			main.screenshots_taken+=1
 		for player_id in players:
 			if player_id!=multiplayer.get_unique_id() and players[player_id].steam_id!=0:
 				Steam.tagUser(screenshot_handle,players[player_id].steam_id)

@@ -3,7 +3,6 @@ extends Main
 var dead_players:Array[int]=[]
 var players_compleated_floor:Array[int]=[]
 var original_id:=0
-var strawman_taps:Dictionary[int,int]
 var force_allow_select_player:=false
 #var waiting_to_be_revived:=false
 signal all_players_compleated_floor
@@ -11,8 +10,12 @@ signal all_players_compleated_floor
 signal player_died(id:int)
 #signal peer_set_spells(success:bool)
 
-#var reviving:=false
 var candy_round:=false
+
+# end summary stats
+var strawman_taps:int=0
+var screenshots_taken:int=0
+var deaths:int=0
 
 @onready var coop_notifications:CoopNotifications=%CoopNotifications
 @onready var coop_spell_effects:CoopSpellEffects=$CoopSpellEffects
@@ -39,7 +42,7 @@ func start_battle(skipping_transition = false):
 
 func _on_peer_disconnected(id:int):
 	print(id," disconnected")
-	if id==1:
+	if id==1 and not summary_menu.active:
 		save_and_exit()
 	else:
 		if id in dead_players:
@@ -76,6 +79,7 @@ func player_death():
 		return 
 	peer_died.rpc()
 	word_builder.submitted_count=0
+	deaths+=1
 	print("I died")
 	tile_board.clear_targets()
 	if dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():

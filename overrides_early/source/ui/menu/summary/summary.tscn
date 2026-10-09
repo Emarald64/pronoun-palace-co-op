@@ -8,7 +8,7 @@
 script = ExtResource("2_roion")
 
 [node name="AlternatingPageBox" parent="PageMask/MarginContainer/LinkedScrollContainer/MarginContainer" parent_id_path=PackedInt32Array(1393533725) index="0" unique_id=1381074398 node_paths=PackedStringArray("source_boxes")]
-source_boxes = [NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary/MarginContainer/LongestWordsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights/FightsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells/SpellsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words/WordsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer/CoopDamageStats"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer2/CoopLongestWordStats")]
+source_boxes = [NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary/MarginContainer/LongestWordsBox"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Fights/FightsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Spells/SpellsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Words/WordsContainer"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer/CoopDamageStats"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/MarginContainer2/CoopLongestWordStats"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/CategoriesStuff"), NodePath("../../../../../MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/CategoriesStuff/MarginContainer3/CoopPlayerCategories")]
 
 [node name="LongestWords" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/PrimarySummary" parent_id_path=PackedInt32Array(115545741) index="3" unique_id=203239441]
 text = ""
@@ -30,7 +30,31 @@ script = ExtResource("3_qp8bk")
 key = "/mod/co-op/menu/summary/co-op"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="TotalDamage" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="1" unique_id=145947881 groups=["always_base_panel"]]
+[node name="CategoriesStuff" type="VBoxContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="1" unique_id=87684553]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Categories" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/CategoriesStuff" index="0" unique_id=996619250 groups=["always_base_panel"]]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_type_variation = &"MenuDescriptionLabel"
+vertical_alignment = 1
+script = ExtResource("3_qp8bk")
+key = "/mod/co-op/menu/summary/categories"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/CategoriesStuff" index="1" unique_id=2118442256]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="CoopPlayerCategories" type="VBoxContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop/CategoriesStuff/MarginContainer3" index="0" unique_id=1396473975]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TotalDamage" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="2" unique_id=145947881 groups=["always_base_panel"]]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
@@ -39,7 +63,7 @@ script = ExtResource("3_qp8bk")
 key = "/mod/co-op/menu/summary/damage"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="2" unique_id=28679783]
+[node name="MarginContainer" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="3" unique_id=28679783]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 
@@ -48,7 +72,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="LongestWord" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="3" unique_id=1879194278 groups=["always_base_panel"]]
+[node name="LongestWord" type="Label" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="4" unique_id=1879194278 groups=["always_base_panel"]]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 theme_type_variation = &"MenuDescriptionLabel"
@@ -57,7 +81,7 @@ script = ExtResource("3_qp8bk")
 key = "/mod/co-op/menu/summary/word"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="4" unique_id=202615937]
+[node name="MarginContainer2" type="MarginContainer" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="5" unique_id=202615937]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 
@@ -66,7 +90,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="PageFiller" type="Control" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="5" unique_id=67992061 groups=["always_base_panel"]]
+[node name="PageFiller" type="Control" parent="MainMask/MarginContainer/ScrollContainer/MarginContainer/ContentsBox/Coop" index="6" unique_id=67992061 groups=["always_base_panel"]]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3

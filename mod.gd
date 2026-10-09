@@ -174,18 +174,27 @@ func get_run_save_data() -> Dictionary:
 		candy_round=Game.main.candy_round,
 		original_id=Game.main.original_id,
 		all_player_names=Game.all_player_names,
+		
+		# summary stats
+		strawman_taps=Game.main.strawman_taps,
+		screenshots_taken=Game.main.screenshots_taken,
+		deaths=Game.main.deaths,
 		}
 	
 func load_run_save_data(data: Dictionary) -> void:
 	Game.word_builder.others_submitted_words=data.others_submitted_words
 	Game.word_builder.player_total_damage=data.player_total_damage
-	Game.main.candy_round=data.candy_round
 	Game.main.original_id=data.get("original_id",multiplayer.get_unique_id())
+	Game.main.candy_round=data.candy_round
 	if data.candy_round:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
-	#extra_hate_time=data.extra_hate_time
+	
+	# summary stats
+	Game.main.screenshots_taken=data.screenshots_taken
+	Game.main.strawman_taps=data.strawman_taps
+	Game.main.deaths=data.deaths
 
 func get_options_save_data() -> Dictionary:
 	return {
@@ -193,7 +202,7 @@ func get_options_save_data() -> Dictionary:
 	}
 
 func load_options_save_data(data: Dictionary) -> void:
-	Game.player_info.dont_bug_me=data.dont_bug_me
+	Game.player_info.dont_bug_me=data.get("dont_bug_me",false)
 
 #func set_extra_hate_time(value:bool):
 	#extra_hate_time=value

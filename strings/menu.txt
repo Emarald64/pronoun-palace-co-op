@@ -5,6 +5,8 @@
 		Total Damage:
 	:word:
 		Longest Word:
+	:categories:
+		Titles:
 :join:
 	Join
 :ip:

@@ -1,106 +1,10 @@
-:stawman_taps:
+:deaths:
 	:title:
-		Objectum
+		Death Wish
 	:description:
-		Tapped {"housebroken" if housebroken}{"strawman" not housebroken} {value} times.
-	:minimum:
-		50
-:co-op_spells:
-	:title:
-		Helping Hand
-	:description:
-		Used co-op spells {value} times.
-	:minimum:
-		10
-:slurs_played:
-	:title:
-		Bigot
-	:description:
-		Submitted {value} slurs.
-	:minimum:
-		3
-:metals_played:
-	:title:
-		Metalic
-	:description:
-		Submitted {value} metals.
-	:minimum:
-		3
-:animals_played:
-	:title:
-		Furry
-	:description:
-		Submitted {value} animals.
-	:minimum:
-		3
-:fruits_and_veg_played:
-	:title:
-		Eat Your Greens
-	:description:
-		Submitted {value} fruits and vegetables.
-	:minimum:
-		3
-:colors_played:
-	:title:
-		{"Pallet" if pallete}{"Palette" not pallete} Expert
-	:description:
-		Submitted {value} colors.
-	:minimum:
-		3
-:body_parts_played:
-	:title:
-		Body Builder
-	:description:
-		Submitted {value} body parts.
-	:minimum:
-		3
-:time_spent:
-	:most:
-		:title:
-			Slowpoke
-		:description:
-			Spent a whole {value time "h:mm:ss"} deliberating.
-		:minimum:
-			# 1 hour
-			3600000
-	:least:
-		:title:
-			Speedster
-		:description:
-			Spent only {value time "mm:ss"} deliberating.
-		:maximum:
-			# 20 minutes
-			1200000
-:spells_used:
-	:most:
-		:title:
-			Magician
-		:description:
-			Used spells {value} times.
-		:minimum:
-			100
-	:least:
-		:title:
-			Inept
-		:description:
-			Only used spells {value} times.
-		:maximum:
-			20
-:average_letters_played:
-	:most:
-		:title:
-			Sesquipedalian
-		:description:
-			Played an average of {value} letters per word
-		:minimum:
-			8
-	:least:
-		:title:
-			Hippopotomonstrosesquippedaliophobia
-		:description:
-			Played an average of only {value} letters per word.
-		:maximum:
-			5
+		Died {value} times.
+	:limit:
+		2
 :damage_taken:
 	:least:
 		:title:
@@ -115,33 +19,136 @@
 			Took no damage.
 		:description_normal:
 			Only took {value} damage.
-		:maximum:
+		:limit:
 			15
 	:most:
 		:title:
 			Battered and Bruised
 		:discription:
 			Took {value} damage.
-		:minimum:
-			60
-:screenshots_taken:
-	:title:
-		Photographer
-	:description:
-		Took {value} screenshots.
-	:minimum:
-		5
+		:limit:
+			50
 :single_attack_damage:
 	:title:
 		Heavy Hitter
 	:description:
 		Dealt {value} damage in a single attack.
-	:minimum:
+	:limit:
+		45
+:time_spent:
+	:most:
+		:title:
+			Slowpoke
+		:description:
+			Spent a whole {value time "h:mm:ss"} deliberating.
+		:limit:
+			# 1 hour
+			3600000
+	:least:
+		:title:
+			Speedster
+		:description:
+			Spent only {value time "mm:ss"} deliberating.
+		:limit:
+			# 20 minutes
+			1200000
+:average_word_length:
+	:most:
+		:title:
+			Sesquipedalian
+		:description:
+			Played an average of {value} letters per word.
+		:limit:
+			8
+	:least:
+		:title:
+			Hippopotomonstrosesquippedaliophobia
+		:description:
+			Played an average of only {value} letters per word.
+		:limit:
+			5
+:strawman_taps:
+	:title:
+		Objectum
+	:description:
+		Tapped {"housebroken" if housebroken}{"strawman" not housebroken} {value} times.
+	:limit:
 		50
+:coop_spells:
+	:title:
+		Helping Hand
+	:description:
+		Used co-op spells {value} times.
+	:limit:
+		10
+:slurs_played:
+	:title:
+		Bigot
+	:description:
+		Submitted {value} slurs.
+	:limit:
+		3
+:metals_played:
+	:title:
+		Metalic
+	:description:
+		Submitted {value} metals.
+	:limit:
+		3
+:animals_played:
+	:title:
+		Furry
+	:description:
+		Submitted {value} animals.
+	:limit:
+		3
+:fruits_and_veg_played:
+	:title:
+		Eat Your Greens
+	:description:
+		Submitted {value} fruits and vegetables.
+	:limit:
+		3
+:colors_played:
+	:title:
+		{"Pallet" if pallete}{"Palette" not pallete} Expert
+	:description:
+		Submitted {value} colors.
+	:limit:
+		3
+:body_parts_played:
+	:title:
+		Body Builder
+	:description:
+		Submitted {value} body parts.
+	:limit:
+		3
 :modded_spells:
 	:title:
-		Modifier
+		Playtester
 	:description:
 		Used {value} (non-co-op) modded spells.
-	:minimum:
-		10
+	:limit:
+		30
+:spells_used:
+	:most:
+		:title:
+			Magician
+		:description:
+			Used spells {value} times.
+		:limit:
+			100
+	:least:
+		:title:
+			Inept
+		:description:
+			Only used spells {value} times.
+		:limit:
+			20
+:screenshots_taken:
+	:title:
+		Photographer
+	:description:
+		Took {value} screenshots.
+	:limit:
+		5
