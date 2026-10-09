@@ -3,3 +3,4 @@
 [x] test rejoining co-op game/ stop desyncing as addict
 [] health bar doesn't reappear after reviving sometimes?
 [x] nobody swap attack always thinks its the first time
+[x] bammon doesn't remove tiles outside of the board when dieing

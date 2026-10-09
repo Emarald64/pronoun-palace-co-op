@@ -516,34 +516,23 @@ func phone_a_friend_recive():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
-	if recived_phone_a_friend_data.is_empty():
-		#var tile_to_curse=get_tiles({
-			#amount = moves.phone_a_friend_recive.cursed_num, 
-			#effect_priority = EFFECT_PRIORITY.STATUS_ONLY, 
-		#})
-		#for tile in tile_to_curse:
-			#tile.add_status(TileStatus.CURSED)
-			#tile.add_poofcloud(tile.get_color())
-			#await Game.timeout(.1)
-		pass
-	else:
-		var width=tile_board.num_columns
-		var height=tile_board.num_rows
-		for i in mini(recived_phone_a_friend_data.size(),width*height):
-			var cord=Vector2i(i%width,height-(i/width)-1)
-			var tile=tile_board.create_tile()
-			main.add_child(tile)
-			var tile_data=recived_phone_a_friend_data[i]
-			InputSanity.process_tile_data(tile_data)
-			tile.load_save_data(tile_data)
-			#if tile in cursed_tiles:
-				#tile.add_status(Globals.TileStatus.CURSED)
-			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
-			tile.impacted.connect(_on_projectile_impacted)
-			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-			await Game.timeout(0.16)
-		recived_phone_a_friend_data.clear()
-		await all_projectiles_impacted
+	var width=tile_board.num_columns
+	var height=tile_board.num_rows
+	for i in mini(recived_phone_a_friend_data.size(),width*height):
+		var cord=Vector2i(i%width,height-(i/width)-1)
+		var tile=tile_board.create_tile()
+		main.add_child(tile)
+		var tile_data=recived_phone_a_friend_data[i]
+		InputSanity.process_tile_data(tile_data)
+		tile.load_save_data(tile_data)
+		#if tile in cursed_tiles:
+			#tile.add_status(Globals.TileStatus.CURSED)
+		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)
+		tile.impacted.connect(_on_projectile_impacted)
+		tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
+		await Game.timeout(0.16)
+	recived_phone_a_friend_data.clear()
+	await all_projectiles_impacted
 	await Game.tile_board.settle_board()
 	await Game.tile_board.fill_board()
 	await wait_for_idle()

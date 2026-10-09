@@ -133,6 +133,17 @@ func submit_word() -> void :
 func on_player_turn_ending() -> void :
 	if not main.candy_round and player.health>0:
 		await send_attack_and_wait()
+		
+		# clear out of board tiles from party phone
+		#var out_of_board_tiles:Array[Tile]=[]
+		#for row in range(-5,0):
+			#for column in tile_board.num_columns:
+				#var coord=Vector2i(row,column)
+				#if coord in tile_board.tile_map:
+					#var tile=tile_board.tile_map[coord]
+					#if not tile.in_word():
+						#out_of_board_tiles.append(tile)
+		#await tile_board.remove_tiles(out_of_board_tiles,{settle=false,fill=false})
 	await super()
 
 func player_disconnected(id:int)->void:

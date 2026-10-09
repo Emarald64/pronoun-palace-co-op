@@ -51,7 +51,7 @@
 		Party Telephone
 
 	:description:
-		Send a spelled word to another player.
+		Send a spelled word to another player. The word will be placed on the side of their board. 
 
 	:label:
 		Send word
@@ -229,7 +229,7 @@
 	
 	:banner:
 		Select a player to copy the SSN of
-	
+
 :printed_ssn:
 	:name:
 		{:spell/ssn/name:}

@@ -47,9 +47,11 @@ func recive_word(tiles:Array)->void:
 			new_tile.impacted.connect(func ():
 				projectile_impacted()
 				AudioManager.play_sound(Sounds.PROLE_SERVICE.TONE)
-				tile_board.insert_tile(new_tile,coord,false)
-				new_tile.reparent(main.tile_container)
-				new_tile.add_poofcloud(new_tile.get_poof_color())
+				var tile=tile_board.insert_tile(new_tile,coord,false)
+				tile.reparent(main.tile_container)
+				tile.add_poofcloud(tile.get_poof_color())
+				tile.is_projectile=false
+				tile.update_z_index()
 				)
 		await get_tree().create_timer(0.16).timeout
 	await all_projectiles_impacted
