@@ -95,8 +95,12 @@ func time_out():
 	await tile_board.wait_for_idle()
 	#if tile.has_status(TileStatus.BOMB):
 		#await tile.get_status(TileStatus.BOMB).explode()
-	tile_board.remove_tile(tile)
+	tile_board.remove_tile(tile,{delete_tiles=false})
 	tile_board.state_updated.connect(Game.player.recompose,ConnectFlags.CONNECT_ONE_SHOT)
+	
+	if not tile.has_status(TileStatus.BOMB):
+		tile_board.launch_tile(tile)
+	
 
 func _on_timer_stopped(elapsed_time:int):
 	if not stopped_timer:
