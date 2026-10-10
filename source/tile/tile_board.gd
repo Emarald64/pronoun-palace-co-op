@@ -1,5 +1,12 @@
 extends TileBoard
 
+var getting_tiles_for_intents:=false
+
+func _ready():
+	#await get_tree().process_frame
+	word_builder.updating_stats.connect(_on_start_updating_stats)
+	word_builder.post_tile_stats.connect(_on_post_tile_stats)
+
 func _add_tile_at(column, update = true, instant = false):
 	#print("using custom add tile function")
 	var queued_tile=queue.queue[Vector2i(column,0)]
@@ -57,3 +64,15 @@ func turn_end(reroll: = false, end_of_battle: = false):
 func update_tiles():
 	super()
 	main.phone_board.update_tiles()
+
+func _on_start_updating_stats(_words):
+	getting_tiles_for_intents=true
+
+func _on_post_tile_stats(_words):
+	getting_tiles_for_intents=false
+
+func _get_matching_tile_info(parameters: Dictionary, tiles_only: bool) -> Array[Dictionary]:
+	var tile_info=super(parameters,tiles_only)
+	if getting_tiles_for_intents:
+		tile_info.append_array(main.phone_board._get_matching_tile_info(parameters,tiles_only))
+	return tile_info

@@ -48,6 +48,7 @@ func recive_word(tiles:Array)->void:
 			new_tile.load_save_data(tile_data)
 			var tile=phone_board.insert_tile(new_tile,coord,false)
 			tile.tile_board=phone_board
+			tile.update_z_index()
 	
 	if need_to_move_main_board:
 		# move main tile board to the left

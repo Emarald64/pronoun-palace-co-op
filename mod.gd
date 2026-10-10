@@ -43,14 +43,14 @@ const SPELLS:Dictionary[StringName,String]={
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={
-	SPELLS.PARTY_TELEPHONE:1.5,
-	SPELLS.POSTAGE_STAMP:2.0,
-	SPELLS.BLUE_BOX:1.5,
+	SPELLS.PARTY_TELEPHONE:3.0,
+	SPELLS.POSTAGE_STAMP:1.75,
+	SPELLS.BLUE_BOX:1.0,
 	SPELLS.REMOTE_OBJECT:2.0,
-	SPELLS.TV_SNOW:2.0,
-	SPELLS.SSN_PRINTER:2.5,
-	SPELLS.MINUTE_OF_HATE:1.5,
-	SPELLS.SNEAKERNET:2.0,
+	SPELLS.TV_SNOW:1.5,
+	SPELLS.SSN_PRINTER:2.0,
+	SPELLS.MINUTE_OF_HATE:2.0,
+	SPELLS.SNEAKERNET:1.75,
 }
 
 const GIFT_SPELLS:Array[String]=[
@@ -196,13 +196,18 @@ func load_run_save_data(data: Dictionary) -> void:
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
 	
-	if "phone_board" in data:
-		Game.main.phone_board.load_save_data(data.phone_board)
 	
 	# summary stats
 	Game.main.screenshots_taken=data.screenshots_taken
 	Game.main.strawman_taps=data.strawman_taps
 	Game.main.deaths=data.deaths
+	
+	if "phone_board" in data:
+		await get_tree().process_frame
+		Game.main.phone_board.load_save_data(data.phone_board)
+		Game.tile_board.prepare_to_animate()
+		Game.tile_board.position.x=180
+		Game.tile_board.finish_animating()
 
 func get_options_save_data() -> Dictionary:
 	return {
