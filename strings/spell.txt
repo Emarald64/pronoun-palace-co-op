@@ -51,7 +51,7 @@
 		Party Telephone
 
 	:description:
-		Send a spelled word to another player. The word will be placed on the side of their board. 
+		Send a spelled word to another player. The word will be placed on a separate board. 
 
 	:label:
 		Send word
@@ -60,7 +60,7 @@
 		rare
 
 	:max_charge:
-		2
+		3
 
 	:banner:
 		Select a player to send the word to
