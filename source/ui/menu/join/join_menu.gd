@@ -7,6 +7,7 @@ var icons:Array[CharacterSelectorIcon]=[]
 
 func _ready()->void:
 	start_appearing.connect(_on_start_appearing)
+	start_disappearing.connect(_on_start_disappearing)
 	multiplayer.connection_failed.connect(connection_failed)
 	multiplayer.connected_to_server.connect(connection_ok)
 
@@ -25,13 +26,23 @@ func _on_start_appearing()->void:
 		var selector_icons: Array[SelectorIcon] = []
 		selector_icons.assign(icons)
 		%IconSelector.set_icons(selector_icons)
-	%IconSelector.select(Globals.CHARACTER_ORDER.find(SaveManager.get_save_data().selected_character))
+		
+	var selected_character=SaveManager.get_save_data().selected_character
+	%IconSelector.set_initial_selection(Globals.CHARACTER_ORDER.find(selected_character))
+	select_character(selected_character)
 	%Name.clear()
 	if Bridge.steam_initialized:
 		Game.player_info.name=Bridge.get_username(Bridge.own_user_id)
 	else:
 		Game.player_info.name="Client"
 	%Name.placeholder_text=Game.player_info.name
+	
+	get_tree().create_timer(0.02).timeout.connect($ConnectButton.appear_complete)
+
+
+func _on_start_disappearing():
+	get_tree().create_timer(0.02).timeout.connect($ConnectButton.disappear_complete)
+
 
 func connect_to_server() -> void:
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
@@ -63,9 +74,13 @@ func connection_ok()->void:
 
 
 func _on_icon_selector_selected(icon: SelectorIcon) -> void:
-	SaveManager.get_save_data().selected_character = icon.character
-	%CharacterTitle.key="character/%s/select_title" % icon.character
-	Game.player_info.character=icon.character
+	select_character(icon.character)
+
+
+func select_character(character:String):
+	SaveManager.get_save_data().selected_character = character
+	%CharacterTitle.key="character/%s/select_title" % character
+	Game.player_info.character=character
 
 
 func _on_name_changed(new_text: String) -> void:

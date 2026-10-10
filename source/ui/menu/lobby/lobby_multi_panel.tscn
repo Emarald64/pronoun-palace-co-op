@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bw5t4ryinjkff"]
+
+[ext_resource type="Script" uid="uid://y2ynpogmbu7y" path="res://mods/co-op/source/ui/menu/lobby/lobby_multi_panel.gd" id="1_dte48"]
+[ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/menu/lobby/lobby_main_panel.tscn" id="2_kiq7k"]
+[ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="3_3w04l"]
+
+[node name="LobbyMultiPanel" type="Control" unique_id=304877311]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_dte48")
+full_screen_menu = true
+metadata/_custom_type_script = "uid://bsqibr4dgehl3"
+
+[node name="LobbyMainPanel" parent="." unique_id=1499490309 instance=ExtResource("2_kiq7k")]
+layout_mode = 1
+
+[node name="MenuButtonRight" parent="." unique_id=159128984 groups=["multipanel_position_exclude"] instance=ExtResource("3_3w04l")]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 220.0
+offset_right = 480.0
+offset_bottom = 220.0
+
+[connection signal="pressed" from="MenuButtonRight" to="LobbyMainPanel" method="start_game"]

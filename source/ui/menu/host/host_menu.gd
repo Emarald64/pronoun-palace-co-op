@@ -20,6 +20,7 @@ var visibility_selector_icon_scene:PackedScene=load("res://mods/co-op/source/ui/
 
 func _ready() -> void:
 	start_appearing.connect(_on_start_appearing)
+	start_disappearing.connect(_on_start_disappearing)
 
 func _on_start_appearing():
 	%Steam.disabled=not Bridge.steam_initialized
@@ -44,6 +45,13 @@ func _on_start_appearing():
 		Game.player_info.name=%Name.placeholder_text
 	else:
 		Game.player_info.name=%Name.text
+	
+	get_tree().create_timer(0.02).timeout.connect($HostButton.appear_complete)
+
+
+func _on_start_disappearing():
+	get_tree().create_timer(0.02).timeout.connect($HostButton.disappear_complete)
+
 
 func host_pressed():
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)

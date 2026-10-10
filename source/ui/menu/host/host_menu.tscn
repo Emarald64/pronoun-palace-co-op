@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="4_040ac"]
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="5_ualr1"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="6_8mq6c"]
+[ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="7_82q5v"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_a6585"]
 
@@ -232,8 +233,17 @@ key = "/mod/co-op/menu/lobby_type/friends_only/description"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1806416797]
+visible = false
 layout_mode = 2
 text = "Host"
+
+[node name="HostButton" parent="." index="2" unique_id=159128984 instance=ExtResource("7_82q5v")]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 220.0
+offset_right = 480.0
+offset_bottom = 220.0
+text = "/mod/co-op/menu/host"
 
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod/IP" to="." method="select_ip"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/NetworkingMethod/Steam" to="." method="select_steam"]
@@ -241,5 +251,6 @@ text = "Host"
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Stuff/HBoxContainer/ShowIPButton" to="." method="show_ip"]
 [connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector" to="." method="_on_visibility_selector_selected"]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="host_pressed"]
+[connection signal="pressed" from="HostButton" to="." method="host_pressed"]
 
 [editable path="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector"]

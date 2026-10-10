@@ -14,7 +14,7 @@ func _ready() -> void:
 #func _on_start_appearing()->void:
 
 func _on_start_appearing()->void:
-	%Start.disabled=not multiplayer.is_server()
+	#%Start.disabled=not multiplayer.is_server()
 	%SteamStuff.visible=Game.steam_lobby_id!=0
 	if Game.steam_lobby_id:
 		var lobby_id_array=PackedByteArray()
@@ -36,7 +36,7 @@ func remove_player(id:int)->void:
 	block.queue_free()
 
 func start_game():
-	var run_seed=character_select.seed_button.get_seed()
+	var run_seed=Game.main_menu.get_node("%CharacterSelect").seed_button.get_seed()
 	if run_seed==null:
 		run_seed=randi()
 	if Game.steam_lobby_id:

@@ -4,12 +4,11 @@
 [ext_resource type="Script" uid="uid://dit6w1p5gk6f8" path="res://mods/co-op/source/main_menu.gd" id="2_le0k0"]
 [ext_resource type="PackedScene" uid="uid://ca42grsrjw13r" path="res://source/ui/menu/buttons/menu_label_button_tall.tscn" id="3_f3mtu"]
 [ext_resource type="PackedScene" uid="uid://benomodipcosy" path="res://mods/co-op/source/ui/menu/join/join_menu.tscn" id="3_le0k0"]
-[ext_resource type="PackedScene" uid="uid://cbyfe8xina7d" path="res://mods/co-op/source/ui/menu/lobby/lobby.tscn" id="4_sfbee"]
 [ext_resource type="Script" uid="uid://drhqtq2pm08ot" path="res://mods/co-op/source/ui/menu/join/join_button.gd" id="4_ubdpl"]
 [ext_resource type="PackedScene" uid="uid://d1xbhbxo8rq8k" path="res://mods/co-op/source/ui/menu/host/host_menu.tscn" id="5_f3mtu"]
+[ext_resource type="PackedScene" uid="uid://bw5t4ryinjkff" path="res://mods/co-op/source/ui/menu/lobby/lobby_multi_panel.tscn" id="6_0y8nw"]
 [ext_resource type="PackedScene" uid="uid://b0ic6lvqrr2a2" path="res://mods/co-op/source/ui/menu/join/steam_join_menu.tscn" id="8_sfbee"]
 [ext_resource type="Script" uid="uid://dfwgxqa7kl7hi" path="res://source/ui/menu/generic/multi_panel_menu.gd" id="9_f3mtu"]
-[ext_resource type="PackedScene" uid="uid://bd1kelblt38w4" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_list.tscn" id="9_ujukc"]
 [ext_resource type="PackedScene" uid="uid://ca1lq3w2bh23" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_menu.tscn" id="12_4o2ty"]
 [ext_resource type="PackedScene" uid="uid://g4eausffcst3" path="res://source/ui/menu/buttons/menu_label_button_small.tscn" id="12_jervs"]
 
@@ -48,11 +47,9 @@ offset_top = 1000.0
 offset_bottom = 1000.0
 lobby = NodePath("../Lobby")
 
-[node name="Lobby" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="16" unique_id=1882475272 node_paths=PackedStringArray("character_select") instance=ExtResource("4_sfbee")]
-unique_name_in_owner = true
+[node name="Lobby" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="16" unique_id=849495929 instance=ExtResource("6_0y8nw")]
 offset_top = 1000.0
 offset_bottom = 1000.0
-character_select = NodePath("../CharacterSelect")
 
 [node name="CreateServerMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="17" unique_id=1190851394 node_paths=PackedStringArray("lobby") instance=ExtResource("5_f3mtu")]
 unique_name_in_owner = true
@@ -65,11 +62,7 @@ offset_top = 1000.0
 offset_bottom = 1000.0
 lobby = NodePath("../Lobby")
 
-[node name="LobbySearch" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=1874066626 instance=ExtResource("9_ujukc")]
-offset_top = 1000.0
-offset_bottom = 1000.0
-
-[node name="JoinSelectionMenu" type="Control" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="20" unique_id=356725616]
+[node name="JoinSelectionMenu" type="Control" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="19" unique_id=356725616]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -95,7 +88,7 @@ offset_bottom = 559.0
 text = "mod/co-op/menu/lobbies"
 opens_menu = NodePath("../../LobbySearchMenu")
 
-[node name="LobbySearchMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="21" unique_id=501848588 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("12_4o2ty")]
+[node name="LobbySearchMenu" parent="HUD" parent_id_path=PackedInt32Array(1038201479) index="20" unique_id=501848588 node_paths=PackedStringArray("steam_join_menu") instance=ExtResource("12_4o2ty")]
 offset_left = 515.0
 offset_top = 621.0
 offset_right = 515.0

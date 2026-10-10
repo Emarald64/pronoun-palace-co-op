@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c8847cuxj6uhe" path="res://source/ui/menu/character_select/icon_selector.tscn" id="3_fj880"]
 [ext_resource type="Script" uid="uid://c17dcnicbtc1a" path="res://source/library/sound_ref.gd" id="4_10pla"]
 [ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="6_51rn3"]
+[ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="7_ggpi4"]
 
 [sub_resource type="Resource" id="Resource_ooua1"]
 script = ExtResource("4_10pla")
@@ -95,6 +96,7 @@ max_value = 65535.0
 value = 7000.0
 
 [node name="Button" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="5" unique_id=990898958]
+visible = false
 layout_mode = 2
 text = " "
 
@@ -118,7 +120,16 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
+[node name="ConnectButton" parent="." index="2" unique_id=159128984 instance=ExtResource("7_ggpi4")]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 220.0
+offset_right = 480.0
+offset_bottom = 220.0
+text = "/mod/co-op/menu/connect"
+
 [connection signal="selected" from="PositionRoot/Panel/MarginContainer/VBoxContainer/IconSelector" to="." method="_on_icon_selector_selected"]
 [connection signal="text_changed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="_on_name_changed"]
 [connection signal="text_submitted" from="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer3/Name" to="." method="connect_to_server" unbinds=1]
 [connection signal="pressed" from="PositionRoot/Panel/MarginContainer/VBoxContainer/Button" to="." method="connect_to_server"]
+[connection signal="pressed" from="ConnectButton" to="." method="connect_to_server"]
