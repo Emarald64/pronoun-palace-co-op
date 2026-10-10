@@ -20,9 +20,11 @@ var deaths:int=0
 @onready var coop_notifications:CoopNotifications=%CoopNotifications
 @onready var coop_spell_effects:CoopSpellEffects=$CoopSpellEffects
 @onready var peers_ui=%PeersUI
+@onready var phone_board:TileBoard=%PhoneBoard
 
 func _ready():
 	super()
+	Game.tile_board=tile_board
 	Game.player_disconnected.connect(_on_peer_disconnected)
 	if not multiplayer.is_server():
 		%FixDesync.forced_hidden=true

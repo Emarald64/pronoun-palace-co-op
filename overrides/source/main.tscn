@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dxrtpk113g3g8" path="res://mods/co-op/source/main.gd" id="2_8s84c"]
 [ext_resource type="Script" uid="uid://cowh3fukue25l" path="res://mods/co-op/source/word_builder/word_builder.gd" id="2_rhwav"]
 [ext_resource type="Script" uid="uid://dlpnjmg71lnya" path="res://mods/co-op/source/tile/tile_board.gd" id="3_hfx5h"]
+[ext_resource type="PackedScene" uid="uid://dpvpnoikr6qcl" path="res://mods/co-op/source/tile/phone_board.tscn" id="4_o8jme"]
 [ext_resource type="PackedScene" uid="uid://d268ojbynpbue" path="res://mods/co-op/source/ui/sidebar/peers_ui.tscn" id="5_2w87v"]
 [ext_resource type="PackedScene" uid="uid://i22cj8xh1npk" path="res://mods/co-op/source/ui/notification/coop_notifications.tscn" id="7_2w87v"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="8_2w87v"]
@@ -16,19 +17,23 @@ script = ExtResource("2_8s84c")
 offset_left = 110.0
 offset_right = 156.0
 
-[node name="TileBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="2" unique_id=1619504647]
+[node name="PhoneBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="2" unique_id=2138667918 instance=ExtResource("4_o8jme")]
+unique_name_in_owner = true
+position = Vector2(286, 169)
+
+[node name="TileBoard" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=1619504647]
 script = ExtResource("3_hfx5h")
 
-[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="3" unique_id=952275895]
+[node name="WordBuilder" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="4" unique_id=952275895]
 script = ExtResource("2_rhwav")
 
-[node name="EnemyIntentContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="6" unique_id=112413146]
+[node name="EnemyIntentContainer" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="7" unique_id=112413146]
 realign_with_word_length = false
 
-[node name="PeersUI" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="15" unique_id=925131084 instance=ExtResource("5_2w87v")]
+[node name="PeersUI" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="16" unique_id=925131084 instance=ExtResource("5_2w87v")]
 unique_name_in_owner = true
 
-[node name="CoopNotifications" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="16" unique_id=1613358473 instance=ExtResource("7_2w87v")]
+[node name="CoopNotifications" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="17" unique_id=1613358473 instance=ExtResource("7_2w87v")]
 unique_name_in_owner = true
 anchors_preset = 1
 anchor_left = 1.0

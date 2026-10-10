@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dpvpnoikr6qcl"]
+
+[ext_resource type="PackedScene" uid="uid://c2oso7j5byhn5" path="res://source/tile/tile_board.tscn" id="1_nncn2"]
+[ext_resource type="Script" uid="uid://bi5kuchl22lop" path="res://mods/co-op/source/tile/phone_board.gd" id="2_4b2jr"]
+[ext_resource type="Texture2D" uid="uid://c4yatrg4yh15f" path="res://mods/co-op/arte/ui/phone_board.png" id="3_255m3"]
+[ext_resource type="Texture2D" uid="uid://ban3f2w2agtx" path="res://mods/co-op/arte/ui/phone_board_inside.png" id="4_21kix"]
+
+[node name="PhoneBoard" unique_id=2138667918 instance=ExtResource("1_nncn2")]
+script = ExtResource("2_4b2jr")
+
+[node name="Board" parent="BoardPosition" parent_id_path=PackedInt32Array(1855108311) index="0" unique_id=629802601]
+texture = ExtResource("3_255m3")
+
+[node name="PreviewMask" parent="BoardPosition/Board" index="0" unique_id=1392933849]
+visible = false
+
+[node name="TooltipCollision" parent="BoardPosition/Board/PreviewMask" index="0" unique_id=1104614176]
+visible = false
+
+[node name="TileBox" parent="BoardPosition/Board" index="1" unique_id=1106987208]
+texture = ExtResource("4_21kix")

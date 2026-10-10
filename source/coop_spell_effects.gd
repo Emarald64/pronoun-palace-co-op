@@ -6,7 +6,7 @@ signal all_projectiles_impacted
 
 var using_remote_object:=false
 var in_coop_spell_animation:=false
-var projectile_count:=0
+#var projectile_count:=0
 
 var tile_board:TileBoard=Game.tile_board
 var main:Main=Game.main
@@ -18,43 +18,48 @@ func _ready():
 	await Game.main_scene_loaded
 	spell_container = Game.spell_container
 
-func projectile_impacted():
-	projectile_count-=1
-	if projectile_count<=0:
-		all_projectiles_impacted.emit()
+#func projectile_impacted():
+	#projectile_count-=1
+	#if projectile_count<=0:
+		#all_projectiles_impacted.emit()
 
 @rpc("any_peer")
 func recive_word(tiles:Array)->void:
 	#print(tiles)
 	in_coop_spell_animation=true
-	await tile_board.wait_for_idle()
-	var width=tile_board.num_columns
-	var height=tile_board.num_rows
-	var offset=((tiles.size()-1)/4)+1
-	for i in height*width:
-		var coord:=Vector2i(i/width-offset,height-(i%height)-1)
-		var existing_tile=tile_board.get_tile_at(coord)
-		var tile_data =tiles.pop_front()
-		if tile_data==null:
-			break
+	var phone_board:TileBoard=main.phone_board
+	var need_to_move_main_board=phone_board.is_slid_out
+	if not phone_board.is_slid_out:
+		await word_builder.remove_tiles()
+		phone_board.prepare_to_animate()
+		await phone_board.slide_out()
+		phone_board.finish_animating()
+	var width=phone_board.num_columns
+	var height=phone_board.num_rows
+	#var offset=((tiles.size()-1)/4)+1
+	for i in mini(height*width,tiles.size()):
+		var coord=Vector2i(i%width,height-(i/width)-1)
+		var existing_tile=phone_board.get_tile_at(coord)
+		var tile_data =tiles[i]
 		if existing_tile==null or not existing_tile.in_word():
-			projectile_count+=1
 			InputSanity.process_tile_data(tile_data)
-			var new_tile=tile_board.create_tile()
+			var new_tile=phone_board.create_tile()
 			main.add_child(new_tile)
 			new_tile.load_save_data(tile_data)
-			new_tile.launch(Vector2(-50,150),tile_board.get_coord_position(coord),randf_range(40,80))
-			new_tile.impacted.connect(func ():
-				projectile_impacted()
-				AudioManager.play_sound(Sounds.PROLE_SERVICE.TONE)
-				var tile=tile_board.insert_tile(new_tile,coord,false)
-				tile.reparent(main.tile_container)
-				tile.add_poofcloud(tile.get_poof_color())
-				tile.is_projectile=false
-				tile.update_z_index()
-				)
-		await get_tree().create_timer(0.16).timeout
-	await all_projectiles_impacted
+			var tile=phone_board.insert_tile(new_tile,coord,false)
+			tile.tile_board=phone_board
+	
+	if need_to_move_main_board:
+		# move main tile board to the left
+		main.tile_board.prepare_to_animate()
+		var tween=create_tween()
+		tween.tween_property(main.tile_board,"position:x",180,.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+		tween.finished.connect(main.tile_board.finish_animating)
+		await get_tree().create_timer(.1).timeout
+	phone_board.prepare_to_animate()
+	await phone_board.slide_in()
+	await phone_board.wait_for_idle()
+	phone_board.finish_animating()
 	in_coop_spell_animation=false
 
 @rpc("any_peer")

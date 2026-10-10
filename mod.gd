@@ -168,7 +168,7 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	
 
 func get_run_save_data() -> Dictionary:
-	return {
+	var data= {
 		others_submitted_words=Game.word_builder.others_submitted_words,
 		player_total_damage=Game.word_builder.player_total_damage,
 		candy_round=Game.main.candy_round,
@@ -180,7 +180,12 @@ func get_run_save_data() -> Dictionary:
 		screenshots_taken=Game.main.screenshots_taken,
 		deaths=Game.main.deaths,
 		}
+	if not Game.main.phone_board.is_slid_out:
+		data.phone_board=Game.main.phone_board.get_save_data()
 	
+	return data
+
+
 func load_run_save_data(data: Dictionary) -> void:
 	Game.word_builder.others_submitted_words=data.others_submitted_words
 	Game.word_builder.player_total_damage=data.player_total_damage
@@ -190,6 +195,9 @@ func load_run_save_data(data: Dictionary) -> void:
 		Game.main.peer_died.rpc()
 	Game.set_original_id.rpc(Game.main.original_id)
 	Game.all_player_names.merge(data.all_player_names)
+	
+	if "phone_board" in data:
+		Game.main.phone_board.load_save_data(data.phone_board)
 	
 	# summary stats
 	Game.main.screenshots_taken=data.screenshots_taken

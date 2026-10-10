@@ -113,7 +113,7 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 				):
 					tiles_to_remove.append(coord)
 		
-		if local_save.data.run_stats.turns_taken!=host_save.data.run_stats.turns_taken:
+		if true:#local_save.data.run_stats.turns_taken!=host_save.data.run_stats.turns_taken:
 			#difrent turn remove tiles which are removed at the end of the turn
 			print('on diffrent turn')
 			for coord in local_save.data.board.tiles:
@@ -123,7 +123,7 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 						if "destroy_on_turn_end" in StringManager.get_string("/status/%s/flags"%status).split(" ",false):
 							tiles_to_remove.append(coord)
 							break 
-			local_save.data.run_stats.turns_taken=host_save.data.run_stats.turns_taken
+			#local_save.data.run_stats.turns_taken=host_save.data.run_stats.turns_taken
 		if not tiles_to_remove.is_empty():
 			for coord_to_remove in tiles_to_remove:
 				local_save.data.board.tiles.erase(coord_to_remove)
