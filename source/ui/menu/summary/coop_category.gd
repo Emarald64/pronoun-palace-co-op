@@ -6,7 +6,7 @@ func setup(player_id:int,category:String,value):
 		if encounter.enemy_name==Enemies.HOUSEBROKEN:
 			context.housebroekn=true
 			break
-	%Header.text="%s - %s"%[
+	%Header.text="• %s - %s"%[
 		Game.all_player_names[player_id],
 		StringManager.get_string(
 			"mod/co-op/end_title/%s/title"%category,

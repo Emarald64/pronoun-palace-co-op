@@ -8,13 +8,13 @@
 :damage_taken:
 	:least:
 		:title:
-			{:title_normal: if value}{:title_no_hit: not value} 
+			{:title_no_hit: if value 0}{:title_normal: not value 0} 
 		:title_no_hit:
 			No-hitter
 		:title_normal:
 			Blocker
 		:description:
-			{:description_normal: if value}{:description_no_hit: not value}
+			{:description_no_hit: if value 0}{:description_normal: not value 0}
 		:description_no_hit:
 			Took no damage.
 		:description_normal:
@@ -151,4 +151,4 @@
 	:description:
 		Took {value} screenshots.
 	:limit:
-		5
+		3

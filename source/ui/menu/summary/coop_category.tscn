@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://pafatajj5y2k" path="res://mods/co-op/source/ui/menu/summary/coop_category.gd" id="1_bsmj0"]
 
 [node name="CoopCategory" type="MarginContainer" unique_id=1669890571]
-offset_right = 213.0
-offset_bottom = 26.0
+offset_right = 201.0
+offset_bottom = 30.0
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("1_bsmj0")
@@ -16,13 +16,14 @@ theme_override_constants/separation = 2
 [node name="Header" type="Label" parent="VBoxContainer" unique_id=804600678]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Xanderath - Hippopotomonstrosesquippedaliophobia"
+text = "• Xanderath - Hippopotomonstrosesquippedaliophobia"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" unique_id=729240088]
 layout_mode = 2
-theme_override_constants/margin_left = 8
+theme_override_constants/margin_left = 10
 
 [node name="Description" type="Label" parent="VBoxContainer/MarginContainer" unique_id=2067578047]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Played an average of only 5 letters per word."
+autowrap_mode = 2

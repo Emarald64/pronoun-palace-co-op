@@ -24,7 +24,6 @@ signal peer_attack_updated(id:int,submit:bool)
 
 func _ready() -> void:
 	super()
-	print(Game.players)
 	Game.player_disconnected.connect(player_disconnected)
 	finished_updating_stats.connect(_on_finished_updating_stats)
 
@@ -135,15 +134,14 @@ func on_player_turn_ending() -> void :
 		await send_attack_and_wait()
 		
 		# clear out of board tiles from party phone
-		#var out_of_board_tiles:Array[Tile]=[]
-		#for row in range(-5,0):
-			#for column in tile_board.num_columns:
-				#var coord=Vector2i(row,column)
-				#if coord in tile_board.tile_map:
-					#var tile=tile_board.tile_map[coord]
-					#if not tile.in_word():
-						#out_of_board_tiles.append(tile)
-		#await tile_board.remove_tiles(out_of_board_tiles,{settle=false,fill=false})
+		#if not main.phone_board.is_slid_out:
+			##main.phone_board.remove_tiles(main.phone_board.get_tiles())
+			#main.tile_board.prepare_to_animate()
+			#var tween=create_tween()
+			#tween.tween_property(main.tile_board,"position:x",240,.4)
+			#tween.finished.connect(main.tile_board.finish_animating)
+			#
+			#await main.phone_board.slide_out()
 	await super()
 
 func player_disconnected(id:int)->void:
@@ -227,6 +225,10 @@ func update_stats() -> void :
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health,bruise)
 		main.peers_ui.update_total_damage_counter(damage)
+
+#func clear_word(charges_spells: = true):
+	#await super(charges_spells)
+	#var phone_tiles=main.phone_board.tile_map.values()
 
 func _on_finished_updating_stats(_words):
 	if main.candy_round:
