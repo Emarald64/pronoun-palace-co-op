@@ -153,7 +153,7 @@ func get_category_scores()->Dictionary:
 		strawman_taps=Game.main.strawman_taps,
 		time_spent=run_stats.get_total_deliberation_time(),
 		average_word_length=0.0,
-		damage_taken=Game.player.damage_taken,
+		damage_taken=AchievementManager.total_damage_taken,
 		single_attack_damage=run_stats.get_max_damage(),
 		spells_used=0,
 		coop_spells=0,
