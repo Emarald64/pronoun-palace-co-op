@@ -57,7 +57,7 @@ func recive_word(tiles:Array)->void:
 				tile.sway_handler.disabled = true
 				tile.reparent(main.tile_board.tile_mask)
 		var tween=create_tween()
-		tween.tween_property(main.tile_board,"position:x",180,.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+		tween.tween_property(main.tile_board,"position:x",180,.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 		tween.finished.connect(main.tile_board.finish_animating)
 		await get_tree().create_timer(.1).timeout
 	phone_board.prepare_to_animate()
