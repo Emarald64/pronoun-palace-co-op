@@ -5,7 +5,7 @@ var selecting_spell:=false
 func _use():
 	# display other player's spells
 	var my_index:=spell_container.player_spells.find(player_spell_slot)
-	var old_spells=spell_container.get_spells()
+	var old_spells:=spell_container.get_spells()
 	selecting_spell=false
 	var peer_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
 	if peer_id==null:
@@ -13,12 +13,20 @@ func _use():
 		return
 	
 	coop_spell_effects.using_remote_object=true
+	
+	#make spell charge decays not cause errors
+	for spell in old_spells:
+		var charge_decay:SpellChargeDecay=spell.get("spell_charge_decay")
+		if charge_decay:
+			charge_decay.timer.stopped.disconnect(charge_decay._on_timer_stopped)
+	
 	coop_spell_effects.request_set_spells.rpc_id(peer_id)
 	#player_spell_slot.get_tree().create_timer(10).timeout.connect(main.peer_set_spells.emit.bind(false))
 	var timeout_result=await wait_for_reply_with_timeout()
 	#main.allow_set_spells=false
 	if not timeout_result:
 		coop_notifications.add_spell_notification(id,{failed=true},peer_id)
+		restore_spells(old_spells)
 		push_warning("remote object request set spells failed")
 		coop_spell_effects.using_remote_object=false
 		_end_use()
@@ -33,9 +41,7 @@ func _use():
 	selecting_spell=false
 	if new_spell == null:
 		remove_all_player_spells()
-		for i in old_spells.size():
-			spell_container.add_spell(old_spells[i])
-		#spell_container.load_save_data(old_spells_save_data)
+		restore_spells(old_spells)
 		coop_spell_effects.using_remote_object=false
 		_end_use()
 		return
@@ -50,18 +56,16 @@ func _use():
 	remove_all_player_spells()
 	coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
 	coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
-	for i in old_spells.size():
-		spell_container.add_spell(old_spells[i])
+	restore_spells(old_spells)
 	coop_spell_effects.using_remote_object=false
 	_end_use()
 
-#func wait_with_timeout(sig:Signal,timeout:=5.0)->bool:
-	#var dummy_obj=RefCounted.new()
-	#dummy_obj.add_user_signal("result",[{name="result",type=TYPE_BOOL}])
-	#var result_signal=Signal(dummy_obj,"result")
-	#sig.connect(result_signal.emit.bind(true),CONNECT_ONE_SHOT)
-	#main.get_tree().create_timer(timeout).timeout.connect(result_signal.emit.bind(false),CONNECT_ONE_SHOT)
-	#return await result_signal
+func restore_spells(spells:Array[Spell]):
+	for spell in spells:
+		spell_container.add_spell(spell)
+		var charge_decay:SpellChargeDecay=spell.get("spell_charge_decay")
+		if charge_decay:
+			charge_decay.timer.stopped.connect(charge_decay._on_timer_stopped)
 
 func get_tooltip_context():
 	return {selecting_spell=selecting_spell}
