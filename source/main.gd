@@ -32,7 +32,7 @@ func _ready():
 
 func _process(_delta: float) -> void:
 	if Input.is_key_pressed(KEY_R):
-		stop_waiting_for_death(true)
+		revive()
 	
 	if Input.is_key_pressed(KEY_P):
 		all_players_compleated_floor.emit()
@@ -53,9 +53,10 @@ func _on_peer_disconnected(id:int):
 			players_compleated_floor.erase(id)
 		else:
 			if dead_players.size()+1>=Game.players.size():
-				stop_waiting_for_death()
+				if candy_round:
+					super.player_death()
 			elif dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():
-				stop_waiting_for_death(true)
+				revive()
 			if players_compleated_floor.size()>=Game.players.size()-1:
 				all_players_compleated_floor.emit()
 
@@ -88,7 +89,7 @@ func player_death():
 		if players_compleated_floor.is_empty():
 			await super()
 		else:
-			stop_waiting_for_death(true)
+			revive()
 		return
 	elif enemy.id==Enemies.NOBODY:
 		await super()
@@ -102,36 +103,38 @@ func player_death():
 			await Game.timeout(0.1)
 		start_player_action()
 
-func stop_waiting_for_death(revive=false):
+func revive():
 	if candy_round:
-		if revive:
-			print("reviving")
-			is_player_turn=false
-			candy_round=false
-			#reviving=false
-			player.is_defeated=false
-			player.is_flinching=false
-			player.is_dying=false
-			tile_board.unlock_restock(true)
-			await word_builder.remove_tiles()
-			await word_builder.intent_container.clear_intents()
-			word_builder.submitted_count=0
-			word_builder.update()
-			await player.heal(maxi(word_builder.heighest_candy_round_value,1))
-			word_builder.heighest_candy_round_value=0
-			await tile_board.reroll_board()
-			player.sprite.show()
-			is_player_turn=true
-			player.anim_player.clear_queue()
-			player.anim_player.play("idle")
-			await player.health_bar.appear()
-			end_battle()
-		else:
-			super.player_death()
+		print("reviving")
+		is_player_turn=false
+		candy_round=false
+		#reviving=false
+		player.is_defeated=false
+		player.is_flinching=false
+		player.is_dying=false
+		tile_board.unlock_restock(true)
+		await word_builder.remove_tiles()
+		await word_builder.intent_container.clear_intents()
+		word_builder.submitted_count=0
+		word_builder.update()
+		await player.heal(maxi(word_builder.heighest_candy_round_value,1))
+		word_builder.heighest_candy_round_value=0
+		await tile_board.reroll_board()
+		player.sprite.show()
+		is_player_turn=true
+		player.anim_player.clear_queue()
+		player.anim_player.play("idle")
+		await player.health_bar.appear()
+		end_battle()
+	else:
+		push_error("tried to revive while not in candy round")
 
-func start_enemy_turn():
-	if not candy_round:
-		await super()
+func kill_the_player_for_real():
+		super.player_death()
+
+#func start_enemy_turn():
+	#if not candy_round:
+		#await super()
 
 @rpc("any_peer")
 func peer_died():
@@ -140,8 +143,8 @@ func peer_died():
 	if id not in dead_players:
 		dead_players.append(id)
 		player_died.emit(id)
-		if dead_players.size()==Game.players.size()-1:
-			stop_waiting_for_death()
+		if dead_players.size()==Game.players.size()-1 and candy_round:
+			super.player_death()
 		peers_ui.set_dead(id)
 
 @rpc("any_peer")
@@ -150,7 +153,7 @@ func log_compleated_floor():
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
 	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
 		#print("reviving")
-		stop_waiting_for_death(true)
+		revive()
 		await get_tree().process_frame
 		#reviving=false
 	if players_compleated_floor.size()>=Game.players.size()-1:
