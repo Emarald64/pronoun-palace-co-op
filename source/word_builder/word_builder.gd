@@ -74,7 +74,7 @@ func send_attack_and_wait()->void:
 	var enemy=main.enemy
 	if (submitted_count+main.dead_players.size())<len(Game.players)-1:
 		#var verses_label=$"../VersusLabel"
-		word_hint.label.text="Waiting for other players to submit"
+		word_hint.label.text=StringManager.get_string("mod/co-op/misc/word_hint/wait_for_submit")
 		word_hint.appear()
 		#verses_label.show()
 		waiting_for_peers_to_submit=true

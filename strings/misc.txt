@@ -1,0 +1,5 @@
+:word_hint:
+	:wait_for_submit:
+		Waiting for other players to submit
+	:wait_for_floor:
+		Waiting for {count} more player{count plural "s"} to complete floor

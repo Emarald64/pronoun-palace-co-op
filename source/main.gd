@@ -146,7 +146,7 @@ func peer_died():
 
 @rpc("any_peer")
 func log_compleated_floor():
-	print(multiplayer.get_remote_sender_id()," compleated floor: ",act_events[0])
+	print(multiplayer.get_remote_sender_id()," completed floor: ",act_events[0])
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
 	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
 		#print("reviving")
@@ -154,15 +154,20 @@ func log_compleated_floor():
 		await get_tree().process_frame
 		#reviving=false
 	if players_compleated_floor.size()>=Game.players.size()-1:
-		print("all players compleated floor")
+		print("all players completed floor")
 		all_players_compleated_floor.emit()
+	else:
+		word_builder.word_hint.label.text=StringManager.get_string("mod/co-op/misc/word_hint/wait_for_floor",{count=Game.players.size()-players_compleated_floor.size()-1})
 
 func increment_floor():
 	## wait for all players to finish floor before continuing
 	log_compleated_floor.rpc()
 	if players_compleated_floor.size()<Game.players.size()-1:
 		print("waiting for other players to compleate floor")
+		word_builder.word_hint.label.text=StringManager.get_string("mod/co-op/misc/word_hint/wait_for_floor",{count=Game.players.size()-players_compleated_floor.size()-1})
+		word_builder.word_hint.appear()
 		await all_players_compleated_floor
+		word_builder.word_hint.disappear()
 	peers_ui.reset_peers()
 	player.sprite.show()
 	dead_players.clear()
