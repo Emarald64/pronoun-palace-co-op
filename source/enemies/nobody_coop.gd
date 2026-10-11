@@ -191,7 +191,7 @@ func ask_set_partner():
 		#update_intents()
 
 func _on_player_died_or_dc(peer_id:int):
-	if peer_id==swap_partner:
+	if peer_id==swap_partner and not is_dead:
 		print("swap partner died")
 		swap_partner=-1
 		regular_board=true
@@ -359,14 +359,14 @@ func swap_small():
 var sending_spell_data:Dictionary
 signal sending_spell_data_set
 var recived_spell_save:Dictionary
-var sender_id:=0
+var spell_sender_id:=0
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
 	#await Game.timeout(randf_range(1,5))
 	print("recived ",swapped_spell.id," from ",multiplayer.get_remote_sender_id())
 	recived_spell_save=swapped_spell
-	sender_id=multiplayer.get_remote_sender_id()
+	spell_sender_id=multiplayer.get_remote_sender_id()
 	recived_spell_data.emit()
 
 @rpc("any_peer")
@@ -426,7 +426,7 @@ func send_spell():
 				"/mod/co-op/enemy/nobody/spell_swap_notification",
 				{
 					sent_spell=spell_to_swap.spell.get_title(),
-					sender=Game.all_player_names[sender_id],
+					sender=Game.all_player_names[spell_sender_id],
 					recived_spell=new_spell.get_title()
 				}
 			)
