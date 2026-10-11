@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://fn8op17sv5bv" path="res://mods/co-op/source/ui/menu/lobby/lobby.gd" id="2_mb6rq"]
 [ext_resource type="PackedScene" uid="uid://7yaxnry66h85" path="res://mods/co-op/source/ui/menu/lobby/lobby_player.tscn" id="3_mb6rq"]
 [ext_resource type="FontFile" uid="uid://dloxpf3fuils7" path="res://fonts/JetBrainsMono-Regular.ttf" id="4_qe3it"]
+[ext_resource type="Script" uid="uid://blxt2xfbu02t5" path="res://source/ui/generic/string_key_label.gd" id="5_vecv5"]
 
 [node name="LobbyMainPanel" unique_id=1499490309 instance=ExtResource("1_heodt")]
 script = ExtResource("2_mb6rq")
@@ -24,12 +25,14 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1179551543]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=1656486453]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="0" unique_id=1397404121]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 theme_override_font_sizes/font_size = 16
-text = "Players"
 horizontal_alignment = 1
+script = ExtResource("5_vecv5")
+key = "/mod/co-op/menu/lobby_title"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="SteamStuff" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=1428095304]
 unique_name_in_owner = true
@@ -46,9 +49,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="InviteFriendsButton" type="Button" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/SteamStuff" index="2" unique_id=1530165520]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "Invite Friends"
+text = " Invite Friends"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="2" unique_id=1537939960]
 layout_mode = 2

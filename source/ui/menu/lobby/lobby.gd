@@ -11,6 +11,7 @@ func _ready() -> void:
 	Game.player_connected.connect(add_player)
 	Game.player_disconnected.connect(remove_player)
 	multiplayer.server_disconnected.connect(leave)
+	%InviteFriendsButton.text=StringManager.get_string("mod/co-op/menu/invite")
 #func _on_start_appearing()->void:
 
 func _on_start_appearing()->void:

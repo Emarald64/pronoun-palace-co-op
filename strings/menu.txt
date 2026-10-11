@@ -23,6 +23,8 @@
 	Max Players
 :port:
 	Port
+:upnp:
+	Enable UPnP:
 :visibility:
 	Visibility:
 :connect:
@@ -54,3 +56,7 @@
 			Anyone can join. Visible in the lobby search.
 :extra_hate_time:
 	Easier Time Limits
+:lobby_title:
+	Players
+:invite:
+	Invite Friends

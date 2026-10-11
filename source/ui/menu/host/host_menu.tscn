@@ -135,11 +135,13 @@ value = 7000.0
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option" index="0" unique_id=241829582]
+[node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option" index="0" unique_id=855675781]
 layout_mode = 2
 theme_type_variation = &"OptionsLabel"
 theme_override_font_sizes/font_size = 13
-text = "Enable UPnP:"
+script = ExtResource("4_040ac")
+key = "mod/co-op/menu/upnp"
+metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="CheckBox" type="CheckBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/UPnP Option" index="1" unique_id=1376439678]
 layout_mode = 2
