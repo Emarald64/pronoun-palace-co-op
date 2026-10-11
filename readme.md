@@ -24,6 +24,10 @@ Features:
 <img src=".readme_assets/identity theft.webp">
 <br>
 
+# Lend Your Friend a Hand
+<img src=".readme_assets/party telephone showcase.webp">
+<br>
+
 # Died before the end?
 
 <img src=".readme_assets/candy round showcase.webp">
