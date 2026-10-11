@@ -52,7 +52,10 @@ func recive_word(tiles:Array)->void:
 	
 	if need_to_move_main_board:
 		# move main tile board to the left
-		main.tile_board.prepare_to_animate()
+		for tile in main.tile_board.get_tiles({in_word=false}):
+			if tile.get_parent() == main.tile_container:
+				tile.sway_handler.disabled = true
+				tile.reparent(main.tile_board.tile_mask)
 		var tween=create_tween()
 		tween.tween_property(main.tile_board,"position:x",180,.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 		tween.finished.connect(main.tile_board.finish_animating)
