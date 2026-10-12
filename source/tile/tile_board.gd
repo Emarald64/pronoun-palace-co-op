@@ -76,3 +76,22 @@ func _get_matching_tile_info(parameters: Dictionary, tiles_only: bool) -> Array[
 	if getting_tiles_for_intents:
 		tile_info.append_array(main.phone_board._get_matching_tile_info(parameters,tiles_only))
 	return tile_info
+
+func swap_tiles(tile_a: Tile, tile_b: Tile, settle_duration: = 0.08, settle_grid_duration: = 0.16) -> void:
+	@warning_ignore("shadowed_variable_base_class")
+	var swap_coords=tile_b.get_coord()
+	var swap_board=tile_b.tile_board
+	
+	tile_a.tile_board.tile_map[tile_a.get_coord()]=tile_b
+	tile_b.tile_board=tile_a.tile_board
+	
+	swap_board.tile_map[swap_coords]=tile_a
+	tile_a.tile_board=swap_board
+	
+	tile_a.tween_to_board(tile_a.get_settle_duration(settle_duration, settle_grid_duration))
+	tile_b.tween_to_board(tile_b.get_settle_duration(settle_duration, settle_grid_duration))
+
+	await wait_for_idle_tiles()
+
+	update_state()
+	tiles_changed.emit()
