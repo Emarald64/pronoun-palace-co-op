@@ -107,10 +107,18 @@ func set_spells(spells:Array):
 		request_replied.emit(true)
 
 @rpc("any_peer")
-func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index=null):
-	if reply_index!=null:
-		set_spell_and_send_data.rpc_id(multiplayer.get_remote_sender_id(),spell_container.player_spells[recive_index].spell.get_save_data(),reply_index)
+func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index:=-1):
 	InputSanity.process_spell_data(spell)
+	if reply_index!=-1:
+		if main.player.active_spell==spell_container.get_spells()[recive_index] and main.player.active_spell.id!=CoOp.SPELLS.REMOTE_OBJECT:
+			#already using spell that is being replaced, cancel
+			failed_request.rpc_id(multiplayer.get_remote_sender_id(),"failed to swap spells, other playing was using the spell that was attempted to be swapped")
+			return
+		set_spell_and_send_data.rpc_id(multiplayer.get_remote_sender_id(),spell_container.player_spells[recive_index].spell.get_save_data(),reply_index)
+		
+		coop_notifications.add_spell_notification(CoOp.SPELLS.REMOTE_OBJECT,{spell=spell_container.player_spells[recive_index].spell.get_spell_name()})
+	else:
+		request_replied.emit(true)
 	spell_container.player_spells[recive_index].set_spell(Spell.create_from_save(spell))
 	spell_container.player_spells[recive_index].spell_paper.gain()
 

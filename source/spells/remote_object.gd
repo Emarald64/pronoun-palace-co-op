@@ -55,9 +55,13 @@ func _use():
 		my_save_data.max_charge=maxi(0,max_charge)
 	remove_all_player_spells()
 	coop_spell_effects.set_spell_and_send_data.rpc_id(peer_id,my_save_data,new_spell_index,my_index)
-	coop_notifications.add_spell_notification.rpc_id(peer_id,id,{spell=new_spell.get_spell_name()})
 	restore_spells(old_spells)
+	timeout_result= await wait_for_reply_with_timeout()
 	coop_spell_effects.using_remote_object=false
+	if timeout_result:
+		_trigger_use_completed(false)
+	else:
+		coop_notifications.add_spell_notification(id,{failed=true},peer_id)
 	_end_use()
 
 func restore_spells(spells:Array[Spell]):
