@@ -3,7 +3,7 @@ extends CoopSpell
 func _use():
 	var peer_id=await player.get_selection(CoOp.PEER_SELECTION_TYPE,
 		func (player_id:int)->bool:
-			return not word_builder.peer_attacks[player_id].submitted
+			return not word_builder.peer_attacks[player_id].submitted and not player_id in main.dead_players
 	)
 	if peer_id==null:
 		_end_use()
@@ -17,3 +17,6 @@ func _use():
 	await tile_board.wait_for_idle()
 	await tile_board.wait_for_idle_tiles()
 	_post_use()
+
+func is_usable():
+	return super() and not main.candy_round
