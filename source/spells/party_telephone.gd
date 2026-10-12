@@ -13,7 +13,10 @@ func _use():
 	#var my_id=main.multiplayer.get_unique_id()
 	var target_id=-1
 	while target_id<0 or target_id in main.dead_players:
-		target_id= await player.get_selection(CoOp.PEER_SELECTION_TYPE)
+		target_id= await player.get_selection(CoOp.PEER_SELECTION_TYPE,
+			func (player_id:int)->bool:
+				return not word_builder.peer_attacks[player_id].submitted
+		)
 		if target_id==null:
 			_end_use()
 			return

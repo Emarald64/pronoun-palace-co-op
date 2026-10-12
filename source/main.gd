@@ -31,7 +31,7 @@ func _ready():
 	coop_spell_effects.coop_notifications=coop_notifications
 
 func _process(_delta: float) -> void:
-	if Input.is_key_pressed(KEY_R):
+	if Input.is_key_pressed(KEY_R) and candy_round:
 		revive()
 	
 	if Input.is_key_pressed(KEY_P):

@@ -1,6 +1,6 @@
 extends TileBoard
 
-var getting_tiles_for_intents:=false
+var include_phone_board_tiles:=false
 
 func _ready():
 	#await get_tree().process_frame
@@ -47,33 +47,25 @@ func remove_tiles(tiles, parameters = {}):
 	await super(own_tiles,parameters)
 
 func turn_end(reroll: = false, end_of_battle: = false):
+	include_phone_board_tiles=true
 	await super(reroll,end_of_battle)
-	await main.phone_board.turn_end(false,end_of_battle)
+	include_phone_board_tiles=false
 	if not main.phone_board.is_slid_out:
-		prepare_to_animate()
-		var tween=create_tween()
-		tween.tween_interval(.2)
-		tween.tween_property(self,"position:x",240,.3).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-		tween.finished.connect(finish_animating)
-		
-		main.phone_board.prepare_to_animate()
-		await main.phone_board.slide_out()
-		main.phone_board.finish_animating()
-		main.phone_board.remove_tiles(main.phone_board.get_tiles(),{ignore_status=true})
+		await main.phone_board.turn_end(false,end_of_battle)
 
 func update_tiles():
 	super()
 	main.phone_board.update_tiles()
 
 func _on_start_updating_stats(_words):
-	getting_tiles_for_intents=true
+	include_phone_board_tiles=true
 
 func _on_post_tile_stats(_words):
-	getting_tiles_for_intents=false
+	include_phone_board_tiles=false
 
 func _get_matching_tile_info(parameters: Dictionary, tiles_only: bool) -> Array[Dictionary]:
 	var tile_info=super(parameters,tiles_only)
-	if getting_tiles_for_intents:
+	if include_phone_board_tiles:
 		tile_info.append_array(main.phone_board._get_matching_tile_info(parameters,tiles_only))
 	return tile_info
 

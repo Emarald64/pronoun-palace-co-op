@@ -51,7 +51,8 @@
 		Party Telephone
 
 	:description:
-		Send a spelled word to another player. The word will be placed on a separate board. 
+		Send a spelled word to another player. The word will be placed on a separate board.
+		Can not be used on players who have submitted. 
 
 	:label:
 		Send word
