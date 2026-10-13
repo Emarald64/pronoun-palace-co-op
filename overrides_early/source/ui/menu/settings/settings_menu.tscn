@@ -9,7 +9,7 @@ extends Setting
 
 func _ready():
 	super()
-	if not Game.is_in_run() and Bridge.own_user_id in Game.PLAYTESTERS:
+	if not Game.is_in_run() and (Bridge.own_user_id in CoOp.BUGS or Bridge.own_user_id in CoOp.CUSTOM_CHARACTER_ICONS):
 		show()
 		set_setting_methods(
 			func ():return Game.player_info.dont_bug_me,

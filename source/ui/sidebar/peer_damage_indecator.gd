@@ -13,12 +13,13 @@ func _ready() -> void:
 func setup(id:int)->void:
 	Game.player.selection_started.connect(start_selecting)
 	Game.player.selection_finished.connect(stop_selecting)
-	if Game.is_playtester(id):
-		%CharacterIcon.texture=load("res://mods/co-op/arte/ui/bug.png")
-		%CharacterIcon.hframes=1
-		%CharacterIcon.vframes=1
-	else:
-		set_character(Game.players[id].character)
+	%CharacterIcon.texture=await CoOp.get_character_icon(id)
+	#if Game.is_playtester(id):
+		#%CharacterIcon.texture=load("res://mods/co-op/arte/ui/bug.png")
+		#%CharacterIcon.hframes=1
+		#%CharacterIcon.vframes=1
+	#else:
+		#set_character(Game.players[id].character)
 	%Name.text=Game.players[id].name
 	peer_id=id
 
@@ -36,8 +37,8 @@ func update(damage_info:Dictionary):
 	update_shadow_color()
 	#get_tree().set_group(&"shadow_cloner_change_color","solid_shadow_color",)
 
-func set_character(character:String)->void:
-	%CharacterIcon.set_character(character,true)
+#func set_character(character:String)->void:
+	#%CharacterIcon.set_character(character,true)
 
 func set_dead(dead:bool):
 	%Dead.visible=dead

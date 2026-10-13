@@ -62,6 +62,23 @@ const SPELL_UPGRADES={
 	SPELLS.GIFT_COOP:SPELLS.MIRACLE_CACHE_COOP
 }
 
+const BUGS=[
+	76561198057895955,#Starblock
+	#76561198041843538,#Ciirulean
+	76561198172774482,#DeadInfinity
+	#76561198273453230,#RENREN
+	76561198150996567,#Finley
+	76561198025169706,#SeaCharmeleon
+	76561198796950574,#Pearl
+]
+
+const CUSTOM_CHARACTER_ICONS:Dictionary[int,Texture2D]={
+	76561198041843538:preload("res://mods/co-op/arte/ui/bunny.png"),#Ciirulean
+	76561198172774482:preload("res://mods/co-op/arte/ui/stickbug.png"),#DeadInfinity
+	76561198273453230:preload("res://mods/co-op/arte/ui/dog.png"),#RENREN
+	76561198984198927:preload("res://mods/co-op/arte/ui/wooper.png"),#Xanderath
+}
+
 var unloaded_intents:Array[String]=INTENTS.values()
 
 func _process(_delta: float) -> void:
@@ -160,7 +177,7 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	for removed_spell in REMOVED_SPELLS:
 		pool.erase(removed_spell)
 	
-	if category.is_empty() and Game.players.keys().any(func (player_id:int)->bool:return Game.is_playtester(player_id)):
+	if category.is_empty() and Game.players.keys().any(func (player_id:int)->bool:return is_bug(player_id)):
 		pool.erase(Globals.SPELLS.BUG_SPRAY)
 		pool[SPELLS.BUG_SPRAY]=100
 	
@@ -230,3 +247,25 @@ func get_spell_data(spell_id: String) -> SpellData:
 		return SpellDataBannedCurses.new()
 	else:
 		return super(spell_id)
+
+
+static func is_bug(peer_id:int)->bool:
+	return Game.players[peer_id].steam_id in BUGS and not Game.players[peer_id].dont_bug_me
+
+
+static func get_character_icon(peer_id:int,use_steam_avatar:=false)->Texture2D:
+	var steam_id=Game.players[peer_id].steam_id
+	if steam_id in CUSTOM_CHARACTER_ICONS and not Game.players[peer_id].dont_bug_me:
+		return CUSTOM_CHARACTER_ICONS[steam_id]
+	elif steam_id in BUGS and not Game.players[peer_id].dont_bug_me:
+		return load("res://mods/co-op/arte/ui/bug.png")
+	else:
+		if use_steam_avatar and steam_id>0:
+			#set steam avatar
+			var steam_avatar=await Bridge.get_avatar(steam_id)
+			if steam_avatar.get_size()!=Vector2.ZERO:
+				return steam_avatar
+		
+		var character_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres").duplicate()
+		character_texture.set_character(Game.players[peer_id].character,not Game.is_in_run() or (Game.difficulty!=0 and Game.difficulty!=10))
+		return character_texture

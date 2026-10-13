@@ -7,7 +7,7 @@ func _use():
 			if current_selection is Tile:
 				return true
 			elif current_selection is int:
-				return Game.is_playtester(current_selection)
+				return CoOp.is_bug(current_selection)
 			return false
 	)
 	main.force_allow_select_player=false

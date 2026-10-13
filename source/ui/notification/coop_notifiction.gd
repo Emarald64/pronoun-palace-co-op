@@ -4,19 +4,20 @@ extends Control
 func set_peer_id(id:int):
 	var player_info=Game.players[id]
 	%PlayerName.text=player_info.name
-	var set_character_icon:=true
-	if player_info.steam_id>0:
-		#set steam avatar
-		var steam_avatar=await Bridge.get_avatar(player_info.steam_id)
-		if steam_avatar.get_size()!=Vector2.ZERO:
-			set_character_icon=false
-			%PlayerIcon.texture=await Bridge.get_avatar(player_info.steam_id)
-	
-	if set_character_icon:
-		#set character icon
-		var character_icon_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres")
-		character_icon_texture.set_character(player_info.character)
-		%PlayerIcon.texture=character_icon_texture
+	%PlayerIcon.texture=await CoOp.get_character_icon(id,true)
+	#var set_character_icon:=true
+	#if player_info.steam_id>0:
+		##set steam avatar
+		#var steam_avatar=await Bridge.get_avatar(player_info.steam_id)
+		#if steam_avatar.get_size()!=Vector2.ZERO:
+			#set_character_icon=false
+			#%PlayerIcon.texture=await Bridge.get_avatar(player_info.steam_id)
+	#
+	#if set_character_icon:
+		##set character icon
+		#var character_icon_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres")
+		#character_icon_texture.set_character(player_info.character)
+		#%PlayerIcon.texture=character_icon_texture
 
 func appear():
 	position.y=-70

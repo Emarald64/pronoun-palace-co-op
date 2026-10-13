@@ -1,16 +1,5 @@
 extends "res://source/autoload/game.gd"
 
-const PLAYTESTERS=[
-	76561198057895955,#Starblock
-	76561198041843538,#Ciirulean
-	76561198172774482,#DeadInfinity
-	76561198273453230,#RENREN
-	76561198150996567,#Finley
-	76561198025169706,#SeaCharmeleon
-	76561198796950574,#Pearl
-	#76561198984198927,#Xanderath
-]
-
 var players:Dictionary[int,Dictionary]={}
 var id_remaps:Dictionary[int,int]
 var player_info = {
@@ -207,4 +196,4 @@ func kill_peer():
 	all_player_names.clear()
 
 func is_playtester(id:int):
-	return players[id].steam_id in PLAYTESTERS and not players[id].dont_bug_me
+	return players[id].steam_id in CoOp.BUGS and not players[id].dont_bug_me
