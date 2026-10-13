@@ -63,7 +63,7 @@ const SPELL_UPGRADES={
 }
 
 const BUGS=[
-	76561198057895955,#Starblock
+	#76561198057895955,#Starblock
 	#76561198041843538,#Ciirulean
 	76561198172774482,#DeadInfinity
 	#76561198273453230,#RENREN
@@ -77,6 +77,7 @@ const CUSTOM_CHARACTER_ICONS:Dictionary[int,Texture2D]={
 	76561198172774482:preload("res://mods/co-op/arte/ui/stickbug.png"),#DeadInfinity
 	76561198273453230:preload("res://mods/co-op/arte/ui/dog.png"),#RENREN
 	76561198984198927:preload("res://mods/co-op/arte/ui/wooper.png"),#Xanderath
+	76561198057895955:preload("res://mods/co-op/arte/ui/star.png"),#Starblock
 }
 
 var unloaded_intents:Array[String]=INTENTS.values()
@@ -179,7 +180,7 @@ func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
 	
 	if category.is_empty() and Game.players.keys().any(func (player_id:int)->bool:return is_bug(player_id)):
 		pool.erase(Globals.SPELLS.BUG_SPRAY)
-		pool[SPELLS.BUG_SPRAY]=100
+		pool[SPELLS.BUG_SPRAY]=1.0
 	
 	pool.merge(get_spell_pool(category))
 	
