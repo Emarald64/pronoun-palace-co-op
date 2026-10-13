@@ -6,9 +6,11 @@ signal recieved_all_category_scores
 const PLAYER_CATEGORY_SCENE=preload("res://mods/co-op/source/ui/menu/summary/coop_category.tscn")
 var players_category_scores:Dictionary[int,Variant]={}
 
-#func _process(_delta: float) -> void:
-	#update_panels()
-	#super()
+const IGNORED_COOP_SPELLS=[
+	CoOp.SPELLS.GIFT_COOP,
+	CoOp.SPELLS.PRINTED_SSN,
+	CoOp.SPELLS.MIRACLE_CACHE_COOP,
+]
 
 func generate_summary(act: int = -1, victory: bool = true) -> void:
 	super(act,victory)
@@ -174,7 +176,8 @@ func get_category_scores()->Dictionary:
 	for spell:String in run_stats.spell_usages:
 		scores.spells_used+=run_stats.spell_usages[spell]
 		if spell.begins_with("co-op:"):
-			scores.coop_spells+=run_stats.spell_usages[spell]
+			if spell not in IGNORED_COOP_SPELLS:
+				scores.coop_spells+=run_stats.spell_usages[spell]
 		elif ":" in spell:
 			scores.modded_spells+=run_stats.spell_usages[spell]
 	
