@@ -66,6 +66,8 @@ func save_and_exit():
 		print_debug("asking other players to quit")
 		save_and_exit.rpc()
 		#await get_tree().create_timer(1).timeout
+	#else:
+		#summary_menu.summary_panel.summary.send_category_scores()
 	if multiplayer.get_remote_sender_id()!=0:
 		print_debug("asked by server to quit")
 	#kill_peer()
@@ -151,7 +153,7 @@ func peer_died():
 func log_compleated_floor():
 	print(multiplayer.get_remote_sender_id()," completed floor: ",act_events[0])
 	players_compleated_floor.append(multiplayer.get_remote_sender_id())
-	if players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
+	if candy_round and players_compleated_floor.size()+dead_players.size()>=Game.players.size()-1:
 		#print("reviving")
 		revive()
 		await get_tree().process_frame
@@ -250,4 +252,8 @@ func merge_and_load_save(host_save:Dictionary):
 	#await screen_wipe.screen_covered
 	Game.sync_start=true
 	get_tree().change_scene_to_file("res://mods/co-op/source/Purgatory.tscn")
-	
+
+func finish_run(is_victory: = false):
+	if is_victory or (enemy!=null and enemy.id==Enemies.NOBODY):
+		summary_menu.summary_panel.summary.send_category_scores()
+	await super(is_victory)

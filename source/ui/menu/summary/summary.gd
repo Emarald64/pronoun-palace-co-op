@@ -58,13 +58,6 @@ func generate_summary(act: int = -1, victory: bool = true) -> void:
 			%CoopLongestWordStats.add_child(label)
 			label.text="• %s: %s" % longest_word_stat
 		
-		if victory:
-			# send out category scores
-			var category_scores=get_category_scores()
-			#players_category_scores[multiplayer.get_unique_id()]=category_scores
-			print(category_scores)
-			recieve_category_scores.rpc(category_scores)
-		
 		%Coop.reset_size()
 		await get_tree().process_frame
 		update_panels.call_deferred()
@@ -119,6 +112,9 @@ func calculate_player_categories():
 	
 	print(assigned_categories)
 	
+	for title in %CoopPlayerCategories.get_children():
+		title.queue_free()
+	
 	for category in assigned_categories:
 		var player_category=PLAYER_CATEGORY_SCENE.instantiate()
 		var player_id=assigned_categories[category]
@@ -151,6 +147,8 @@ const tracked_word_categories={
 }
 
 func get_category_scores()->Dictionary:
+	@warning_ignore("shadowed_variable_base_class")
+	var run_stats=Game.main.run_stats
 	var scores:={
 		strawman_taps=Game.main.strawman_taps,
 		time_spent=run_stats.get_total_deliberation_time(),
@@ -182,3 +180,6 @@ func get_category_scores()->Dictionary:
 			scores.modded_spells+=run_stats.spell_usages[spell]
 	
 	return scores
+
+func send_category_scores():
+	recieve_category_scores.rpc(get_category_scores())

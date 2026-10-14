@@ -12,5 +12,5 @@ func set_character(character:String,trans:=true):
 
 [resource]
 atlas = ExtResource("1_sybb5")
-region = Rect2(1, 1, 32, 32)
-script = SubResource("GDScript_3riqv")
+region = Rect2(35, 35, 32, 32)
+script = ExtResource("2_sybb5")

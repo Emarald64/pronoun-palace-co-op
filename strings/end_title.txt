@@ -35,23 +35,6 @@
 		Dealt {value} damage in a single attack.
 	:limit:
 		45
-:time_spent:
-	:most:
-		:title:
-			Slowpoke
-		:description:
-			Spent a whole {value time "h:mm:ss"} deliberating.
-		:limit:
-			# 1 hour
-			3600000
-	:least:
-		:title:
-			Speedster
-		:description:
-			Spent only {value time "mm:ss"} deliberating.
-		:limit:
-			# 20 minutes
-			1200000
 :average_word_length:
 	:most:
 		:title:
@@ -123,6 +106,23 @@
 		Submitted {value} body parts.
 	:limit:
 		3
+:time_spent:
+	:most:
+		:title:
+			Slowpoke
+		:description:
+			Spent a whole {value time "h:mm:ss"} deliberating.
+		:limit:
+			# 1 hour
+			3600000
+	:least:
+		:title:
+			Speedster
+		:description:
+			Spent only {value time "mm:ss"} deliberating.
+		:limit:
+			# 20 minutes
+			1200000
 :modded_spells:
 	:title:
 		Playtester

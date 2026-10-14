@@ -7,6 +7,7 @@ var player_total_damage:Dictionary[int,int]={}
 #@export var total_attack_label:Label
 #@export var total_attack_container:Control
 var submitted_count:=0
+var last_turn_damage:=0
 
 var heighest_candy_round_value:=0
 var heighest_cany_round_tiles:Array[Tile]
@@ -90,7 +91,12 @@ func send_attack_and_wait()->void:
 	else:
 		player_total_damage[my_id]=damage
 	
+	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+		var health_scaling=main.enemy._get_health_scaling()
+		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
+	
 	var bite_healing:=0
+	last_turn_damage=damage
 	for id in peer_attacks:
 		if id not in main.dead_players:
 			var peer_attack=peer_attacks[id]
@@ -117,9 +123,6 @@ func send_attack_and_wait()->void:
 		##Beat the shit out of Nobody when killing her
 		#for i in mini(8,Game.players.size()-main.dead_players.size()-1):
 			#await player.attack(enemy,damage)
-	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
-		var health_scaling=main.enemy._get_health_scaling()
-		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	if not is_submitting:
 		await player.attack(enemy,damage)
 	if bite_healing>0 and damage<enemy.health:
@@ -143,6 +146,13 @@ func on_player_turn_ending() -> void :
 			#
 			#await main.phone_board.slide_out()
 	await super()
+
+func confirm_word(do_end_turn: = true, do_charge_spells: = true):
+	await super(do_end_turn,do_charge_spells)
+	
+	var current_encounter=main.run_stats.get_current_encounter()
+	if current_encounter!=null:
+		current_encounter.damage[-1]=last_turn_damage
 
 func player_disconnected(id:int)->void:
 	if id in peer_attacks:
