@@ -35,6 +35,7 @@ unique_name_in_owner = true
 
 [node name="CoopNotifications" parent="GameUILayer" parent_id_path=PackedInt32Array(1903357470) index="17" unique_id=1613358473 instance=ExtResource("7_2w87v")]
 unique_name_in_owner = true
+z_index = 10
 anchors_preset = 1
 anchor_left = 1.0
 anchor_bottom = 0.0

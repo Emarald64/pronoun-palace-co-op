@@ -1,6 +1,6 @@
 extends Control
 
-const TILES_TO_MOVE=12
+const TILES_TO_MOVE=11
 const DAMAGE_INDECATOR_SCENE=preload("res://mods/co-op/source/ui/sidebar/peer_damage_indecator.tscn")
 
 var pushed_off:=false
@@ -18,13 +18,14 @@ func _ready():
 	await get_tree().process_frame
 	Game.player.selection_started.connect(start_selecting)
 	Game.player.selection_finished.connect(stop_selecting)
+	Game.main.game_state_updated.connect(_on_game_state_updated)
 
 func _on_game_state_updated():
 	if word_builder.tiles.size()>=TILES_TO_MOVE and not pushed_off:
 		if tween:
 			tween.kill()
 		tween=get_tree().create_tween()
-		tween.tween_property(self,"position",Vector2(-20,0),.2)
+		tween.tween_property(self,"position",Vector2(-24,0),.2)
 		pushed_off=true
 		#position.x=-20
 	elif word_builder.tiles.size()<TILES_TO_MOVE and pushed_off:
