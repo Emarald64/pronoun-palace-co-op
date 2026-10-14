@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://7yaxnry66h85"]
 
 [ext_resource type="Script" uid="uid://3aq0up4tmbdo" path="res://mods/co-op/source/ui/menu/lobby/lobby_player.gd" id="1_tjqa4"]
-[ext_resource type="Texture2D" uid="uid://bstpv5wdw6jym" path="res://mods/co-op/arte/ui/bug.png" id="2_mwj5j"]
+[ext_resource type="Texture2D" uid="uid://d1hrcojaw1lpk" path="res://mods/co-op/source/ui/character_icon_texture.tres" id="2_mwj5j"]
 
 [node name="Panel" type="Panel" unique_id=1008252444]
 custom_minimum_size = Vector2(0, 32)
 offset_right = 71.0
-offset_bottom = 34.0
+offset_bottom = 32.0
 size_flags_horizontal = 3
 theme_type_variation = &"MenuPaperAlt"
 script = ExtResource("1_tjqa4")
