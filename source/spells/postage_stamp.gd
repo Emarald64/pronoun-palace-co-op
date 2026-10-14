@@ -59,7 +59,7 @@ func _use():
 		notification_context.face="?".repeat(tile_save.faces[0].length())
 	elif TileStatus.MONEY in tile_save.statuses:
 		notification_context.face=tile_save.faces[0].replace_char("*".unicode_at(0),"$".unicode_at(0))
-	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StringManager.get_string_at_path(["statuses",status_id,"flags"]).split(" ")):
+	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StringManager.get_string_at_path(["status",status_id,"flags"]).split(" ")):
 		notification_context.face=tile_save.faces[0]
 	
 	if "face" in notification_context:
@@ -93,14 +93,15 @@ func _use():
 	tile.bounce()
 	tile.load_status("stamped",stamped_save)
 	_post_use()
-	await Game.timeout(1)
+	tile.get_tree().create_timer(1).timeout.connect( func ():
+		#animate the tile off the bottom of the screen
+		var tween=tile.create_tween()
+		AudioManager.play_sound(Sounds.GENERIC.BOARD_OUT,1.0,.75)
+		tween.tween_property(tile,"position",TARGET_OFFSET+Vector2(0,41),0.2)
+		await tween.finished
+		tile.queue_free()
+	)
 	
-	#animate the tile off the bottom of the screen
-	var tween=tile.create_tween()
-	AudioManager.play_sound(Sounds.GENERIC.BOARD_OUT,1.0,.75)
-	tween.tween_property(tile,"position",TARGET_OFFSET+Vector2(0,41),0.2)
-	await tween.finished
-	tile.queue_free()
 
 func get_tooltip_context():
 	return {selecting_tile=selecting_tile}
