@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2ennjpah8780"
-path="res://.godot/imported/dog.png-71dcaee74cb43e5d91bb4b9c2ccdcda3.ctex"
+uid="uid://c3yx5x27ytsd5"
+path="res://.godot/imported/xander.png-6f9a5205fa42f8000e9fdba6f1a88a5a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/co-op/arte/ui/dog.png"
-dest_files=["res://.godot/imported/dog.png-71dcaee74cb43e5d91bb4b9c2ccdcda3.ctex"]
+source_file="res://mods/co-op/arte/ui/player_icons/xander.png"
+dest_files=["res://.godot/imported/xander.png-6f9a5205fa42f8000e9fdba6f1a88a5a.ctex"]
 
 [params]
 

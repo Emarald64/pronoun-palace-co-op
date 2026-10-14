@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ww61skxv56p2"
-path="res://.godot/imported/bunny.png-34e57020a613afae44be4c459599e53f.ctex"
+uid="uid://dwntps2tqkf3k"
+path="res://.godot/imported/cadence.png-95e13348ff120774a5d9b0197e4deeed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/co-op/arte/ui/bunny.png"
-dest_files=["res://.godot/imported/bunny.png-34e57020a613afae44be4c459599e53f.ctex"]
+source_file="res://mods/co-op/arte/ui/player_icons/cadence.png"
+dest_files=["res://.godot/imported/cadence.png-95e13348ff120774a5d9b0197e4deeed.ctex"]
 
 [params]
 

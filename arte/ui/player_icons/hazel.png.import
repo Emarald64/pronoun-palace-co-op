@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr6wof64r36ee"
-path="res://.godot/imported/star.png-573b7da6a3483457ab6ddc9e252a11c5.ctex"
+uid="uid://db4o8fl6uf1ys"
+path="res://.godot/imported/hazel.png-d51d950d5527bfdf206156e71ff84975.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/co-op/arte/ui/star.png"
-dest_files=["res://.godot/imported/star.png-573b7da6a3483457ab6ddc9e252a11c5.ctex"]
+source_file="res://mods/co-op/arte/ui/player_icons/hazel.png"
+dest_files=["res://.godot/imported/hazel.png-d51d950d5527bfdf206156e71ff84975.ctex"]
 
 [params]
 
