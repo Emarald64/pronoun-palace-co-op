@@ -21,7 +21,11 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_other_connected)
 	multiplayer.connected_to_server.connect(_on_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	if Bridge.own_user_id!=null:
+	var cmdline_args:= OS.get_cmdline_args()
+	var steam_id_pos:=cmdline_args.find("-steamid")
+	if steam_id_pos!=-1 and steam_id_pos+1<cmdline_args.size():
+		player_info.steam_id=int(cmdline_args[steam_id_pos+1])
+	elif Bridge.own_user_id!=null:
 		player_info.steam_id=Bridge.own_user_id
 	Steam.screenshot_ready.connect(tag_screenshot)
 
@@ -77,7 +81,8 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 			"act_events",
 			"background",
 			"enemy",
-			"showing_act_end_summary"
+			"showing_act_end_summary",
+			"rng"
 		]
 		
 		var tiles_to_remove:Array[Vector2i]=[]
