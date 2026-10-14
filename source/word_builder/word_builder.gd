@@ -189,16 +189,29 @@ func resolve_tile_words(use_tiles) -> WordList:
 	var depriority_words: = PackedStringArray()
 	var priority_flag: WordDictionary.WordFlags = WordDictionary.WordFlags.NONE
 
+	var passcode:=""
+	if Game.enemy != null and Game.enemy.id == Enemies.HOUSEBROKEN:
+		passcode=Game.enemy.passcode
+
 	if Game.balance.no_repeat_words:
-		depriority_words.append_array(main.run_stats.get_words())
-		for id in others_submitted_words:
-			depriority_words.append_array(others_submitted_words[id])
+		if passcode.is_empty():
+			depriority_words.append_array(main.run_stats.get_words())
+			for id in others_submitted_words:
+				depriority_words.append_array(others_submitted_words[id])
+		else:
+			for word in main.run_stats.get_words():
+				if word!=passcode:
+					depriority_words.append(word)
+			for id in others_submitted_words:
+				for word in others_submitted_words[id]:
+					if word!=passcode:
+						depriority_words.append(word)
 		if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty():
 			depriority_words.append(main.enemy.given_word)
 
 	if Game.enemy != null:
 		if Game.enemy.id == Enemies.HOUSEBROKEN:
-			priority_words.append(Game.enemy.passcode)
+			priority_words.append(passcode)
 		elif Game.enemy.id == Enemies.LUMP:
 			if not Game.enemy.category_queue.is_empty():
 				priority_flag = Globals.WORD_CATEGORY_FLAGS[Game.enemy.category_queue[0]]
