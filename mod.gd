@@ -78,6 +78,8 @@ const CUSTOM_CHARACTER_ICONS:Dictionary[int,Texture2D]={
 	76561198273453230:preload("res://mods/co-op/arte/ui/dog.png"),#RENREN
 	76561198984198927:preload("res://mods/co-op/arte/ui/wooper.png"),#Xanderath
 	76561198057895955:preload("res://mods/co-op/arte/ui/star.png"),#Starblock
+	76561199096565403:preload("res://mods/co-op/arte/ui/player_icons/teoc.png"),#TeoC
+	76561199089530630:preload("res://mods/co-op/arte/ui/player_icons/tenex.png"),#Tenex
 }
 
 var unloaded_intents:Array[String]=INTENTS.values()
