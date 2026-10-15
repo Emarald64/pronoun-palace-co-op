@@ -64,6 +64,11 @@ func load_joining_game(host_save:Dictionary)->void:
 	AudioManager.fade_sounds()
 	get_tree().change_scene_to_file("res://source/main.tscn")
 
+@rpc
+func set_difficulty(_difficulty:int):
+	difficulty=_difficulty
+	difficulty_changed.emit()
+
 @rpc("any_peer","call_local")
 func set_original_id(original_id:int):
 	var id=multiplayer.get_remote_sender_id()
@@ -147,12 +152,15 @@ func _on_connected()->void:
 
 func _on_other_connected(id:int)->void:
 	print(id, " connected")
-	register_player.rpc_id(id,player_info)
-	if main!=null and multiplayer.is_server():
-		if enemy!=null and enemy.id=="nobody":
-			multiplayer.disconnect_peer(id)
+	if multiplayer.is_server():
+		if main!=null:
+			if enemy!=null and enemy.id=="nobody":
+				multiplayer.disconnect_peer(id)
+			else:
+				load_joining_game.rpc_id(id,{metadata=main.get_save_metadata(),data=main.get_save_data()})
 		else:
-			load_joining_game.rpc_id(id,{metadata=main.get_save_metadata(),data=main.get_save_data()})
+			set_difficulty.rpc_id(id,difficulty)
+	register_player.rpc_id(id,player_info)
 
 func _on_peer_disconnected(id:int)->void:
 	print(id, " disconnected")

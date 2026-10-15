@@ -270,5 +270,5 @@ static func get_character_icon(peer_id:int,use_steam_avatar:=false)->Texture2D:
 				return steam_avatar
 		
 		var character_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres").duplicate()
-		character_texture.set_character(Game.players[peer_id].character,not Game.is_in_run() or (Game.difficulty!=0 and Game.difficulty!=10))
+		character_texture.set_character(Game.players[peer_id].character, (Globals.is_character_trans(Game.players[peer_id].character,Game.difficulty,false)))
 		return character_texture
