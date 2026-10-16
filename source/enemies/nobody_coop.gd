@@ -349,6 +349,7 @@ func swap_big():
 		tile_board.ripped=false
 		tile_board.board.texture=load("res://arte/ui/tile_board.png")
 		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
+		tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 		
 		for coord in new_tiles:
 			new_tiles[coord].sway_handler.disabled=false
@@ -378,8 +379,8 @@ func swap_big():
 			hit_player(moves.swap.first_damage)
 	await tile_board.set_size(5, 4)
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
-	if smoke.position.y<0:
-		smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position:y",0,5)
+	if smoke.position.y>0:
+		smoke.create_tween().set_trans(Tween.TRANS_QUART).tween_property(smoke,"position:y",0,5)
 	regular_board=false
 	await wait_for_idle()
 
@@ -416,6 +417,8 @@ func swap_small():
 	tile_board.tile_box.patch_margin_left=2
 	tile_board.tile_box.patch_margin_right=2
 	tile_board.ripped=true
+	
+	tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 	
 	var ripped_board_projectile:ArcingProjectile=RIPPED_BOARD_PROJECTILE_SCENE.instantiate()
 	main.add_child(ripped_board_projectile)
