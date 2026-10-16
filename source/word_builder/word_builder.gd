@@ -187,6 +187,8 @@ func get_repeat_word(word_list: WordList) -> String:
 			if main.enemy.given_word==word:
 				return word
 	for word in word_list.words:
+		if word==main.coop_spell_effects.party_telephone_word:
+			return word
 		for id in others_submitted_words:
 			if word in others_submitted_words[id] \
 			and (main.enemy==null or main.enemy.id!=Enemies.HOUSEBROKEN or word!=main.enemy.passcode):
@@ -216,6 +218,7 @@ func resolve_tile_words(use_tiles) -> WordList:
 				for word in others_submitted_words[id]:
 					if word!=passcode:
 						depriority_words.append(word)
+		depriority_words.append(main.coop_spell_effects.party_telephone_word)
 		if main.enemy!=null and main.enemy.id==Enemies.NOBODY and not main.enemy.given_word.is_empty():
 			depriority_words.append(main.enemy.given_word)
 
@@ -237,6 +240,8 @@ func add_warning(warnings: Dictionary, warning_id: String, context: Dictionary =
 			if id in Game.players and context.word in others_submitted_words[id]:
 				context.name=Game.players[id].name
 				break
+		if context.word==main.coop_spell_effects.party_telephone_word:
+			context.phone=true
 	super(warnings,warning_id,context)
 
 func update_stats() -> void :

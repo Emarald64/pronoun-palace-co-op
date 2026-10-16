@@ -1,5 +1,9 @@
 :word_warnings:
 	:repeat_known_word:
+		{:party_telephone_word: if phone}{:repeat_non_phone_word: not phone}
+	:repeat_non_phone_word:
 		“{word}” has already been submitted {:by_name: if name}{" " if name}this run
 	:by_name:
 		by {name}
+	:party_telephone_word:
+		The word you are trying to spell is no longer avaiable

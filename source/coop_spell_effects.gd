@@ -6,6 +6,7 @@ signal all_projectiles_impacted
 
 var using_remote_object:=false
 var in_coop_spell_animation:=false
+var party_telephone_word:=""
 #var projectile_count:=0
 
 var tile_board:TileBoard=Game.tile_board
@@ -24,9 +25,10 @@ func _ready():
 		#all_projectiles_impacted.emit()
 
 @rpc("any_peer")
-func recive_word(tiles:Array)->void:
+func recive_word(tiles:Array,word:String)->void:
 	#print(tiles)
 	in_coop_spell_animation=true
+	party_telephone_word=word
 	var phone_board:TileBoard=main.phone_board
 	var need_to_move_main_board=phone_board.is_slid_out
 	if not phone_board.is_slid_out:
