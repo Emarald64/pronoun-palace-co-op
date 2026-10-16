@@ -277,6 +277,9 @@
 		swapped boards with you.
 	:notification_failed:
 		Failed to swap boards with {name}.
+	
+	:credit:
+		Sprite by WiffleNanny
 
 :bug_spray:
 	:name:

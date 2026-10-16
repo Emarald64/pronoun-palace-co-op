@@ -29,3 +29,9 @@
 	::
 		Art:
 		Global Lobby Visibility Icon
+
+::
+	WiffleNanny
+	::
+		Art:
+		Sneakernet
