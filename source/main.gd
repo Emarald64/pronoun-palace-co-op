@@ -104,6 +104,9 @@ func player_death():
 			tile.add_status(Globals.TileStatus.CANDY)
 			await Game.timeout(0.1)
 		start_player_action()
+	else:
+		candy_round=true
+		revive()
 
 func revive():
 	if candy_round:
