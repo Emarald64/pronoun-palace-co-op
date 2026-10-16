@@ -113,6 +113,12 @@ func _init():
 				2:6,
 				3:10
 			},
+			damage={
+				0:0,
+				1:2,
+				2:3,
+				3:5,
+			},
 			next="solo_attack"
 		},
 		solo_attack={
@@ -271,6 +277,7 @@ func display_intent():
 				count=moves.solo_echo.cursed_num,
 				status=TileStatus.CURSED
 			})
+			add_intent(Intent.ATTACK,{damage=moves.solo_attack.damage})
 			if tile_board.num_columns!=4:
 				add_intent(Intent.SHRINK_BOARD, {size_x = 4, size_y = 4})
 		"solo_attack":
@@ -732,6 +739,7 @@ func solo_concentration():
 	if get_multitude_attack_damage()>0:
 		#await animate_attack()
 		hit_player(get_multitude_attack_damage())
+		await reset_board()
 		await wait_for_idle()
 		#if swap_partner!=-1:
 			#if swap_partner>multiplayer.get_unique_id():
@@ -739,13 +747,10 @@ func solo_concentration():
 			#else:
 				#next_move_override="swap_small"
 	else:
-		if tile_board.num_columns!=4:
-			#await animate_attack()
-			await tile_board.set_size()
-			regular_board=true
-			dooming_columns.clear()
-		await wait_for_idle()
+		await reset_board()
+		
 		await Game.timeout(0.5)
+		await wait_for_idle()
 
 func solo_echo():
 	#echo
@@ -769,10 +774,7 @@ func solo_echo():
 	AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 	await Game.timeout(1.2)
 	await animate_attack()
-	if tile_board.num_columns!=4:
-		await tile_board.set_size()
-		regular_board=true
-		dooming_columns.clear()
+	await reset_board()
 	if not echo_tiles.is_empty():
 		var width=tile_board.num_columns
 		var height=tile_board.num_rows
@@ -787,22 +789,30 @@ func solo_echo():
 			await Game.timeout(0.16)
 		await all_projectiles_impacted
 		await Game.tile_board.settle_board()
+	hit_player(moves.solo_echo.damage)
 	damage_taken=0
 	await wait_for_idle()
 
 func solo_attack():
 	await animate_attack()
 	hit_player(moves.solo_attack.damage)
-	if tile_board.num_columns!=4:
-		await tile_board.set_size()
-		regular_board=true
-		dooming_columns.clear()
+	await reset_board()
 	if swap_partner!=-1:
 		if multiplayer.get_unique_id()<swap_partner:
 			next_move_override="swap_big"
 		else:
 			next_move_override="swap_small"
 	await wait_for_idle()
+
+func reset_board():
+	if tile_board.num_columns!=4:
+		tile_board.ripped=false
+		tile_board.board.texture=load("res://arte/ui/tile_board.png")
+		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
+		tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
+		await tile_board.set_size()
+		regular_board=true
+		dooming_columns.clear()
 
 func flinch_lethal(amount: int):
 	super(amount)

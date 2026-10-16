@@ -81,6 +81,7 @@ func set_original_id(original_id:int):
 	#main.strawman_taps[id]=main.strawman_taps.get(original_id,0)
 
 func merge_saves(host_save:Dictionary,local_save:Dictionary):
+	#print_debug()
 	if host_save.metadata.seed==local_save.metadata.seed or (Input.is_key_pressed(KEY_PAGEDOWN) and Bridge.is_debug_build()):
 		const COPPIED_DATA=[
 			"act_events",
@@ -89,6 +90,9 @@ func merge_saves(host_save:Dictionary,local_save:Dictionary):
 			"showing_act_end_summary",
 			"rng"
 		]
+		
+		if host_save.metadata.seed!=local_save.metadata.seed:
+			local_save.data.mod_data["co-op"].original_id=0
 		
 		var tiles_to_remove:Array[Vector2i]=[]
 		if "enemy" in local_save.data and ("enemy" not in host_save.data or local_save.data.enemy.id!=host_save.data.enemy.id):
