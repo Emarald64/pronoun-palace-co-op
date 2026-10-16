@@ -1,6 +1,7 @@
 extends TileBoard
 
 var include_phone_board_tiles:=false
+var ripped:=false
 
 func _ready():
 	#await get_tree().process_frame
@@ -87,3 +88,26 @@ func swap_tiles(tile_a: Tile, tile_b: Tile, settle_duration: = 0.08, settle_grid
 
 	update_state()
 	tiles_changed.emit()
+
+func get_tile_box_size():
+	if ripped:
+		return super()+Vector2(0,7)
+	else:
+		return super()
+
+func get_total_size():
+	if ripped:
+		return super()-Vector2(0,10)
+	else:
+		return super()
+
+func get_target_global_position():
+	if ripped:
+		return super()+Vector2(0,-47)
+	else:
+		return super()
+
+#func pop_tile(tile: Tile, fixed_direction: int = 0, launch_multiplier: float = 1.0):
+	#tile.reparent(main)
+	#super(tile,fixed_direction,launch_multiplier)
+	

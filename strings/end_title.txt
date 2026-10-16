@@ -20,11 +20,11 @@
 		:description_normal:
 			Only took {value} damage.
 		:limit:
-			15
+			10
 	:most:
 		:title:
 			Battered and Bruised
-		:discription:
+		:description:
 			Took {value} damage.
 		:limit:
 			50

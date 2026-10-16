@@ -2,9 +2,12 @@ extends "res://source/enemies/nobody.gd"
 
 const PHONE_POS=Vector2(113,140)
 
+const RIPPED_BOARD_PROJECTILE_SCENE=preload("res://mods/co-op/source/effects/ripped_board_projectile.tscn")
+
 var swap_partner:int
 var partnerless_players:Array[int]=[]
 
+var board_shake_offset:=Vector2.ZERO
 var recived_board_piece:Dictionary={}
 
 var dooming_rows:Array[int]
@@ -39,7 +42,7 @@ func _init():
 				2:3,
 				3:4,
 			},
-			next="phone_a_friend_recive"
+			next="swap_small"#"phone_a_friend_recive"
 		},
 		swap_small={
 			second_damage={
@@ -48,7 +51,7 @@ func _init():
 				2:7,
 				3:8
 			},
-			next="phone_a_friend_send"
+			next="swap_big"#"phone_a_friend_send"
 		},
 		phone_a_friend_recive={
 			cursed_num={
@@ -286,7 +289,7 @@ func recive_board(swapped_board_piece:Dictionary={}):
 
 func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	var tiles=get_tiles({
-		rows=[2,3]
+		rows=[0,1]
 	})
 	var save_data:Dictionary[Vector2i,Dictionary]={}
 	for tile:Tile in tiles:
@@ -294,41 +297,89 @@ func get_board_part_to_swap()->Dictionary[Vector2i,Dictionary]:
 	return save_data
 
 func swap_big():
-	await send_spell()
+	send_spell()
 	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_rows==2
-	if swapping_board:
-		hit_player(moves.swap_big.second_damage)
-	else:
-		hit_player(moves.swap.first_damage)
 	if recived_board_piece.is_empty() and swapping_board:
 		get_tree().create_timer(10).timeout.connect(recived_swap_info.emit)
 		await recived_swap_info
 	
 	if not recived_board_piece.is_empty():
-		await tile_board.set_size(5, 4,null,0)
+		var ripped_board_projectile:ArcingProjectile=RIPPED_BOARD_PROJECTILE_SCENE.instantiate()
+		
 		AudioManager.play_sound(Sounds.PROLE_SERVICE.RING)
 		await Game.timeout(1.2)
-		# set top half of board to recived tiles
-		num_projectiles=recived_board_piece.size()
-		for cord in recived_board_piece:
+		await add_recived_spell()
+		
+		hit_player(moves.swap_big.second_damage)
+		
+		main.add_child(ripped_board_projectile)
+		ripped_board_projectile.rotation=deg_to_rad(-9)
+		var new_tiles:Dictionary[Vector2i,Tile]={}
+		for coord in recived_board_piece:
 			var tile=tile_board.create_tile()
-			main.add_child(tile)
-			var tile_data=recived_board_piece[cord]
+			ripped_board_projectile.add_child(tile)
+			var tile_data=recived_board_piece[coord]
 			InputSanity.process_tile_data(tile_data)
 			tile.load_save_data(tile_data)
-			tile.launch(PHONE_POS,tile_board.get_coord_position(cord),rng.move.randf_range(80,100))
-			tile.impacted.connect(tile_board.insert_tile.bind(tile,cord,false))
-			tile.impacted.connect(_on_projectile_impacted)
-			tile.impacted.connect(AudioManager.play_sound.bind(Sounds.PROLE_SERVICE.TONE))
-
-			await Game.timeout(0.16)
+			tile.sway_handler.disabled=true
+			tile.z_index=1-coord.y
+			tile.position=Vector2(-44,3)+(coord*22.0*Vector2(1,-1))
+			new_tiles[coord]=tile
+		
+		ripped_board_projectile.scale=Vector2(0.5,0.5)
+		ripped_board_projectile.launch(PHONE_POS,tile_board.position+Vector2(0,52),55)
+		#ripped_board_projectile.look_at_direction=false
+		ripped_board_projectile.angular_velocity=PI/6
+		ripped_board_projectile.angular_deceleration = PI
+		ripped_board_projectile.decelerate_to = PI/20
+		#ripped_board_projectile.free_on_impact=false
+		
+		create_tween().tween_property(ripped_board_projectile,"scale",Vector2.ONE,.25)
+		await ripped_board_projectile.impacted
+		
+		#ripped_board_projectile.process_mode=Node.PROCESS_MODE_DISABLED
+		#var tween=create_tween()
+		#tween.tween_property(ripped_board_projectile,"position",tile_board.position+Vector2(0,52),.2)#.set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
+		#await tween.finished
+		#ripped_board_projectile.queue_free()
+		
+		AudioManager.play_sound(Sounds.SPELLS.SWITCH.merged({PLAY_FROM=0.05}))
+		AudioManager.play_sound({SOUND=load("res://sounds/spells/switch2.wav")})
+		
+		tile_board.ripped=false
+		tile_board.board.texture=load("res://arte/ui/tile_board.png")
+		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
+		
+		for coord in new_tiles:
+			new_tiles[coord].sway_handler.disabled=false
+			tile_board.insert_tile(new_tiles[coord],coord+Vector2i(0,-2),false)
+		
+		
+		await tile_board.set_size(5, 4,null,0,false,0,TileBoard.ExpandMode.BOTTOM_LEFT)
+		
+		#tile_board.prepare_to_animate()
+		#var tween=create_tween().set_trans(Tween.TRANS_QUART)
+		#var board_position=tile_board.get_node("BoardPosition")
+		#tween.tween_property(board_position,"position:y",8,.1).set_ease(Tween.EASE_IN)
+		#tween.tween_property(board_position,"position:y",0,.1).set_ease(Tween.EASE_OUT)
+		#await tween.finished
+		#tile_board.finish_animating()
+		
+		# set top half of board to recived tiles
+		
 		recived_board_piece.clear()
-		await all_projectiles_impacted
+		#await all_projectiles_impacted
 		await tile_board.settle_board()
+	else:
+		await add_recived_spell()
+		if swapping_board:
+			hit_player(moves.swap_big.second_damage)
+		else:
+			hit_player(moves.swap.first_damage)
 	await tile_board.set_size(5, 4)
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
 	if smoke.position.y<0:
-		smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,0),5)
+		smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position:y",0,5)
 	regular_board=false
 	await wait_for_idle()
 
@@ -336,7 +387,54 @@ func swap_small():
 	var swapping_board:bool=tile_board.num_columns==5 and tile_board.num_rows==4
 	if swapping_board:
 		recive_board.rpc_id(swap_partner, get_board_part_to_swap())
-	await send_spell()
+	
+	send_spell()
+	await tile_board.set_size(5,4)
+	await add_recived_spell()
+	
+	AudioManager.play_sound(Sounds.LIQUID_HUMAN.IMPACT.merged({PLAY_FROM=.12}))
+	
+	board_shake_offset=Vector2.ZERO
+	tile_board.prepare_to_animate()
+	var tween=create_tween()
+	tween.set_parallel()
+	tween.tween_method(shake_board,0.0,5.0,.5).set_ease(Tween.EASE_IN)
+	tween.tween_property(tile_board,"rotation",-PI/20,0.5).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self,"board_shake_offset",Vector2(10,2),.5).set_ease(Tween.EASE_OUT)
+	await tween.finished
+	
+	AudioManager.play_sound(Sounds.BAMMON.BONE_CRACK.merged({PITCH_SCALE=.75}))
+	
+	tile_board.board.texture=load("res://mods/co-op/arte/ui/ripped_board.png")
+	tile_board.board.region_rect=Rect2()
+	tile_board.board.patch_margin_left=6
+	tile_board.board.patch_margin_right=6
+	
+	tile_board.tile_box.texture=load("res://mods/co-op/arte/ui/ripped_inside_board.png")
+	tile_board.tile_box.region_rect=Rect2()
+	tile_board.tile_box.patch_margin_bottom=6
+	tile_board.tile_box.patch_margin_left=2
+	tile_board.tile_box.patch_margin_right=2
+	tile_board.ripped=true
+	
+	var ripped_board_projectile:ArcingProjectile=RIPPED_BOARD_PROJECTILE_SCENE.instantiate()
+	main.add_child(ripped_board_projectile)
+	ripped_board_projectile.position=(tile_board.get_node("BoardPosition").global_transform*Vector2(0,34))#+tile_board.get_node("BoardPosition").global_position
+	ripped_board_projectile.rotation=-PI/20
+	
+	for tile in tile_board.get_tiles({rows=[0,1]}):
+		tile_board.remove_tile_from_board(tile)
+		tile.reparent(ripped_board_projectile)
+	
+	ripped_board_projectile.launch(ripped_board_projectile.position,Vector2(tile_board.position.x+80,320),11)
+	#ripped_board_projectile.look_at_direction=false
+	ripped_board_projectile.angular_velocity=PI/6
+	ripped_board_projectile.angular_deceleration = PI
+	ripped_board_projectile.decelerate_to = PI/20
+	
+	tile_board.rotation=0
+	tile_board.get_node("BoardPosition").position=Vector2.ZERO
+	
 	if swapping_board:
 		hit_player(moves.swap_small.second_damage)
 	else:
@@ -346,20 +444,27 @@ func swap_small():
 	dooming_rows.clear()
 	tile_board.top_up_bag(TileType.DEFENSE, 1)
 	
-	await tile_board.set_size(5,2)
+	tile_board.settle_board(true)
+	
+	await tile_board.set_size(5,2,null,null,true)
+	
+	tile_board.finish_animating()
 	regular_board=false
 	
 	# move smoke down
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
-	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position",Vector2(-128,50),5)
-	
+	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position:y",50,5)
 	
 	await wait_for_idle()
+
+func shake_board(intensity:float):
+	tile_board.get_node("BoardPosition").position=board_shake_offset+Vector2(randf()*intensity,randf()*intensity)
 
 var sending_spell_data:Dictionary
 signal sending_spell_data_set
 var recived_spell_save:Dictionary
 var spell_sender_id:=0
+var spell_to_swap:PlayerSpell
 
 @rpc("any_peer")
 func recive_spell(swapped_spell:Dictionary):
@@ -381,8 +486,9 @@ func ask_send_spell():
 
 func send_spell():
 	var spells=main.spell_container.player_spells.duplicate()
-	var spell_to_swap:PlayerSpell
+	#var spell_to_swap:PlayerSpell
 	if spells.size()>1:
+		spells=spells.slice(1)
 		if player.id==Globals.CHARACTERS.CHILD:
 			var defense_spell=null
 			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
@@ -397,7 +503,7 @@ func send_spell():
 			if defense_spell!=null:
 				spells.erase(defense_spell)
 
-		spell_to_swap=rng.move.pick_random(spells.filter(func (player_spell:PlayerSpell)->bool:return not player_spell.spell.spell_data.character_specific))
+		spell_to_swap=rng.move.pick_random(spells)
 	else:
 		spell_to_swap=spells[0]
 	sending_spell_data=spell_to_swap.spell.get_save_data()
@@ -412,11 +518,14 @@ func send_spell():
 	print("sending:",sending_spell_data.id,". requesting from ",spell_sender)
 	ask_send_spell.rpc_id(spell_sender)
 	#recive_spell.rpc_id(spell_reciver,sent_spell)
+
+func add_recived_spell(attack:=true):
 	if recived_spell_save.is_empty():
 		get_tree().create_timer(10).timeout.connect(recived_spell_data.emit)
 		await recived_spell_data
-	#var new_spell_data=
-	await animate_attack()
+	
+	if attack:
+		await animate_attack()
 	if not recived_spell_save.is_empty():
 		InputSanity.process_spell_data(recived_spell_save)
 		var new_spell=Spell.create_from_save(recived_spell_save)
@@ -435,8 +544,8 @@ func send_spell():
 		spell_to_swap.set_spell(new_spell)
 		main.coop_notifications.add_notification(new_notification)
 		recived_spell_save.clear()
-	else:
-		push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
+	#else:
+		#push_error("did not recive a spell from ",spell_sender," name:",Game.players[spell_sender].name)
 	get_tree().create_timer(20).timeout.connect(func ():sending_spell_data.clear())
 
 func _on_word_submitted(words: WordList, _damage: int, _ending_turn: bool) -> void:
@@ -718,7 +827,9 @@ func _on_sprite_event(event:String)->void:
 	super(event)
 
 func unique_end_player_action() -> void :
-	if next_move in ["swap_small","phone_a_friend_recive","solo_echo"]:
+	if next_move == "swap_small":
+		dooming_rows = [0,1]
+	elif next_move in ["phone_a_friend_recive","solo_echo"]:
 		dooming_rows = [2,3]
 	if next_move in ["solo_concentration","solo_echo","solo_attack"] and tile_board.num_columns>4:
 		dooming_columns=[4]

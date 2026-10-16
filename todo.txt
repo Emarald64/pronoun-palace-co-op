@@ -4,3 +4,6 @@
 [] health bar doesn't reappear after reviving sometimes?
 [x] nobody swap attack always thinks its the first time
 [x] bammon doesn't remove tiles outside of the board when dieing
+
+[x] have nobody rip the board in half
+[] allow joining mid game
