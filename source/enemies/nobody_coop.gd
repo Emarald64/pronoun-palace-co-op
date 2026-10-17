@@ -42,7 +42,7 @@ func _init():
 				2:3,
 				3:4,
 			},
-			next="swap_small"#"phone_a_friend_recive"
+			next="phone_a_friend_recive"
 		},
 		swap_small={
 			second_damage={
@@ -51,7 +51,7 @@ func _init():
 				2:7,
 				3:8
 			},
-			next="swap_big"#"phone_a_friend_send"
+			next="phone_a_friend_send"
 		},
 		phone_a_friend_recive={
 			cursed_num={
@@ -356,7 +356,7 @@ func swap_big():
 		tile_board.ripped=false
 		tile_board.board.texture=load("res://arte/ui/tile_board.png")
 		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
-		tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
+		#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 		
 		for coord in new_tiles:
 			new_tiles[coord].sway_handler.disabled=false
@@ -425,7 +425,7 @@ func swap_small():
 	tile_board.tile_box.patch_margin_right=2
 	tile_board.ripped=true
 	
-	tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
+	#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 	
 	var ripped_board_projectile:ArcingProjectile=RIPPED_BOARD_PROJECTILE_SCENE.instantiate()
 	main.add_child(ripped_board_projectile)
@@ -809,7 +809,7 @@ func reset_board():
 		tile_board.ripped=false
 		tile_board.board.texture=load("res://arte/ui/tile_board.png")
 		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
-		tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
+		#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 		await tile_board.set_size()
 		regular_board=true
 		dooming_columns.clear()
