@@ -21,10 +21,10 @@
 		{:charged_spell_nofication: if spell}{:failed_notification: not spell}
 	
 	:charged_spell_nofication:
-		recharged your {spell}.
+		recharged your {spell}
 	
 	:failed_notification:
-		tried to recharge a spell, but there was no valid spell.
+		tried to recharge a spell, but there was no valid spell
 
 :gift_coop: {inherits :spell/gift:}
 	:name:
@@ -67,7 +67,7 @@
 		Select a player to send the word to
 	
 	:effect_notification:
-		sent you {word}.
+		sent you {word}
 	
 	:credit:
 		Sprite by dragonslayr15001
@@ -101,13 +101,13 @@
 		removes_word
 	
 	:effect_notification:
-		sent you a {:status/default/name: lower} {:notification_status: if status}{:notification_face: if face}.
+		sent you a {:status/default/name: lower} {:notification_status: if status}{" " if status}{:notification_face: if face}
 	
 	:notification_status:
 		{status lower}
 	
 	:notification_face:
-		{" " if status}tile with the face {face}
+		tile with the face {face}
 
 :remote_object:
 	:name:
@@ -207,7 +207,7 @@
 		1
 	
 	:effect_notification:
-		made one of your tiles a timed crit {letter upper}.
+		made one of your tiles a timed crit {letter upper}
 
 :ssn_printer:
 	:name:
@@ -274,9 +274,9 @@
 		{:notification_success: if success}{:notification_failed: not success}
 	
 	:notification_success:
-		swapped boards with you.
+		swapped boards with you
 	:notification_failed:
-		Failed to swap boards with {name}.
+		Failed to swap boards with {name}
 	
 	:credit:
 		Sprite by WiffleNanny

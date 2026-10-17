@@ -23,8 +23,8 @@ func _use():
 	# make data for stamped
 	const STAMP_CORNERS=[
 		#Vector2i(7,7),
-		#Vector2i(7,-7),#bottom right
-		Vector2i(-7,7),#top right
+		#Vector2i(-7,7),#bottom right
+		Vector2i(7,-7),#top right
 		Vector2i(-7,-7),#top left
 	]
 	var illegal_tile=tile.has_harmful_status() or tile.has_any_status([TileStatus.HOLE,TileStatus.SCREW])
@@ -47,13 +47,13 @@ func _use():
 	# get status to be named in the notification
 	# get face to be displayed in the notificaton
 	var notification_context={
-			wooden=tile_save.type==TileType.DAMAGE,
-			plastic=tile_save.type==TileType.DEFENSE
-		}
+		wooden=tile_save.type==TileType.DAMAGE,
+		plastic=tile_save.type==TileType.DEFENSE
+	}
 	for status in tile_save.statuses:
 		var group: = StringManager.get_string_group("status/" + status)
 		if "shared" not in group.get_string("flags"):
-			notification_context.status=group.get_string("name")+" "
+			notification_context.status=group.get_string("name")
 			break
 	if TileStatus.MYSTERY in tile_save.statuses:
 		notification_context.face="?".repeat(tile_save.faces[0].length())
