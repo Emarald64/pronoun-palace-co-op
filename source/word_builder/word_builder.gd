@@ -133,6 +133,7 @@ func submit_word() -> void :
 		await super()
 
 func on_player_turn_ending() -> void :
+	main.coop_spell_effects.party_telephone_word=""
 	if not main.candy_round and player.health>0:
 		await send_attack_and_wait()
 		
