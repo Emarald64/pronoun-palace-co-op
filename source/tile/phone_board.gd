@@ -22,7 +22,7 @@ func create_tile() -> Tile:
 	return tile
 
 func turn_end(reroll: = false, end_of_battle: = false):
-	#await super(reroll,end_of_battle)
+	await super(reroll,end_of_battle)
 
 	main.tile_board.prepare_to_animate()
 	var tween=main.tile_board.create_tween()
@@ -33,4 +33,4 @@ func turn_end(reroll: = false, end_of_battle: = false):
 	prepare_to_animate()
 	await slide_out()
 	finish_animating()
-	remove_tiles(get_tiles(),{ignore_status=true})
+	remove_tiles(get_tiles(),{ignore_status=true,settle=false,fill=false})
