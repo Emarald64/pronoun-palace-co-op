@@ -45,10 +45,13 @@ func set_dead(dead:bool):
 
 func update_shadow_color():
 	var shadow_color= Color("c4a1a1")
-	if Game.word_builder.peer_attacks[peer_id].submitted:
+	if is_selecting_players() and not Game.player.passes_selection_condition(peer_id):
+		if peer_id in Game.word_builder.peer_attacks and Game.word_builder.peer_attacks[peer_id].submitted:
+			shadow_color= Color("4e753aff")
+		else:
+			shadow_color= Color("735e5e")
+	elif peer_id in Game.word_builder.peer_attacks and Game.word_builder.peer_attacks[peer_id].submitted:
 		shadow_color=Color("74b054")
-	elif is_selecting_players() and not Game.player.passes_selection_condition(peer_id):
-		shadow_color= Color("735e5e")
 	
 	for shadow_cloner in color_changing_shadow_cloners:
 		shadow_cloner.solid_shadow_color=shadow_color
