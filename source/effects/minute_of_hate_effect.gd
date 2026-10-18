@@ -16,4 +16,7 @@ func _ready():
 	tile.add_status("timed",60000)
 	tile.add_poofcloud(tile.get_poof_color())
 	
+	if not Game.word_builder.is_submitting:
+		Game.word_builder.resolve_words()
+	
 	queue_free()
