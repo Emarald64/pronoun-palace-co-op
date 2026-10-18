@@ -60,7 +60,7 @@ func apply(time:=60000):
 	update_label()
 
 func update_tooltip():
-	if tile.tooltip_collision.is_displaying:
+	if tile.tooltip_collision and tile.tooltip_collision.is_displaying:
 		var tooltip:GameTooltip=tile.tooltip_collision.tooltip
 		var title=StringManager.get_string("/status/timed/name")
 		for subtooltip:SubTooltip in tooltip.subtooltips:
