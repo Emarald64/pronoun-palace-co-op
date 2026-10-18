@@ -109,7 +109,33 @@ func get_target_global_position():
 	else:
 		return super()
 
-#func pop_tile(tile: Tile, fixed_direction: int = 0, launch_multiplier: float = 1.0):
-	#tile.reparent(main)
-	#super(tile,fixed_direction,launch_multiplier)
-	
+func get_tile_state_save_data(include_restock_depth: = false):
+	var save=super(include_phone_board_tiles)
+	save.ripped=ripped
+	return save
+
+func load_tile_state_save_data(save, parent_to_mask: = false, needs_reset: = true):
+	await super(save,parent_to_mask,needs_reset)
+	set_ripped(save.ripped)
+
+func set_ripped(is_ripped:=true):
+	ripped=is_ripped
+	if is_ripped:
+		board.texture=load("res://mods/co-op/arte/ui/ripped_board.png")
+		board.region_rect=Rect2()
+		board.patch_margin_left=6
+		board.patch_margin_right=6
+		board.patch_margin_top=2
+		board.patch_margin_bottom=12
+		
+		tile_box.texture=load("res://mods/co-op/arte/ui/ripped_inside_board.png")
+		tile_box.region_rect=Rect2()
+		tile_box.patch_margin_bottom=6
+		tile_box.patch_margin_left=2
+		tile_box.patch_margin_right=2
+		
+		main.turn_timer.position.y=-47
+	else:
+		board.texture=load("res://arte/ui/tile_board.png")
+		tile_box.texture=load("res://arte/ui/insideboard.png")
+		main.turn_timer.position.y=-71

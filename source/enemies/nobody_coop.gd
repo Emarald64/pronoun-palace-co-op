@@ -353,9 +353,7 @@ func swap_big():
 		AudioManager.play_sound(Sounds.SPELLS.SWITCH.merged({PLAY_FROM=0.05}))
 		AudioManager.play_sound({SOUND=load("res://sounds/spells/switch2.wav")})
 		
-		tile_board.ripped=false
-		tile_board.board.texture=load("res://arte/ui/tile_board.png")
-		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
+		tile_board.set_ripped(false)
 		#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 		
 		for coord in new_tiles:
@@ -387,7 +385,7 @@ func swap_big():
 	await tile_board.set_size(5, 4)
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
 	if smoke.position.y>0:
-		smoke.create_tween().set_trans(Tween.TRANS_QUART).tween_property(smoke,"position:y",0,5)
+		smoke.create_tween().set_trans(Tween.TRANS_QUART).tween_property(smoke,"position:y",0,8)
 	regular_board=false
 	await wait_for_idle()
 
@@ -413,17 +411,7 @@ func swap_small():
 	
 	AudioManager.play_sound(Sounds.BAMMON.BONE_CRACK.merged({PITCH_SCALE=.75}))
 	
-	tile_board.board.texture=load("res://mods/co-op/arte/ui/ripped_board.png")
-	tile_board.board.region_rect=Rect2()
-	tile_board.board.patch_margin_left=6
-	tile_board.board.patch_margin_right=6
-	
-	tile_board.tile_box.texture=load("res://mods/co-op/arte/ui/ripped_inside_board.png")
-	tile_board.tile_box.region_rect=Rect2()
-	tile_board.tile_box.patch_margin_bottom=6
-	tile_board.tile_box.patch_margin_left=2
-	tile_board.tile_box.patch_margin_right=2
-	tile_board.ripped=true
+	tile_board.set_ripped(true)
 	
 	#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 	
@@ -463,7 +451,7 @@ func swap_small():
 	
 	# move smoke down
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
-	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position:y",50,5)
+	smoke.create_tween().set_ease(Tween.EASE_IN_OUT).tween_property(smoke,"position:y",50,8)
 	
 	await wait_for_idle()
 
@@ -806,9 +794,7 @@ func solo_attack():
 
 func reset_board():
 	if tile_board.num_columns!=4:
-		tile_board.ripped=false
-		tile_board.board.texture=load("res://arte/ui/tile_board.png")
-		tile_board.tile_box.texture=load("res://arte/ui/insideboard.png")
+		tile_board.set_ripped(false)
 		#tile_board.get_node("BoardPosition/Board/ShadowCloner")._on_parent_texture_changed()
 		await tile_board.set_size()
 		regular_board=true
