@@ -68,6 +68,8 @@ func host_pressed():
 			peer.server_relay=true
 			peer.host_with_lobby(Game.steam_lobby_id)
 			multiplayer.multiplayer_peer=peer
+			Bridge.set_rich_presence_display("#Custom")
+			Bridge.set_rich_presence_key("custom", StringManager.get_string("mod/co-op/misc/rich_presence/lobby"))
 			go_to_lobby()
 		else:
 			push_error("Lobby creation error: ",responce[0])

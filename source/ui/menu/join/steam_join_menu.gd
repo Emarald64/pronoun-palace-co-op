@@ -9,6 +9,8 @@ func _on_start_appearing()->void:
 	lobby_id_array.resize(8)
 	lobby_id_array.encode_u64(0,Game.steam_lobby_id)
 	%LobbyInfo.text="Lobby id: "+Marshalls.raw_to_base64(lobby_id_array)
+	Bridge.set_rich_presence_display("#Custom")
+	Bridge.set_rich_presence_key("custom", StringManager.get_string("mod/co-op/misc/rich_presence/lobby"))
 
 func connect_to_server() -> void:
 	AudioManager.play_sound(Sounds.UI.MENU_BUTTON)
@@ -27,6 +29,7 @@ func disappear(instant: bool = false) -> void:
 		print("left lobby")
 		Steam.leaveLobby(Game.steam_lobby_id)
 		Game.steam_lobby_id=0
+		Bridge.clear_rich_presence()
 	await super(instant)
 
 func connection_ok():

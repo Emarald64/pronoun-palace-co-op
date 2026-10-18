@@ -3,3 +3,7 @@
 		Waiting for other players to submit
 	:wait_for_floor:
 		Waiting for {count} more player{count plural "s"} to complete floor
+
+:rich_presence:
+	:lobby:
+		In Co-Op lobby

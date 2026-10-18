@@ -49,6 +49,7 @@ func disappear(instant: bool = false)->void:
 		player_block.queue_free()
 	player_blocks.clear()
 	if Game.steam_lobby_id:
+		Bridge.clear_rich_presence()
 		menu_controller.menu_path.back()
 	Game.kill_peer()
 	super(instant)
