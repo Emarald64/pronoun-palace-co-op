@@ -109,14 +109,23 @@ func get_target_global_position():
 	else:
 		return super()
 
+func get_save_data():
+	var save=super()
+	save.ripped=ripped
+	return save
+
 func get_tile_state_save_data(include_restock_depth: = false):
-	var save=super(include_phone_board_tiles)
+	var save=super(include_restock_depth)
 	save.ripped=ripped
 	return save
 
 func load_tile_state_save_data(save, parent_to_mask: = false, needs_reset: = true):
-	await super(save,parent_to_mask,needs_reset)
 	set_ripped(save.ripped)
+	await super(save,parent_to_mask,needs_reset)
+
+func reset_board():
+	set_ripped(false)
+	super()
 
 func set_ripped(is_ripped:=true):
 	ripped=is_ripped
