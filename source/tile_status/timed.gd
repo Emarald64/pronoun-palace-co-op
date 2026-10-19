@@ -5,8 +5,7 @@ var timer_label:DebossLabel
 var timer:=GameTimer.new()
 var stopped_timer:=false
 
-func _init(_id:String):
-	super(_id)
+func _status_init() -> void:
 	timer.stopped.connect(_on_timer_stopped)
 
 func _status_connect():
@@ -62,10 +61,10 @@ func apply(time:=60000):
 func update_tooltip():
 	if tile.tooltip_collision and tile.tooltip_collision.is_displaying:
 		var tooltip:GameTooltip=tile.tooltip_collision.tooltip
-		var title=StringManager.get_string("/status/timed/name")
+		var title=effect_data.get_string_group().get_string("name")
 		for subtooltip:SubTooltip in tooltip.subtooltips:
 			if subtooltip.get_node("%Title").text==title:
-				subtooltip.set_description(StringManager.get_string("/status/timed/description",get_tooltip_context()))
+				subtooltip.set_description(effect_data.get_string_group().get_string("description",get_tooltip_context()))
 
 func _process(_delta:float):
 	if timer.is_running() and not tile.is_indestructible():

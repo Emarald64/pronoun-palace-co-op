@@ -8,19 +8,22 @@ const REPLACEMENT_SPELLS=[
 
 const ALL_CHARACTERS=Letters.ALPHABET+Letters.WILDCARD_CHARACTERS+[" "]
 
+
 static func is_valid_face(face:String)->bool:
 	for letter in face:
 		if letter not in ALL_CHARACTERS:
 			return false
 	return true
 
+
 static func add_status_to_tile_data(tile_data:Dictionary,status:String):
 	tile_data.get_or_add("statuses",[]).append(status)
 
+
 static func process_tile_data(tile_data:Dictionary):
 	if "statuses" in tile_data:
-		# remove non-exisitant statuses
-		tile_data.statuses=tile_data.statuses.filter(func (status_id:String)->bool:return StringManager.has_string_group_at_path(["status",status_id]))
+		# remove non-existant statuses
+		tile_data.statuses=tile_data.statuses.filter(EffectRegistry.has_data)
 	if "faces" in tile_data:
 		if not tile_data.faces.all(is_valid_face):
 			add_status_to_tile_data(tile_data,Globals.TileStatus.ASH)
@@ -32,14 +35,15 @@ static func process_tile_data(tile_data:Dictionary):
 	else:
 		add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
 
+
 static func process_spell_data(spell_data:Dictionary):
-	if "id" not in spell_data or spell_data.id not in SpellData.spell_data:
+	if "id" not in spell_data or not SpellRegistry.has_data(spell_data.id):
 		if "id" in spell_data:
 			push_warning("recived spell ",spell_data.id," but no spell exists in this game")
 		else:
 			push_error("recived a spell without an id")
 		for replacement_spell_id in REPLACEMENT_SPELLS:
-			if replacement_spell_id in SpellData.spell_data:
+			if SpellRegistry.has_data(replacement_spell_id):
 				spell_data.id=replacement_spell_id
 				if replacement_spell_id=="proverbpalace:datamosh":
 					spell_data.faking_out=true
@@ -47,11 +51,6 @@ static func process_spell_data(spell_data:Dictionary):
 					spell_data.max_charge=0
 				break
 
-static func get_mod_or_null(mod_id:String)->Mod:
-	for mod:Mod in ModLoader.mod_scenes:
-		if mod.mod_data.id==mod_id:
-			return mod
-	return null
 
 static func data_has_status(tile_data:Dictionary,status:String)->bool:
 	return "statuses" in tile_data and status in tile_data.statuses

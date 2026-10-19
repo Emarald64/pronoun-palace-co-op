@@ -2,7 +2,7 @@ class_name CoOp
 extends Mod
 
 const ID="co-op"
-const id=ID
+#const id=ID
 const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.3.2 - 10/16"
@@ -60,6 +60,20 @@ const GIFT_SPELLS:Array[String]=[
 
 const SPELL_UPGRADES={
 	SPELLS.GIFT_COOP:SPELLS.MIRACLE_CACHE_COOP
+}
+
+const REMOVED_SPELLS:PackedStringArray=[
+	Globals.SPELLS.MBA,
+	Globals.SPELLS.RED_TAPE,
+]
+
+#const BANNED_CURSES_SPELL_DATA=[
+	#SPELLS.SSN_PRINTER
+#]
+
+const STATUS={
+	STAMPED=NAMESPACE+"stamped",
+	TIMED=NAMESPACE+"timed",
 }
 
 const BUGS=[
@@ -140,7 +154,25 @@ func _ready()->void:
 			push_error("error joining lobby, code: ",lobby_joined_response)
 	
 	Steam.join_requested.connect(_on_join_lobby_requested)
-	
+
+func register_callbacks(helper: CallbackHelper) -> void:
+	helper.add_callback(Callbacks.REGISTER_SPELLS.MOD_INIT,register_spells,0)
+	helper.add_callback(Callbacks.REGISTER_EFFECTS.MOD_INIT,register_statuses,0)
+
+
+func register_spells():
+	SpellRegistry.register(self,SPELLS.values())
+	#SpellRegistry.register(self,BANNED_CURSES_SPELL_DATA,load("res://mods/co-op/source/spell/spell_data_banned_curses.gd"))
+	SpellRegistry.add_spells_to_pool(SPELL_WEIGHTS)
+	for spell in REMOVED_SPELLS:
+		SpellRegistry.spell_pool[spell]=0
+	SpellRegistry.spell_pool[SPELLS.BUG_SPRAY]=SpellRegistry.spell_pool[Globals.SPELLS.BUG_SPRAY]
+	SpellRegistry.spell_pool[Globals.SPELLS.BUG_SPRAY]=0
+
+
+func register_statuses():
+	EffectRegistry.register(self,STATUS.values())
+
 
 func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 	Steam.joinLobby(lobby_id)
@@ -166,28 +198,6 @@ func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
 func get_spell_ids() -> Array[String]:
 	return SPELLS.values()
 
-func get_spell_pool(category: String = "") -> Dictionary[String, float]:
-	if category.is_empty():
-		return SPELL_WEIGHTS
-	#if category not in SPELL_CATAGORIES:
-	return {}
-	#return SpellData.get_filtered_spell_pool(SPELL_WEIGHTS,SPELL_CATAGORIES[category])
-
-const REMOVED_SPELLS:PackedStringArray=[
-	Globals.SPELLS.MBA,
-	Globals.SPELLS.RED_TAPE,
-]
-
-func modify_spell_pool(pool: Dictionary, category: String = "") -> void:
-	for removed_spell in REMOVED_SPELLS:
-		pool.erase(removed_spell)
-	
-	if category.is_empty() and Game.players.keys().any(func (player_id:int)->bool:return is_bug(player_id)):
-		pool.erase(Globals.SPELLS.BUG_SPRAY)
-		pool[SPELLS.BUG_SPRAY]=1.0
-	
-	pool.merge(get_spell_pool(category))
-	
 
 func get_run_save_data() -> Dictionary:
 	var data= {
@@ -243,15 +253,12 @@ func load_options_save_data(data: Dictionary) -> void:
 	#extra_hate_time=value
 	#updated_extra_time.emit(value)
 
-const BANNED_CURSES_SPELL_DATA=[
-	SPELLS.SSN_PRINTER
-]
 
-func get_spell_data(spell_id: String) -> SpellData:
-	if spell_id in BANNED_CURSES_SPELL_DATA:
-		return SpellDataBannedCurses.new()
-	else:
-		return super(spell_id)
+#func get_spell_data(spell_id: String) -> SpellData:
+	#if spell_id in BANNED_CURSES_SPELL_DATA:
+		#return SpellDataBannedCurses.new()
+	#else:
+		#return super(spell_id)
 
 
 static func is_bug(peer_id:int)->bool:

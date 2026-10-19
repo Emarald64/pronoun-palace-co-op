@@ -37,8 +37,8 @@ func _use():
 	
 	# add stamp to sent tile data
 	var tile_save=tile.get_save_data()
-	tile_save.get_or_add("statuses",[]).append("stamped")
-	tile_save.get_or_add("status_data",{}).stamped=stamped_save
+	tile_save.get_or_add("statuses",[]).append(CoOp.STATUS.STAMPED)
+	tile_save.get_or_add("status_data",{})[CoOp.STATUS.STAMPED]=stamped_save
 	tile_save.as_save=true
 	#send tile
 	main.coop_spell_effects.queue_tile.rpc_id(player_id,tile_save)
@@ -51,7 +51,7 @@ func _use():
 		plastic=tile_save.type==TileType.DEFENSE
 	}
 	for status in tile_save.statuses:
-		var group: = StringManager.get_string_group("status/" + status)
+		var group: = EffectRegistry.get_data(status).get_string_group()
 		if "shared" not in group.get_string("flags"):
 			notification_context.status=group.get_string("name")
 			break
@@ -59,7 +59,7 @@ func _use():
 		notification_context.face="?".repeat(tile_save.faces[0].length())
 	elif TileStatus.MONEY in tile_save.statuses:
 		notification_context.face=tile_save.faces[0].replace_char("*".unicode_at(0),"$".unicode_at(0))
-	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StringManager.get_string_at_path(["status",status_id,"flags"]).split(" ")):
+	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in EffectRegistry.get_data(status_id).get_string("flags").split(" ")):
 		notification_context.face=tile_save.faces[0]
 	
 	if "face" in notification_context:
@@ -91,7 +91,7 @@ func _use():
 	#add stamp to tile
 	AudioManager.play_sound(Sounds.SPELLS.STAMP)
 	tile.bounce()
-	tile.load_status("stamped",stamped_save)
+	tile.load_status(CoOp.STATUS.STAMPED,stamped_save)
 	_post_use()
 	tile.get_tree().create_timer(1).timeout.connect( func ():
 		#animate the tile off the bottom of the screen
