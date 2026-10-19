@@ -152,7 +152,7 @@ func get_category_scores()->Dictionary:
 	var scores:={
 		strawman_taps=Game.main.strawman_taps,
 		time_spent=run_stats.get_total_deliberation_time(),
-		average_word_length=0.0,
+		average_word_length=run_stats.get_average_word_length(-1),
 		damage_taken=AchievementManager.total_damage_taken,
 		single_attack_damage=run_stats.get_max_damage(),
 		spells_used=0,
@@ -165,11 +165,11 @@ func get_category_scores()->Dictionary:
 		scores["%s_played"%word_category]=0
 	var played_words=run_stats.get_words()
 	for word in played_words:
-		scores.average_word_length+=word.length()
+		#scores.average_word_length+=word.length()
 		for word_category in tracked_word_categories:
 			if WordUtility.dictionary.word_has_flag(word,tracked_word_categories[word_category]):
 				scores["%s_played"%word_category]+=1
-	scores.average_word_length/=played_words.size()
+	#scores.average_word_length/=played_words.size()
 	
 	for spell:String in run_stats.spell_usages:
 		scores.spells_used+=run_stats.spell_usages[spell]
