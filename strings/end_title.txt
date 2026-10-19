@@ -50,6 +50,23 @@
 			Played an average of only {value} letters per word.
 		:limit:
 			5
+:time_spent:
+	:most:
+		:title:
+			Slowpoke
+		:description:
+			Spent a whole {value time "h:mm:ss"} deliberating.
+		:limit:
+			# 1 hour
+			3600000
+	:least:
+		:title:
+			Speedster
+		:description:
+			Spent only {value time "mm:ss"} deliberating.
+		:limit:
+			# 20 minutes
+			1200000
 :strawman_taps:
 	:title:
 		Objectum
@@ -78,13 +95,6 @@
 		Submitted {value} metals.
 	:limit:
 		3
-:animals_played:
-	:title:
-		Furry
-	:description:
-		Submitted {value} animals.
-	:limit:
-		3
 :fruits_and_veg_played:
 	:title:
 		Eat Your Greens
@@ -106,23 +116,13 @@
 		Submitted {value} body parts.
 	:limit:
 		3
-:time_spent:
-	:most:
-		:title:
-			Slowpoke
-		:description:
-			Spent a whole {value time "h:mm:ss"} deliberating.
-		:limit:
-			# 1 hour
-			3600000
-	:least:
-		:title:
-			Speedster
-		:description:
-			Spent only {value time "mm:ss"} deliberating.
-		:limit:
-			# 20 minutes
-			1200000
+:animals_played:
+	:title:
+		Furry
+	:description:
+		Submitted {value} animals.
+	:limit:
+		3
 :modded_spells:
 	:title:
 		Playtester

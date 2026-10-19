@@ -80,7 +80,8 @@ func reset_peers():
 	total_attack_container.hide()
 
 func set_dead(id:int,dead:bool=true):
-	damage_indecators[id].set_dead(dead)
+	if id in damage_indecators:
+		damage_indecators[id].set_dead(dead)
 
 func remove_peer(id:int):
 	if id in damage_indecators:

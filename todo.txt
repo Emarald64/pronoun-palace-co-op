@@ -7,3 +7,6 @@
 
 [x] have nobody rip the board in half
 [] allow joining mid game
+
+[] timed tiles stuck at zero time sometimes
+[] consored spell sprites not updated when swapping spells with remote object

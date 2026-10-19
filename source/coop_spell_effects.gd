@@ -32,7 +32,9 @@ func recive_word(tiles:Array,word:String)->void:
 	var phone_board:TileBoard=main.phone_board
 	var need_to_move_main_board=phone_board.is_slid_out
 	if not phone_board.is_slid_out:
-		await word_builder.remove_tiles()
+		if not phone_board.get_tiles({in_word=true}).is_empty():
+			await word_builder.remove_tiles()
+			await phone_board.wait_for_idle_tiles()
 		phone_board.prepare_to_animate()
 		await phone_board.slide_out()
 		phone_board.finish_animating()
@@ -43,7 +45,7 @@ func recive_word(tiles:Array,word:String)->void:
 		var coord=Vector2i(i%width,height-(i/width)-1)
 		var existing_tile=phone_board.get_tile_at(coord)
 		var tile_data =tiles[i]
-		if existing_tile==null or not existing_tile.in_word():
+		if existing_tile==null or not existing_tile.is_indestructible():
 			InputSanity.process_tile_data(tile_data)
 			var new_tile=phone_board.create_tile()
 			main.add_child(new_tile)
