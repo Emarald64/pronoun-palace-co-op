@@ -361,7 +361,7 @@ func swap_big():
 			tile_board.insert_tile(new_tiles[coord],coord+Vector2i(0,-2),false)
 		
 		
-		await tile_board.set_size(5, 4,null,0,false,0,TileBoard.ExpandMode.BOTTOM_LEFT)
+		await tile_board.set_size(5, 4,3,0,false,0,TileBoard.ExpandMode.BOTTOM_LEFT)
 		
 		#tile_board.prepare_to_animate()
 		#var tween=create_tween().set_trans(Tween.TRANS_QUART)
@@ -382,7 +382,7 @@ func swap_big():
 			hit_player(moves.swap_big.second_damage)
 		else:
 			hit_player(moves.swap.first_damage)
-	await tile_board.set_size(5, 4)
+		await tile_board.set_size(5, 4)
 	var smoke=get_tree().get_first_node_in_group(&"nobody_office_chunk").get_node("SmokeViewport/SmokeMarker2D")
 	if smoke.position.y>0:
 		smoke.create_tween().set_trans(Tween.TRANS_QUART).tween_property(smoke,"position:y",0,8)
@@ -442,11 +442,11 @@ func swap_small():
 	dooming_rows.clear()
 	tile_board.top_up_bag(TileType.DEFENSE, 1)
 	
-	tile_board.settle_board(true)
+	#tile_board.settle_board(true)
 	
-	await tile_board.set_size(5,2,null,null,true)
+	await tile_board.set_size(5,2,null,null,false,0,TileBoard.ExpandMode.BOTTOM_LEFT)
 	
-	tile_board.finish_animating()
+	#tile_board.finish_animating()
 	regular_board=false
 	
 	# move smoke down
@@ -487,19 +487,19 @@ func send_spell():
 	#var spell_to_swap:PlayerSpell
 	if spells.size()>1:
 		spells=spells.slice(1)
-		if player.id==Globals.CHARACTERS.CHILD:
-			var defense_spell=null
-			var direct_defense_spells=SpellData.get_spell_pool(Globals.SPELL_CATEGORY.DIRECT_DEFENSE).keys()
-			for spell:PlayerSpell in spells:
-				if spell.spell.id in direct_defense_spells:
-					if defense_spell==null:
-						defense_spell=spell
-					else:
-						# more than 1 direct defense spell, dont protect
-						defense_spell=null
-						break
-			if defense_spell!=null:
-				spells.erase(defense_spell)
+		var protected_spell=null
+		var all_protected_spells=SpellRegistry.get_spells_in_category(player.get_first_spell_select_guaranteed_category())
+		for spell:PlayerSpell in spells:
+			if spell.spell.id in all_protected_spells:
+				if all_protected_spells==null:
+					protected_spell=spell
+				else:
+					# more than 1 direct defense spell, dont protect
+					protected_spell=null
+					break
+		
+		if protected_spell!=null:
+			spells.erase(protected_spell)
 
 		spell_to_swap=rng.move.pick_random(spells)
 	else:
