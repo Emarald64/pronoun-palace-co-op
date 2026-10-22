@@ -208,7 +208,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 selection_sound = SubResource("Resource_aecc4")
 
-[node name="IconContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector" index="1" unique_id=1136885849]
+[node name="IconContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector/MarginContainer/ScrollContainer/MarginContainer" parent_id_path=PackedInt32Array(1130161940, 2094235651) index="0" unique_id=1136885849]
 custom_minimum_size = Vector2(120, 0)
 alignment = 1
 

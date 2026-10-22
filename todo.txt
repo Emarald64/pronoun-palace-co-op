@@ -10,3 +10,4 @@
 
 [] timed tiles stuck at zero time sometimes
 [] consored spell sprites not updated when swapping spells with remote object
+[] can't type spaces in names

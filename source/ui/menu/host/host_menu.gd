@@ -110,7 +110,9 @@ func go_to_lobby():
 	if continuing_game:
 		#screen_wipe.wipe_in()
 		#await screen_wipe.screen_covered
-		Game.load_run(SaveManager.get_save().get_saved_run(true))
+		var saved_run=SaveManager.get_save().get_saved_run(true)
+		Steam.setLobbyData(Game.steam_lobby_id,"seed",saved_run.metadata.seed)
+		Game.load_run(saved_run)
 	else:
 		menu_controller.set_menu(lobby)
 

@@ -7,7 +7,7 @@ const NAMESPACE=ID+":"
 const AUTHOR="Xanderath"
 const COOP_VERSION="1.3.2 - 10/16"
 
-const PEER_SELECTION_TYPE:=3
+const PEER_SELECTION_TYPE=3
 
 signal updated_extra_time(value:bool)
 
@@ -156,8 +156,8 @@ func _ready()->void:
 	Steam.join_requested.connect(_on_join_lobby_requested)
 
 func register_callbacks(helper: CallbackHelper) -> void:
-	helper.add_callback(Callbacks.REGISTER_SPELLS.MOD_INIT,register_spells,0)
-	helper.add_callback(Callbacks.REGISTER_EFFECTS.MOD_INIT,register_statuses,0)
+	helper.add_callback(Callbacks.REGISTER_SPELLS.MOD,register_spells,0)
+	helper.add_callback(Callbacks.REGISTER_EFFECTS.MOD,register_statuses,0)
 
 
 func register_spells():

@@ -97,14 +97,14 @@
 		3
 :fruits_and_veg_played:
 	:title:
-		Eat Your Greens
+		Vegetarian
 	:description:
 		Submitted {value} fruits and vegetables.
 	:limit:
 		3
 :colors_played:
 	:title:
-		{"Pallet" if pallete}{"Palette" not pallete} Expert
+		Chromolist
 	:description:
 		Submitted {value} colors.
 	:limit:

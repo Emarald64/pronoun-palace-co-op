@@ -182,10 +182,12 @@ func get_player_name(id:int)->String:
 @rpc("any_peer")
 func register_player(other_player_info)->void:
 	var id=multiplayer.get_remote_sender_id()
+	var new_player=id not in players
 	players[id]=other_player_info
 	all_player_names[id]=other_player_info.name
 	id_remaps[id]=id
-	player_connected.emit(id,other_player_info)
+	if new_player:
+		player_connected.emit(id,other_player_info)
 
 func tag_screenshot(screenshot_handle:int,result:Steam.Result):
 	if result==Steam.Result.RESULT_OK and multiplayer.has_multiplayer_peer():
