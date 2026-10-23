@@ -9,6 +9,8 @@ var player_total_damage:Dictionary[int,int]={}
 var submitted_count:=0
 var last_turn_damage:=0
 
+var bonus_damage:=0
+
 var heighest_candy_round_value:=0
 var heighest_cany_round_tiles:Array[Tile]
 
@@ -52,7 +54,7 @@ func peer_stats_updated(peer_damage:int,peer_defense:int,valid:bool,submitted:bo
 	peer_attacks[id]=attack_info
 	
 	main.peers_ui.update_damage_indecator(id,attack_info)
-	main.peers_ui.update_total_damage_counter(damage)
+	main.peers_ui.update_total_damage_counter(get_attack_value())
 	
 	if submitted:
 		submitted_count+=1
@@ -85,15 +87,16 @@ func send_attack_and_wait()->void:
 		waiting_for_peers_to_submit=false
 		word_hint.disappear()
 		#verses_label.hide()
+	damage=get_attack_value()
 	var my_id=multiplayer.get_unique_id()
 	if my_id in player_total_damage:
 		player_total_damage[my_id]+=damage
 	else:
 		player_total_damage[my_id]=damage
 	
-	if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
-		var health_scaling=main.enemy._get_health_scaling()
-		damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
+	#if main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
+		#var health_scaling=main.enemy._get_health_scaling()
+		#damage+=health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
 	
 	var bite_healing:=0
 	last_turn_damage=damage
@@ -119,6 +122,7 @@ func send_attack_and_wait()->void:
 	main.peers_ui.reset_peers()
 	others_queued_words.clear()
 	submitted_count=0
+	bonus_damage=0
 	#if main.enemy.id==Enemies.NOBODY and damage>=main.enemy.health:
 		##Beat the shit out of Nobody when killing her
 		#for i in mini(8,Game.players.size()-main.dead_players.size()-1):
@@ -149,6 +153,9 @@ func on_player_turn_ending() -> void :
 	await super()
 
 func confirm_word(do_end_turn: = true, do_charge_spells: = true):
+	if not do_end_turn:
+		bonus_damage+=damage
+		damage=0
 	await super(do_end_turn,do_charge_spells)
 	
 	var current_encounter=main.run_stats.get_current_encounter()
@@ -169,8 +176,8 @@ func get_attack_value()->int:
 	if main.enemy!=null and main.enemy.id==Enemies.HOUSEBROKEN and main.enemy.passcode in get_words().words:
 		#print("housebroken word spelled")
 		var health_scaling=main.enemy._get_health_scaling()
-		return damage+health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
-	return damage
+		return damage+bonus_damage+health_scaling[clampi(Game.balance.enemy_health,0,health_scaling.size()-1)]
+	return damage+bonus_damage
 
 @rpc("any_peer")
 func resend_submitted():
@@ -253,7 +260,7 @@ func update_stats() -> void :
 			heighest_cany_round_tiles=tiles.filter(func (tile:Tile)->bool:return TileStatus.CANDY in tile.statuses)
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health,bruise)
-		main.peers_ui.update_total_damage_counter(damage)
+		main.peers_ui.update_total_damage_counter(get_attack_value())
 
 #func clear_word(charges_spells: = true):
 	#await super(charges_spells)

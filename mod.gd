@@ -63,13 +63,8 @@ const SPELL_UPGRADES={
 }
 
 const REMOVED_SPELLS:PackedStringArray=[
-	Globals.SPELLS.MBA,
 	Globals.SPELLS.RED_TAPE,
 ]
-
-#const BANNED_CURSES_SPELL_DATA=[
-	#SPELLS.SSN_PRINTER
-#]
 
 const STATUS={
 	STAMPED=NAMESPACE+"stamped",
