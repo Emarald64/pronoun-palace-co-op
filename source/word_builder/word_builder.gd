@@ -255,8 +255,11 @@ func add_warning(warning_id: String, context: Dictionary = {}) -> void:
 func update_stats() -> void :
 	super()
 	if main.candy_round:
-		if self_heal>heighest_candy_round_value and can_submit():
-			heighest_candy_round_value=self_heal
+		var current_candy_round_value:int=self_heal
+		if player.id==Globals.CHARACTERS.CHILD:
+			current_candy_round_value/=2
+		if current_candy_round_value>heighest_candy_round_value and can_submit():
+			heighest_candy_round_value=current_candy_round_value
 			heighest_cany_round_tiles=tiles.filter(func (tile:Tile)->bool:return TileStatus.CANDY in tile.statuses)
 	else:
 		peer_stats_updated.rpc(get_attack_value(),defense,can_submit(),false,player.health,bruise)
@@ -268,4 +271,4 @@ func update_stats() -> void :
 
 func _on_finished_updating_stats(_words):
 	if main.candy_round:
-		add_intent(CoOp.INTENTS.CANDY_ROUND_HEALING,{heal=heighest_candy_round_value},heighest_cany_round_tiles.filter(func (tile):return is_instance_valid(tile)))
+		add_intent(CoOp.INTENTS.CANDY_ROUND_HEALING,{heal=heighest_candy_round_value, halved=player.id==Globals.CHARACTERS.CHILD},heighest_cany_round_tiles.filter(func (tile):return is_instance_valid(tile)))
