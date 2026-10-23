@@ -23,6 +23,8 @@ func _on_start_appearing()->void:
 		lobby_id_array.encode_u64(0,Game.steam_lobby_id)
 		%LobbyID.text="Lobby ID: "+Marshalls.raw_to_base64(lobby_id_array)
 		Steam.setLobbyMemberData(Game.steam_lobby_id,"character",Game.player_info.character)
+		Bridge.set_rich_presence_key("steam_player_group",str(Game.steam_lobby_id))
+		Bridge.set_rich_presence_key("steam_player_group_size",str(Steam.getNumLobbyMembers(Game.steam_lobby_id)))
 
 func add_player(id:int,player_info:Dictionary)->void:
 	if id not in player_blocks:
