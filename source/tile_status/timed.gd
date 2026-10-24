@@ -5,6 +5,8 @@ var timer_label:DebossLabel
 var timer:=GameTimer.new()
 var stopped_timer:=false
 
+var removing:=false
+
 func _status_init() -> void:
 	timer.stopped.connect(_on_timer_stopped)
 
@@ -71,13 +73,15 @@ func _process(_delta:float):
 		update_label()
 		update_tooltip()
 		#print(timer.get_elapsed_time()," ", time_left)
-		if time_left>0 and timer.get_remaining_time(time_left)<=0:
-			time_left=0
+		if not removing and timer.get_remaining_time(time_left)<=0:
+			removing=true
 			time_out()
 
 func get_time_text()->String:
 	if tile.is_indestructible():
 		return "∞"
+	if tile.has_status(Globals.TileStatus.MYSTERY):
+		return "??"
 	if not Game.main.is_player_turn:
 		return str(time_left/1000)
 	return str(timer.get_remaining_time(time_left)/1000)
