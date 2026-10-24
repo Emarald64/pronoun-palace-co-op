@@ -28,6 +28,7 @@ func _ready() -> void:
 	elif Bridge.own_user_id!=null:
 		player_info.steam_id=Bridge.own_user_id
 	Steam.screenshot_ready.connect(tag_screenshot)
+	Steam.join_requested.connect(_on_join_lobby_requested)
 
 @rpc("call_local")
 func start_game(run_seed:int, _difficulty:int):
@@ -214,5 +215,23 @@ func kill_peer():
 	players.clear()
 	all_player_names.clear()
 
-func is_playtester(id:int):
-	return players[id].steam_id in CoOp.BUGS and not players[id].dont_bug_me
+
+func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
+	Steam.joinLobby(lobby_id)
+	if is_in_run():
+		print("returning to main menu to join lobby")
+		return_to_menu()
+		await get_tree().scene_changed
+		await get_tree().process_frame
+	print("joining lobby ",lobby_id)
+	steam_lobby_id=lobby_id
+	var lobby_joined=await Steam.lobby_joined
+	var lobby_joined_response=lobby_joined[3]
+	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
+		print("joined lobby ",lobby_id," successfuly")
+		#await Game.main_menu.screen_wipe.anim_player.animation_finished
+		main_menu.menu_controller.set_menu(Game.main_menu.get_node("HUD/Steam Join Menu"))
+		#else:
+			#push_error("error connecting peer to lobby: ",error_string(peer_error))
+	else:
+		push_error("error joining lobby, code: ",lobby_joined_response) 

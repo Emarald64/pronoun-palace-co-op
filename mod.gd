@@ -27,6 +27,7 @@ const INTENTS:Dictionary[String,String]={
 	CANDY_ROUND_HEALING="candy_round_healing",
 }
 
+### Spells
 const SPELLS:Dictionary[StringName,String]={
 	PARTY_TELEPHONE=NAMESPACE+"party_telephone",
 	POSTAGE_STAMP=NAMESPACE+"postage_stamp",
@@ -71,6 +72,31 @@ const STATUS={
 	TIMED=NAMESPACE+"timed",
 }
 
+## Callbacks
+const CALLBACKS={
+	REVIVE_EARLY=NAMESPACE+"player_pre_revived",
+	REVIVE_LATE=NAMESPACE+"player_post_revived",
+	
+	CONNECT_EARLY=NAMESPACE+"connect_early",
+	CONNECT_MAIN=NAMESPACE+"connect_main",
+	CONNECT_LATE=NAMESPACE+"connect_late",
+}
+
+## awaited REVIVE()
+const REVIVE_CALLBACKS=[
+	CALLBACKS.REVIVE_EARLY,
+	CALLBACKS.REVIVE_LATE
+]
+
+## void CONNECT(hosting:bool,lobby_id:int) [br]
+## [param lobby_id]: the steam id for the lobby joined. 0 if joining an IP lobby. [br][br]
+## Emitted when connected to the host / hosting a game and going to the lobby screen
+const CONNECT_CALLBACKS=[
+	CALLBACKS.CONNECT_EARLY,
+	CALLBACKS.CONNECT_MAIN,
+	CALLBACKS.CONNECT_LATE,
+]
+
 const BUGS=[
 	#76561198057895955,#Starblock
 	#76561198041843538,#Ciirulean
@@ -95,6 +121,7 @@ const CUSTOM_CHARACTER_ICONS:Dictionary[int,Texture2D]={
 
 var unloaded_intents:Array[String]=INTENTS.values()
 
+
 func _process(_delta: float) -> void:
 	for intent in unloaded_intents:
 		var path=intent_icon_path+intent+".png"
@@ -105,6 +132,7 @@ func _process(_delta: float) -> void:
 		elif status!=ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			push_error("Error threaded loading ",path," code: ",status)
 			unloaded_intents.erase(intent)
+
 
 func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true) # not sure if this actually does anything
@@ -147,8 +175,13 @@ func _ready()->void:
 				#push_error("error connecting peer to lobby: ",error_string(peer_error))
 		else:
 			push_error("error joining lobby, code: ",lobby_joined_response)
-	
-	Steam.join_requested.connect(_on_join_lobby_requested)
+
+
+func reserve_callbacks() -> void:
+	for callback_id in CALLBACKS.values():
+		CallbackManager.reserve_callback(self,callback_id)
+		
+
 
 func register_callbacks(helper: CallbackHelper) -> void:
 	helper.add_callback(Callbacks.REGISTER_SPELLS.MOD,register_spells,0)
@@ -167,27 +200,6 @@ func register_spells():
 
 func register_statuses():
 	EffectRegistry.register(self,STATUS.values())
-
-
-func _on_join_lobby_requested(lobby_id:int, _friend_id:int):
-	Steam.joinLobby(lobby_id)
-	if Game.is_in_run():
-		print("returning to main menu to join lobby")
-		Game.return_to_menu()
-		await get_tree().scene_changed
-		await get_tree().process_frame
-	print("joining lobby ",lobby_id)
-	Game.steam_lobby_id=lobby_id
-	var lobby_joined=await Steam.lobby_joined
-	var lobby_joined_response=lobby_joined[3]
-	if lobby_joined_response==Steam.ChatRoomEnterResponse.CHAT_ROOM_ENTER_RESPONSE_SUCCESS:
-		print("joined lobby ",lobby_id," successfuly")
-		#await Game.main_menu.screen_wipe.anim_player.animation_finished
-		Game.main_menu.menu_controller.set_menu(Game.main_menu.get_node("HUD/Steam Join Menu"))
-		#else:
-			#push_error("error connecting peer to lobby: ",error_string(peer_error))
-	else:
-		push_error("error joining lobby, code: ",lobby_joined_response) 
 
 
 func get_spell_ids() -> Array[String]:
@@ -236,24 +248,15 @@ func load_run_save_data(data: Dictionary) -> void:
 		Game.tile_board.position.x=180
 		Game.tile_board.finish_animating()
 
+
 func get_options_save_data() -> Dictionary:
 	return {
 		dont_bug_me=Game.player_info.dont_bug_me
 	}
 
+
 func load_options_save_data(data: Dictionary) -> void:
 	Game.player_info.dont_bug_me=data.get("dont_bug_me",false)
-
-#func set_extra_hate_time(value:bool):
-	#extra_hate_time=value
-	#updated_extra_time.emit(value)
-
-
-#func get_spell_data(spell_id: String) -> SpellData:
-	#if spell_id in BANNED_CURSES_SPELL_DATA:
-		#return SpellDataBannedCurses.new()
-	#else:
-		#return super(spell_id)
 
 
 static func is_bug(peer_id:int)->bool:
@@ -276,3 +279,7 @@ static func get_character_icon(peer_id:int,use_steam_avatar:=false)->Texture2D:
 		var character_texture=load("res://mods/co-op/source/ui/character_icon_texture.tres").duplicate()
 		character_texture.set_character(Game.players[peer_id].character, (Globals.is_character_trans(Game.players[peer_id].character,Game.difficulty,false)))
 		return character_texture
+
+
+static func get_mod_callback_ids(indetifiers:Array[String])->Array[int]:
+	return indetifiers.map(CallbackManager.get_mod_callback_id)
