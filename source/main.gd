@@ -88,15 +88,20 @@ func player_death():
 	print("I died")
 	tile_board.clear_targets()
 	if dead_players.size()+players_compleated_floor.size()+1>=Game.players.size():
+		# all players have either completed the floor or died
 		if players_compleated_floor.is_empty():
 			await super()
 		else:
+			candy_round=true
 			revive()
 		return
 	elif enemy.id==Enemies.NOBODY:
 		await super()
 	elif dead_players.size()+1<Game.players.size():
 		candy_round=true
+		
+		# where I'd turn the player into a ghost, IF I HAD ONE
+		
 		tile_board.unlock_restock()
 		await tile_board.fill_board()
 		for tile in tile_board.get_tiles():
@@ -109,33 +114,35 @@ func player_death():
 		revive()
 
 func revive():
-	if candy_round:
-		print("reviving")
-		is_player_turn=false
-		candy_round=false
-		#reviving=false
-		player.is_defeated=false
-		player.is_flinching=false
-		player.is_dying=false
-		tile_board.unlock_restock(true)
-		await word_builder.remove_tiles()
-		await word_builder.intent_container.clear_intents()
-		word_builder.submitted_count=0
-		word_builder.update()
-		await player.heal(maxi(word_builder.heighest_candy_round_value,1))
-		word_builder.heighest_candy_round_value=0
-		await tile_board.reroll_board()
-		player.sprite.show()
-		is_player_turn=true
-		player.anim_player.clear_queue()
-		player.anim_player.play("idle")
-		await player.health_bar.appear()
-		end_battle()
-	else:
-		push_error("tried to revive while not in candy round")
+	assert(candy_round,"tried to revive while not in candy round")
+	await CallbackManager.await_callbacks([CallbackManager.get_mod_callback_id(CoOp.CALLBACKS.REVIVE_EARLY)],null)
+	
+	is_player_turn=false
+	candy_round=false
+	player.is_defeated=false
+	player.is_flinching=false
+	player.is_dying=false
+	tile_board.unlock_restock(true)
+	await word_builder.remove_tiles()
+	await word_builder.intent_container.clear_intents()
+	word_builder.submitted_count=0
+	word_builder.update()
+	await player.heal(maxi(word_builder.heighest_candy_round_value,1))
+	await tile_board.reroll_board()
+	player.sprite.show()
+	is_player_turn=true
+	player.anim_player.clear_queue()
+	player.anim_player.play("idle")
+	await player.health_bar.appear()
+	
+	await CallbackManager.await_callbacks([CallbackManager.get_mod_callback_id(CoOp.CALLBACKS.REVIVE_LATE)],null)
+	
+	word_builder.heighest_candy_round_value=0
+	end_battle()
+
 
 func kill_the_player_for_real():
-		super.player_death()
+	super.player_death()
 
 #func start_enemy_turn():
 	#if not candy_round:

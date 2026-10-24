@@ -6,8 +6,8 @@
 [x] bammon doesn't remove tiles outside of the board when dieing
 
 [x] have nobody rip the board in half
-[] allow joining mid game
+[x] allow joining mid game: unplanned, probably gonna take forever to make work
 
-[] timed tiles stuck at zero time sometimes
-[] consored spell sprites not updated when swapping spells with remote object
-[] can't type spaces in names
+[x] timed tiles stuck at zero time sometimes
+[x] consored spell sprites not updated when swapping spells with remote object
+[x] can't type spaces in names

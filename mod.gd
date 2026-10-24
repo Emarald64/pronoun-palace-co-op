@@ -82,7 +82,7 @@ const CALLBACKS={
 	CONNECT_LATE=NAMESPACE+"connect_late",
 }
 
-## awaited REVIVE()
+## awaited void REVIVE()
 const REVIVE_CALLBACKS=[
 	CALLBACKS.REVIVE_EARLY,
 	CALLBACKS.REVIVE_LATE
@@ -138,9 +138,10 @@ func _ready()->void:
 	ProjectSettings.set_setting("application/run/flush_stdout_on_print",true) # not sure if this actually does anything
 	
 	# unbind z so you can use it in your name
-	var z_key=InputEventKey.new()
-	z_key.physical_keycode=KEY_Z
-	InputMap.action_erase_event("ui_accept",z_key)
+	var key_to_remove=InputEventKey.new()
+	for key in [KEY_Z,KEY_SPACE]:
+		key_to_remove.physical_keycode=key
+		InputMap.action_erase_event("ui_accept",key_to_remove)
 	
 	version_number=mod_data.json.data.version
 	if mod_data.json.data.author!=AUTHOR:
