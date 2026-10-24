@@ -31,6 +31,8 @@ offset_right = -3.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1695579042]
 layout_mode = 2
@@ -69,6 +71,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
+max_length = 20
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2" unique_id=294778016]
 layout_mode = 2
@@ -83,9 +86,6 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 [node name="MaxPlayers" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3" index="1" unique_id=625778567]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/up_icon_modulate = Color(0.18, 0.18, 0.18, 1)
-theme_override_colors/up_hover_icon_modulate = Color(0.05, 0.05, 0.05, 1)
-theme_override_colors/down_icon_modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
 theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393, 0.050980393, 1)
 min_value = 1.0
 value = 16.0
@@ -124,10 +124,6 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 [node name="Port" type="SpinBox" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/IPSettings/HBoxContainer5" index="1" unique_id=678295482]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/up_icon_modulate = Color(0.18, 0.18, 0.18, 1)
-theme_override_colors/up_hover_icon_modulate = Color(0.05, 0.05, 0.05, 1)
-theme_override_colors/down_icon_modulate = Color(0.18039216, 0.18039216, 0.18039216, 1)
-theme_override_colors/down_hover_icon_modulate = Color(0.050980393, 0.050980393, 0.050980393, 1)
 max_value = 65535.0
 value = 7000.0
 
@@ -198,6 +194,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="0" unique_id=38857167]
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
+horizontal_alignment = 1
 script = ExtResource("4_040ac")
 key = "/mod/co-op/menu/visibility"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
@@ -205,11 +202,16 @@ metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 [node name="VisibilitySelector" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="1" unique_id=1130161940 instance=ExtResource("5_ualr1")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 6
+alignment = 1
 selection_sound = SubResource("Resource_aecc4")
 
-[node name="IconContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector/MarginContainer/ScrollContainer/MarginContainer" parent_id_path=PackedInt32Array(1130161940, 2094235651) index="0" unique_id=1136885849]
-custom_minimum_size = Vector2(120, 0)
+[node name="ScrollContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector" index="1" unique_id=1746078341]
+custom_minimum_size = Vector2(0, 0)
+horizontal_scroll_mode = 0
+
+[node name="IconContainer" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings/VisibilitySelector/ScrollContainer" index="0" unique_id=1136885849]
+theme_override_constants/separation = 4
 alignment = 1
 
 [node name="LobbyTypeHeader" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/SteamSettings" index="2" unique_id=641234611]

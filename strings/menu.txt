@@ -18,15 +18,17 @@
 :host:
 	Host
 :name:
-	Name
+	Name:
 :max_players:
-	Max Players
+	Max Players:
 :port:
-	Port
+	Port:
 :upnp:
 	Enable UPnP:
 :visibility:
 	Visibility:
+:ip_label:
+	IP:
 :connect:
 	Connect
 :refresh:

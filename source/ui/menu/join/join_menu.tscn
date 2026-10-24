@@ -23,8 +23,9 @@ full_screen_menu = false
 layout_mode = 0
 offset_right = 217.0
 offset_bottom = 252.0
-theme_override_constants/margin_left = 4
+theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1894563190]
 layout_mode = 2
@@ -34,6 +35,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 selection_sound = SubResource("Resource_ooua1")
+scroll_indicator_arrows = true
 
 [node name="CharacterTitle" type="Label" parent="PositionRoot/Panel/MarginContainer/VBoxContainer" index="1" unique_id=481420769]
 unique_name_in_owner = true
@@ -67,7 +69,7 @@ layout_mode = 2
 layout_mode = 2
 theme_type_variation = &"MainMenuLabel"
 script = ExtResource("6_51rn3")
-key = "/mod/co-op/menu/ip"
+key = "/mod/co-op/menu/ip_label"
 metadata/_custom_type_script = "uid://blxt2xfbu02t5"
 
 [node name="IP" type="LineEdit" parent="PositionRoot/Panel/MarginContainer/VBoxContainer/HBoxContainer" index="1" unique_id=2024482678]

@@ -24,8 +24,9 @@ full_screen_menu = false
 layout_mode = 0
 offset_right = 217.0
 offset_bottom = 252.0
-theme_override_constants/margin_left = 4
+theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PositionRoot/Panel/MarginContainer" index="0" unique_id=1894563190]
 layout_mode = 2

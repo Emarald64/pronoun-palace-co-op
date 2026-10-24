@@ -28,6 +28,7 @@ func _on_start_appearing()->void:
 
 func add_player(id:int,player_info:Dictionary)->void:
 	if id not in player_blocks:
+		Bridge.set_rich_presence_key("steam_player_group_size",str(Steam.getNumLobbyMembers(Game.steam_lobby_id)))
 		var block=lobby_player_scene.instantiate()
 		block.set_player_info(player_info,id)
 		%Players.add_child(block)

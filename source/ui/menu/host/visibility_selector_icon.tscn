@@ -16,9 +16,10 @@ metadata/_custom_type_script = "uid://dsaiijecg4puu"
 
 [node name="VisibilityRoot" type="Control" parent="." unique_id=251697885]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(34, 34)
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 34.0
+offset_bottom = 34.0
 mouse_filter = 2
 
 [node name="HoverOffset" type="Node2D" parent="VisibilityRoot" unique_id=371731686]
