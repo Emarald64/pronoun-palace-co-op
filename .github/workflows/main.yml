@@ -1,0 +1,43 @@
+name: "godot-ci export"
+on: push
+
+# NOTE: If your `project.godot` is at the repository root, set `PROJECT_PATH` below to ".".
+
+env:
+  GODOT_VERSION: 4.7.2
+  EXPORT_NAME: test-project
+  PROJECT_PATH: test-project
+
+jobs:
+  export-linux:
+    name: Package
+    runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+    container:
+      image: barichello/godot-ci:4.7.2
+    steps:
+      - name: Create Project Folder
+        run: |
+          mkdir -v -p ${GITHUB_WORKSPACE}/mods
+          touch ${GITHUB_WORKSPACE}/project.godot
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          lfs: true
+          path: ${GITHUB_WORKSPACE}/mods/co-op
+      - name: Pack Mod
+        run: |
+          godot --headless --verbose --script "res://mods/co-op/mod_packer.gd" "${GITHUB_WORKSPACE}"
+      - name: Upload release zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: release_zip
+          path: mods/co-op/co-op.zip
+          compression-level: 0
+          archive: false
+      - name: Upload pck
+        uses: actions/upload-artifact@v4
+        with:
+          name: release_zip
+          path: mods/co-op/mod.pck
+          archive: false
+        
