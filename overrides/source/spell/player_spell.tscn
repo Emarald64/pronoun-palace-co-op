@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://p2o2t0jlp6uu"]
+
+[ext_resource type="PackedScene" uid="uid://bgouhxmtv4etk" path="res://source/spell/player_spell.tscn" id="1_iav6w"]
+[ext_resource type="Script" uid="uid://d4e1dfggg76bg" path="res://mods/co-op/source/spell/player_spell.gd" id="2_ysagc"]
+
+[node name="PlayerSpell" unique_id=1782343782 instance=ExtResource("1_iav6w")]
+script = ExtResource("2_ysagc")
+
+[editable path="SpellPaper"]

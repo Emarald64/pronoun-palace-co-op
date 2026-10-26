@@ -4,7 +4,14 @@ var selecting_tile:=false
 
 func _use():
 	selecting_tile=false
-	var player_id= await player.get_selection(CoOp.PEER_SELECTION_TYPE)
+	var player_id
+	if get_meta("imaginary_shadow",false):
+		var players:Array[int]=Game.players.keys()
+		if players.size()>1:
+			player_id=rng.spell.pick_random(players.filter(func (peer_id:int)->bool:return peer_id!=Game.multiplayer.get_unique_id()))
+	else:
+		player_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
+	
 	if player_id==null:
 		_end_use()
 		return

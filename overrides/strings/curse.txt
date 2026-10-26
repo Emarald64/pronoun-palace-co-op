@@ -1,0 +1,5 @@
+:shimmering:
+	:name:
+		Imaginary
+	:description:
+		33% chance to be a different spell when used.

@@ -68,6 +68,69 @@ const REMOVED_SPELLS:PackedStringArray=[
 	Globals.SPELLS.RED_TAPE,
 ]
 
+const SPELL_CATEGORY={
+	IMAGINARY_INSTANT=NAMESPACE+"imaginary_instant",
+	#IMAGINARY_INSTANT_WORD=NAMESPACE+"imaginary_word",
+	IMAGINARY_PICK=NAMESPACE+"imaginary_pick",
+	COOP=NAMESPACE+"co-op"
+}
+
+const SPELL_CATEGORIES:Dictionary[String,Array]={
+	SPELL_CATEGORY.IMAGINARY_INSTANT:[
+		Globals.SPELLS.CATS_CRADLE,
+		Globals.SPELLS.CODE_SWITCH,
+		Globals.SPELLS.VERIFICATION_CAN,
+		Globals.SPELLS.LUCKY_CAT,
+		Globals.SPELLS.LIP_BALM,
+		Globals.SPELLS.SLASHFIC,
+		Globals.SPELLS.T_GEL,
+		Globals.SPELLS.VICTORY_WHISKEY,
+		Globals.SPELLS.MODERN_HEART,
+		Globals.SPELLS.SORGHUM_PINK,
+		SPELLS.SNEAKERNET,
+		SPELLS.MINUTE_OF_HATE,
+		SPELLS.TV_SNOW,
+	],
+	SPELL_CATEGORY.IMAGINARY_PICK:[
+		Globals.SPELLS.CIGARETTE_BUTT,
+		Globals.SPELLS.EIGHT_BALL,
+		Globals.SPELLS.C4,
+		Globals.SPELLS.FRIENDS_SSN,
+		Globals.SPELLS.RAZOR_BLADE,
+		Globals.SPELLS.FINGERNAIL,
+		Globals.SPELLS.PARTY_ROSE,
+		Globals.SPELLS.GUROLAGA,
+		Globals.SPELLS.JO_PERMIT,
+		Globals.SPELLS.SEALED_PACKET,
+		Globals.SPELLS.DIME,
+		Globals.SPELLS.ICE_IX,
+		Globals.SPELLS.FAKE_ID,
+		Globals.SPELLS.PLIERS,
+		Globals.SPELLS.HUNDRED_COW_LEAD,
+		
+		SPELLS.POSTAGE_STAMP,
+		SPELLS.BUG_SPRAY,
+		"proverbpalace:cold_case",
+		"proverbpalace:booster_shot",
+		"proverbpalace:discombobulator",
+		"proverbpalace:blt",
+		"proverbpalace:cat_tail",
+	],
+	SPELL_CATEGORY.COOP:[
+		SPELLS.PARTY_TELEPHONE,
+		SPELLS.PARTY_TELEPHONE,
+		SPELLS.POSTAGE_STAMP,
+		SPELLS.BLUE_BOX,
+		SPELLS.MINUTE_OF_HATE,
+		SPELLS.TV_SNOW,
+		SPELLS.SNEAKERNET,
+	],
+	Globals.SPELL_CATEGORY.SUPPORT:[
+		SPELLS.SSN_PRINTER,
+		SPELLS.BUG_SPRAY,
+	]
+}
+
 const STATUS={
 	STAMPED=NAMESPACE+"stamped",
 	TIMED=NAMESPACE+"timed",
@@ -118,6 +181,18 @@ const CUSTOM_CHARACTER_ICONS:Dictionary[int,Texture2D]={
 	76561199089530630:preload("res://mods/co-op/arte/ui/player_icons/tenex.png"),#Tenex
 	76561198365921509:preload("res://mods/co-op/arte/ui/player_icons/Neco-Arc.png"),#wifflenany
 	76561199379043101:preload("res://mods/co-op/arte/ui/player_icons/krispotrait.png"),#niko
+}
+
+const CHALLENGES={
+	all_ssn_printer={
+		every_spell = Globals.SPELLS.FRIENDS_SSN,
+		daily_star_texture="res://mods/co-op/arte/spells/ssn_printer.png",
+		name="All SSN printer"
+	}
+}
+
+const CURSES={
+	SHIMMERING="shimmering"
 }
 
 var unloaded_intents:Array[String]=INTENTS.values()
@@ -192,7 +267,10 @@ func register_callbacks(helper: CallbackHelper) -> void:
 
 func register_spells():
 	SpellRegistry.register(self,SPELLS.values())
+	SpellRegistry.register_categories(self, SPELL_CATEGORY.values())
+	SpellRegistry.add_spells_to_categories(SPELL_CATEGORIES)
 	#SpellRegistry.register(self,BANNED_CURSES_SPELL_DATA,load("res://mods/co-op/source/spell/spell_data_banned_curses.gd"))
+	
 	SpellRegistry.add_spells_to_pool(SPELL_WEIGHTS)
 	for spell in REMOVED_SPELLS:
 		SpellRegistry.spell_pool[spell]=0

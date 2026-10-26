@@ -7,7 +7,11 @@ func _use():
 	var my_index:=spell_container.player_spells.find(player_spell_slot)
 	var old_spells:=spell_container.get_spells()
 	selecting_spell=false
-	var peer_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
+	var peer_id:int
+	#if get_meta("imaginary_shadow",false):
+		#peer_id=rng.spell.pick_random(Game.players.keys())
+	#else:
+	peer_id = await player.get_selection(CoOp.PEER_SELECTION_TYPE)
 	if peer_id==null:
 		_end_use()
 		return

@@ -4,6 +4,8 @@ extends Node
 signal request_replied(sucess:bool)
 signal all_projectiles_impacted
 
+signal animation_finished
+
 var using_remote_object:=false
 var in_coop_spell_animation:=false
 var party_telephone_word:=""
@@ -199,6 +201,7 @@ func swap_board(board_data:Dictionary,reply:bool):
 			tile_board.load_tile_state_save_data(board_data,true)
 			await tile_board.slide_in()
 		in_coop_spell_animation=false
+		animation_finished.emit()
 	else:
 		failed_request.rpc_id(multiplayer.get_remote_sender_id(),"tried to swap board when it wasn't the other player's turn")
 
