@@ -1,12 +1,9 @@
-name: "godot-ci export"
+name: "Pack Mod"
 on: workflow_dispatch
-
-# NOTE: If your `project.godot` is at the repository root, set `PROJECT_PATH` below to ".".
 
 env:
   GODOT_VERSION: 4.7.2
-  EXPORT_NAME: test-project
-  PROJECT_PATH: test-project
+  MOD_ID: co-op
 
 jobs:
   export-linux:
@@ -23,21 +20,17 @@ jobs:
         uses: actions/checkout@v7
         with:
           lfs: true
-          path: ${GITHUB_WORKSPACE}/mods/co-op
+          path: ${GITHUB_WORKSPACE}/mods/${MOD_ID}
+      - name: Set up Project
+        run: |
+          mv "${GITHUB_WORKSPACE}"/mods/${MOD_ID}/mod.json "${GITHUB_WORKSPACE}"/mod.json
+          godot --headless --verbose --import "${GITHUB_WORKSPACE}"
       - name: Pack Mod
         run: |
-          godot --headless --verbose --script "res://mods/co-op/mod_packer.gd" "${GITHUB_WORKSPACE}"
+          godot --headless --verbose --scene --quit "res://mods/${MOD_ID}/ci_mod_packer.tscn" "${GITHUB_WORKSPACE}"
       - name: Upload release zip
         uses: actions/upload-artifact@v4
         with:
-          name: release_zip
-          path: mods/co-op/co-op.zip
-          compression-level: 0
-          archive: false
-      - name: Upload pck
-        uses: actions/upload-artifact@v4
-        with:
-          name: release_zip
-          path: mods/co-op/mod.pck
-          archive: false
+          name: ${MOD_ID}.zip
+          path: ${GITHUB_WORKSPACE}/*
         

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cetbpngyuyfq6"]
+
+[ext_resource type="Script" uid="uid://b311v68vmtmxr" path="res://mods/co-op/ci_mod_packer.gd" id="1_efgnx"]
+
+[node name="CIModPacker" type="Node" unique_id=587033729]
+script = ExtResource("1_efgnx")
