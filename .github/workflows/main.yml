@@ -20,17 +20,17 @@ jobs:
         uses: actions/checkout@v7
         with:
           lfs: true
-          path: mods/${MOD_ID}
+          path: mods/mod
       - name: Set up Project
         run: |
-          mv "${GITHUB_WORKSPACE}"/mods/${MOD_ID}/mod.json "${GITHUB_WORKSPACE}"/mod.json
+          mv "${GITHUB_WORKSPACE}"/mods/mod/mod.json "${GITHUB_WORKSPACE}"/mod.json
           godot --headless --verbose --import "${GITHUB_WORKSPACE}"
       - name: Pack Mod
         run: |
-          godot --headless --verbose --scene --quit "res://mods/${MOD_ID}/ci_mod_packer.tscn" "${GITHUB_WORKSPACE}"
+          godot --headless --verbose --scene --quit "res://mods/mod/ci_mod_packer.tscn" "${GITHUB_WORKSPACE}"
       - name: Upload release zip
         uses: actions/upload-artifact@v4
         with:
-          name: ${{MOD_ID}}.zip
-          path: ${{GITHUB_WORKSPACE}}/*
+          name: ${MOD_ID}.zip
+          path: ${GITHUB_WORKSPACE}/*
         
