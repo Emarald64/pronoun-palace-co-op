@@ -24,11 +24,11 @@ jobs:
           path: mods/mod
       - name: Set up Project
         run: |
-          mv "${GITHUB_WORKSPACE}"/mods/mod/mod.json "${GITHUB_WORKSPACE}"/mod.json
+          mv "mods/mod/mod.json" "build/mod.json"
           godot --headless --verbose --import "${GITHUB_WORKSPACE}"
       - name: Pack Mod
         run: |
-          godot --headless --verbose --scene --quit "res://mods/mod/ci_mod_packer.tscn" "${GITHUB_WORKSPACE}"
+          godot --headless --verbose --scene --quit "res://mods/mod/ci_mod_packer.tscn"
       - name: Upload release zip
         uses: actions/upload-artifact@v7
         with:
