@@ -29,8 +29,8 @@ jobs:
         run: |
           godot --headless --verbose --scene --quit "res://mods/mod/ci_mod_packer.tscn" "${GITHUB_WORKSPACE}"
       - name: Upload release zip
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${MOD_ID}.zip
-          path: ${GITHUB_WORKSPACE}/*
+          path: *
         
