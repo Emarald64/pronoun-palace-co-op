@@ -15,6 +15,7 @@ jobs:
       - name: Create Project Folder
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/mods
+          mkdir -p ${GITHUB_WORKSPACE}/build
           touch ${GITHUB_WORKSPACE}/project.godot
       - name: Checkout
         uses: actions/checkout@v7
@@ -32,5 +33,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: ${MOD_ID}.zip
-          path: *
+          path: build
         
