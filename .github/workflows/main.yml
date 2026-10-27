@@ -9,14 +9,15 @@ jobs:
   export-linux:
     name: Package
     runs-on: ubuntu-24.04  # Use 24.04 with godot 4
-    container:
-      image: barichello/godot-ci:4.7.2
     steps:
       - name: Create Project Folder
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/mods
           mkdir -p ${GITHUB_WORKSPACE}/build
           touch ${GITHUB_WORKSPACE}/project.godot
+      - name: Install Godot
+        run: |
+          sudo apt install godot
       - name: Checkout
         uses: actions/checkout@v7
         with:
