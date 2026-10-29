@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b5wu1bckkriet"]
+
+[ext_resource type="Script" uid="uid://dqq18ixnqhg8g" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_entry_character_icon.gd" id="1_bo66q"]
+[ext_resource type="PackedScene" uid="uid://btiftdxh0qal0" path="res://source/ui/icons/character_icon.tscn" id="2_vqns3"]
+
+[node name="LobbyEntryCharacterIcon" type="Control" unique_id=560364117]
+custom_minimum_size = Vector2(17, 17)
+custom_maximum_size = Vector2(17, 17)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 24.0
+offset_bottom = 24.0
+script = ExtResource("1_bo66q")
+
+[node name="CharacterIcon" parent="." unique_id=1930440730 instance=ExtResource("2_vqns3")]
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)
+centered = false
+offset = Vector2(0, 0)
+show_locked_character = true

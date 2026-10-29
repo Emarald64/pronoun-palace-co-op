@@ -2,8 +2,8 @@ extends Control
 
 var lobby_id:=0
 signal pressed(lobby_id)
-var character_icon_scene:PackedScene=load("res://source/ui/icons/character_icon.tscn")
-var character_icons:Array[CharacterIcon]
+var character_icon_scene:PackedScene=load("res://mods/co-op/source/ui/menu/lobby_search/lobby_entry_character_icon.tscn")
+var character_icons:Array
 var difficulty
 
 func set_lobby_id(_lobby_id:int):
@@ -19,6 +19,7 @@ func set_lobby_id(_lobby_id:int):
 		%DifficultyIcon.set_difficulty(int(difficulty))
 	else:
 		difficulty=0
+	lobby_updated()
 
 func _join_pressed():
 	pressed.emit(lobby_id)
@@ -30,11 +31,14 @@ func lobby_updated():
 	update_characters(Steam.getLobbyData(lobby_id,"characters"))
 
 func update_characters(characters:String):
-	var new_character_icons:Array[CharacterIcon];
-	for character in characters.split(","):
+	characters="lexicographer,jubilist,fisher,addict,child,jubilist,lexicographer,jubilist,fisher,addict"
+	print("lobby ",lobby_id," character list ", characters)
+	var new_character_icons:Array;
+	for character in characters.split(",").slice(0,9):
 		var character_icon=character_icons.pop_front()
 		if character_icon==null:
 			character_icon=character_icon_scene.instantiate()
+			#character_icon.show_locked_character=true
 			%CharacterIcons.add_child(character_icon)
 		character_icon.set_character(character,difficulty>0)
 		new_character_icons.append(character_icon)
