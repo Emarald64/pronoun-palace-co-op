@@ -13,13 +13,6 @@ func _ready() -> void:
 func setup(id:int)->void:
 	Game.player.selection_started.connect(start_selecting)
 	Game.player.selection_finished.connect(stop_selecting)
-	%CharacterIcon.texture=await CoOp.get_character_icon(id)
-	#if Game.is_playtester(id):
-		#%CharacterIcon.texture=load("res://mods/co-op/arte/ui/bug.png")
-		#%CharacterIcon.hframes=1
-		#%CharacterIcon.vframes=1
-	#else:
-		#set_character(Game.players[id].character)
 	%Name.text=Game.players[id].name
 	peer_id=id
 
@@ -35,6 +28,7 @@ func update(damage_info:Dictionary):
 	#print(damage_info)
 	$Panel.self_modulate=Color("aaff96") if damage_info.submitted else Color.WHITE
 	update_shadow_color()
+	%CharacterIcon.texture=await CoOp.get_character_icon(peer_id)
 	#get_tree().set_group(&"shadow_cloner_change_color","solid_shadow_color",)
 
 #func set_character(character:String)->void:

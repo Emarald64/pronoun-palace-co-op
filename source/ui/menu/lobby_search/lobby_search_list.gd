@@ -1,6 +1,7 @@
 extends MenuPanel
 
 var lobby_entries:Array[Control]=[]
+var lobby_entries_by_id:Dictionary[int,Control]={}
 var lobby_entry_scene:PackedScene=load("res://mods/co-op/source/ui/menu/lobby_search/steam_lobby_entry.tscn")
 signal go_to_join_menu
 
@@ -9,6 +10,7 @@ signal go_to_join_menu
 func _ready():
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 	start_appearing.connect(_on_start_appear)
+	Steam.lobby_data_update.connect(_on_lobby_data_update)
 
 func _on_start_appear() -> void:
 	refresh_lobbies()
@@ -37,6 +39,10 @@ func _on_lobby_match_list(lobby_ids:Array):
 			lobby_entry.show()
 		lobby_entry.set_lobby_id(lobby_id)
 		new_lobby_entries.append(lobby_entry)
+		lobby_entries_by_id[lobby_id]=lobby_entry
+	
+	for old_lobby_entry in lobby_entries:
+		old_lobby_entry.queue_free()
 	
 	lobby_entries=new_lobby_entries
 	%SectionedPanel.update_panels()
@@ -53,3 +59,7 @@ func join_lobby(lobby_id:int):
 		go_to_join_menu.emit()
 	else:
 		push_error("error joining lobby, code: ",lobby_joined_response)
+
+func _on_lobby_data_update(success:bool,lobby_id:int,_member_id:int):
+	if lobby_id in lobby_entries_by_id:
+		lobby_entries_by_id[lobby_id].lobby_updated()

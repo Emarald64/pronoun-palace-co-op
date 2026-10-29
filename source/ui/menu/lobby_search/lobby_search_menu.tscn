@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ca1lq3w2bh23"]
 
-[ext_resource type="Script" uid="uid://6kaa1qkcj7ak" path="res://mods/co-op/overrides/source/lobby_search_menu.gd" id="1_1vkev"]
+[ext_resource type="Script" uid="uid://6kaa1qkcj7ak" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_menu.gd" id="1_1vkev"]
 [ext_resource type="PackedScene" uid="uid://bd1kelblt38w4" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_search_list.tscn" id="2_gltn2"]
 [ext_resource type="PackedScene" uid="uid://caf4hybwcdrm1" path="res://mods/co-op/source/ui/menu/lobby_search/lobby_filter_menu.tscn" id="3_jb2nq"]
 [ext_resource type="PackedScene" uid="uid://btuhthp5narxg" path="res://source/ui/menu/buttons/menu_button_right.tscn" id="4_gltn2"]

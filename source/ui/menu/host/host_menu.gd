@@ -63,6 +63,7 @@ func host_pressed():
 			Steam.setLobbyData(Game.steam_lobby_id,"co-op_version",CoOp.COOP_VERSION)
 			Steam.setLobbyData(Game.steam_lobby_id,"difficulty",str(Game.difficulty))
 			Steam.setLobbyData(Game.steam_lobby_id,"seed"," ")
+			Steam.setLobbyData(Game.steam_lobby_id,"challenge",Game.active_challenge)
 			print("sucessfully created lobby with id ",Game.steam_lobby_id)
 			var peer=SteamMultiplayerPeer.new()
 			peer.server_relay=true

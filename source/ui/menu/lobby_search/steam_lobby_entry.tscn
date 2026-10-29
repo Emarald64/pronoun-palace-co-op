@@ -45,10 +45,11 @@ text = "Title"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=1337194852]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="CharacterIcons" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=560878767]
 unique_name_in_owner = true
-visible = false
+clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
 

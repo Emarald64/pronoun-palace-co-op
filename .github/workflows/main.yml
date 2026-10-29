@@ -17,7 +17,7 @@ jobs:
           touch ${GITHUB_WORKSPACE}/project.godot
       - name: Install Godot
         run: |
-          sudo apt install godot
+          sudo apt install -y godot
       - name: Checkout
         uses: actions/checkout@v7
         with:

@@ -32,10 +32,15 @@ func add_player(id:int,player_info:Dictionary)->void:
 		block.set_player_info(player_info,id)
 		%Players.add_child(block)
 		player_blocks[id]=block
-		if player_info.steam_id:
+		if player_info.steam_id and player_info.steam_id!=Bridge.own_user_id:
 			Steam.setPlayedWith(player_info.steam_id)
 		if Game.steam_lobby_id:
 			Bridge.set_rich_presence_key("steam_player_group_size",str(Steam.getNumLobbyMembers(Game.steam_lobby_id)))
+			if multiplayer.is_server():
+				var character_list=",".join(Game.players.values().map(func (player_data:Dictionary)->String:return player_data.character))
+				Steam.setLobbyData(Game.steam_lobby_id,"characters",character_list)
+				print("character list ",character_list)
+		
 
 func remove_player(id:int)->void:
 	var block=player_blocks[id]
@@ -48,7 +53,7 @@ func start_game():
 		run_seed=randi()
 	if Game.steam_lobby_id:
 		Steam.setLobbyData(Game.steam_lobby_id,"seed",String.num_int64(run_seed, 16, true).lpad(8, "0"))
-	Game.start_game.rpc(run_seed,Game.difficulty)
+	Game.start_game.rpc(run_seed,Game.difficulty,Game.active_challenge)
 
 func disappear(instant: bool = false)->void:
 	for player_block in %Players.get_children():

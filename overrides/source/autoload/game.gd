@@ -31,12 +31,17 @@ func _ready() -> void:
 	Steam.join_requested.connect(_on_join_lobby_requested)
 
 @rpc("call_local")
-func start_game(run_seed:int, _difficulty:int):
+func start_game(run_seed:int, _difficulty:int, challenge:String):
 	print("starting game")
 	difficulty=_difficulty
 	DailyManager.set_process(false)
 	AudioManager.fade_music()
 	AudioManager.fade_sounds()
+	
+	active_challenge=challenge
+	if not active_challenge.is_empty():
+		run_modifiers=Challenges.get_challenge_data(active_challenge)
+	
 	debug_run = false
 	new_run_character = player_info.character
 	new_run_seed = run_seed
