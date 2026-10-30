@@ -69,10 +69,10 @@ func _ready() -> void :
 	#var packer
 	if zip_pack:
 		packer=ZIPPacker.new()
-		packer.open("res://build/"+mod_id+".zip")
+		packer.open("res://build/mod.zip")
 	else:
 		packer = PCKPacker.new()
-		packer.pck_start("res://build/"+mod_id+".pck")
+		packer.pck_start("res://build/mod.pck")
 	
 	pack_folder("res://mods/%s/"%mod_id)
 	
