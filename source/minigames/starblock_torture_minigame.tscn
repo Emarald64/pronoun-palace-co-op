@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://psqmg2k2w50c"]
+
+[ext_resource type="Script" uid="uid://b20nafhbj73bq" path="res://mods/co-op/source/minigames/starblock_torture_minigame.gd" id="1_imd2r"]
+[ext_resource type="Texture2D" uid="uid://cvhrw35u13dm0" path="res://arte/ui/tile_board.png" id="2_72v4d"]
+[ext_resource type="Texture2D" uid="uid://6g2kdfaan5rl" path="res://arte/ui/insideboard.png" id="3_oahw6"]
+[ext_resource type="PackedScene" uid="uid://r63taaj68g31" path="res://mods/co-op/source/minigames/slot_reel.tscn" id="4_pybe7"]
+
+[node name="StarblockTortureMinigame" type="Node2D" unique_id=239548977 node_paths=PackedStringArray("slots") groups=["minigame"]]
+position = Vector2(240, 161)
+script = ExtResource("1_imd2r")
+slots = [NodePath("Board/MarginContainer/SlotHole1/SlotReel"), NodePath("Board/MarginContainer/SlotHole1/SlotReel2"), NodePath("Board/MarginContainer/SlotHole1/SlotReel3"), NodePath("Board/MarginContainer/SlotHole1/SlotReel4")]
+
+[node name="Board" type="NinePatchRect" parent="." unique_id=300911816]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -66.5
+offset_right = 60.0
+offset_bottom = 66.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_72v4d")
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Board" unique_id=1533966013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.5
+offset_right = -6.0
+offset_bottom = -10.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SlotHole1" type="NinePatchRect" parent="Board/MarginContainer" unique_id=2053047252]
+custom_minimum_size = Vector2(24, 116)
+layout_mode = 2
+texture = ExtResource("3_oahw6")
+patch_margin_left = 2
+patch_margin_top = 4
+patch_margin_right = 2
+patch_margin_bottom = 2
+
+[node name="SlotReel" parent="Board/MarginContainer/SlotHole1" unique_id=490203811 node_paths=PackedStringArray("minigame") instance=ExtResource("4_pybe7")]
+position = Vector2(12, 58)
+speed = 4.0
+minigame = NodePath("../../../..")
+
+[node name="SlotReel2" parent="Board/MarginContainer/SlotHole1" unique_id=705736495 node_paths=PackedStringArray("minigame") instance=ExtResource("4_pybe7")]
+position = Vector2(40, 58)
+speed = 4.0
+minigame = NodePath("../../../..")
+
+[node name="SlotReel3" parent="Board/MarginContainer/SlotHole1" unique_id=922204202 node_paths=PackedStringArray("minigame") instance=ExtResource("4_pybe7")]
+position = Vector2(68, 58)
+speed = 4.0
+minigame = NodePath("../../../..")
+
+[node name="SlotReel4" parent="Board/MarginContainer/SlotHole1" unique_id=1929163800 node_paths=PackedStringArray("minigame") instance=ExtResource("4_pybe7")]
+position = Vector2(96, 58)
+speed = 4.0
+minigame = NodePath("../../../..")
+
+[connection signal="clicked" from="Board/MarginContainer/SlotHole1/SlotReel" to="." method="slot_clicked" binds= [0]]
+[connection signal="clicked" from="Board/MarginContainer/SlotHole1/SlotReel2" to="." method="slot_clicked" binds= [1]]
+[connection signal="clicked" from="Board/MarginContainer/SlotHole1/SlotReel3" to="." method="slot_clicked" binds= [0]]
+[connection signal="clicked" from="Board/MarginContainer/SlotHole1/SlotReel4" to="." method="slot_clicked" binds= [3]]

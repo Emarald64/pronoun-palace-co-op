@@ -17,7 +17,10 @@ jobs:
           touch ${GITHUB_WORKSPACE}/project.godot
       - name: Install Godot
         run: |
-          sudo apt install -y godot
+          gh release download ${GODOT_VERSION}-stable --repo godotengine/godot -p "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          rm "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" godot
       - name: Checkout
         uses: actions/checkout@v7
         with:
@@ -26,10 +29,10 @@ jobs:
       - name: Set up Project
         run: |
           mv "mods/${MOD_ID}/mod.json" "build/mod.json"
-          godot --headless --verbose --import "${GITHUB_WORKSPACE}"
+          ./godot --headless --verbose --import "${GITHUB_WORKSPACE}"
       - name: Pack Mod
         run: |
-          godot --headless --verbose --scene --quit "res://mods/${MOD_ID}/ci_mod_packer.tscn"
+          ./godot --headless --verbose --scene --quit "res://mods/${MOD_ID}/ci_mod_packer.tscn"
       - name: Upload release zip
         uses: actions/upload-artifact@v7
         with:

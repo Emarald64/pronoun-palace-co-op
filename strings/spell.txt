@@ -297,3 +297,23 @@
 
 	:max_charge:
 		3
+
+:fishing_reel:
+	:name:
+		Fishing Rod{"?" if curse "cursed"}
+
+	:description:
+		Catch fish to add tiles to the board.
+		Click to reel the hook in.
+
+	:label:
+		Reel in fish{"?" if curse "cursed"}
+
+	:charge_category:
+		auto
+
+	:max_charge:
+		1
+
+	:flags:
+		fisher removes_word

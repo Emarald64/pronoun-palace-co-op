@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://r63taaj68g31"]
+
+[ext_resource type="Script" uid="uid://dr48xsj2b61nu" path="res://mods/co-op/source/minigames/slot_reel.gd" id="1_7t7da"]
+[ext_resource type="PackedScene" uid="uid://d1itq3oy6wgua" path="res://source/tile/tile.tscn" id="1_yjf5o"]
+[ext_resource type="Shader" uid="uid://cdntiauj10va6" path="res://source/shaders/hole.gdshader" id="2_7t7da"]
+[ext_resource type="Texture2D" uid="uid://148kaduvpg0r" path="res://arte/tiles/hole_mask.png" id="3_eil41"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cthlt"]
+resource_local_to_scene = true
+shader = ExtResource("2_7t7da")
+shader_parameter/viewport_scale = Vector2(0, 0)
+shader_parameter/hole_mask = ExtResource("3_eil41")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hx7m7"]
+resource_local_to_scene = true
+shader = ExtResource("2_7t7da")
+shader_parameter/viewport_scale = Vector2(0, 0)
+shader_parameter/hole_mask = ExtResource("3_eil41")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2b4b3"]
+resource_local_to_scene = true
+shader = ExtResource("2_7t7da")
+shader_parameter/viewport_scale = Vector2(0, 0)
+shader_parameter/hole_mask = ExtResource("3_eil41")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wpvli"]
+resource_local_to_scene = true
+shader = ExtResource("2_7t7da")
+shader_parameter/viewport_scale = Vector2(0, 0)
+shader_parameter/hole_mask = ExtResource("3_eil41")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sunrq"]
+resource_local_to_scene = true
+shader = ExtResource("2_7t7da")
+shader_parameter/viewport_scale = Vector2(0, 0)
+shader_parameter/hole_mask = ExtResource("3_eil41")
+
+[node name="SlotReel" type="Node2D" unique_id=490203811 node_paths=PackedStringArray("tiles")]
+script = ExtResource("1_7t7da")
+tiles = [NodePath("Tile"), NodePath("Tile2"), NodePath("PrimaryTile"), NodePath("Tile4"), NodePath("Tile5")]
+
+[node name="Tile" parent="." unique_id=89225296 instance=ExtResource("1_yjf5o")]
+material = SubResource("ShaderMaterial_cthlt")
+position = Vector2(0, -44)
+is_preview = true
+
+[node name="Tile2" parent="." unique_id=192442226 instance=ExtResource("1_yjf5o")]
+material = SubResource("ShaderMaterial_hx7m7")
+position = Vector2(0, -22)
+is_preview = true
+
+[node name="PrimaryTile" parent="." unique_id=953927469 instance=ExtResource("1_yjf5o")]
+material = SubResource("ShaderMaterial_2b4b3")
+instance_shader_parameters/hole_enabled = false
+instance_shader_parameters/hole_offset = Vector2(0, 0)
+is_preview = true
+
+[node name="Tile4" parent="." unique_id=1144025104 instance=ExtResource("1_yjf5o")]
+material = SubResource("ShaderMaterial_wpvli")
+position = Vector2(0, 22)
+is_preview = true
+
+[node name="Tile5" parent="." unique_id=812989346 instance=ExtResource("1_yjf5o")]
+material = SubResource("ShaderMaterial_sunrq")
+position = Vector2(0, 44)
+is_preview = true
+
+[node name="Button" type="Button" parent="." unique_id=557633622]
+z_index = 100
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+flat = true
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1292209235]
+z_index = 100
+offset_left = -12.0
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 58.0
+color = Color(0, 0, 0, 0.62352943)
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1421340491]
+z_index = 100
+offset_left = -12.0
+offset_top = -56.0
+offset_right = 12.0
+offset_bottom = -12.0
+color = Color(0, 0, 0, 0.62352943)
+
+[connection signal="pressed" from="Button" to="." method="on_click"]
