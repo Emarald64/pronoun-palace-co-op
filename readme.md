@@ -14,6 +14,8 @@ Features:
   * 8 new multiplayer spells
   * Custom final boss fight
 
+<h3><a href="releases">Download here</a></h3>
+
 # Send Love Letters
 
 <img width=444 src=".readme_assets/love letter.webp">
