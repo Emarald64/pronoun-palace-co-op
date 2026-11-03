@@ -16,7 +16,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 modified_uv=vec2(UV.x+sin((4.*UV.y+TIME)/PI*2.)/16.,UV.y);
+	vec2 modified_uv=vec2(UV.x+sin((5.*UV.y/REGION_RECT.w+TIME)*PI/2.)*REGION_RECT.z/16.0,UV.y);
 	COLOR=texture(TEXTURE,modified_uv);
 	
 	if (COLOR.a > 0.0001 && (COLOR.r > 0.0001 || COLOR.g > 0.0001 || COLOR.b > 0.0001)) {
