@@ -3,16 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://b8wqs3a6tthoa" path="res://source/spell/spell_sprite.tscn" id="1_secrb"]
 [ext_resource type="Script" uid="uid://dqi4n47sb31pf" path="res://mods/co-op/source/spell/spell_sprite.gd" id="2_y508t"]
 [ext_resource type="Shader" uid="uid://ds5akg8dvh5l6" path="res://mods/co-op/source/shaders/imaginary_spell.gdshader" id="3_ryomr"]
-[ext_resource type="Texture2D" uid="uid://dbtm4jtrgvhts" path="res://arte/spells/clover.png" id="4_fc0sr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a6585"]
 shader = ExtResource("3_ryomr")
+shader_parameter/imaginary_dark = Color(0.14344764, 0.13347602, 0.3376929, 1)
+shader_parameter/imaginary_light = Color(0.53333336, 0.32156864, 0.6313726, 1)
 
 [node name="SpellSprite" unique_id=1448247384 instance=ExtResource("1_secrb")]
 script = ExtResource("2_y508t")
 coop_curse_material = SubResource("ShaderMaterial_a6585")
-
-[node name="Sprite" parent="." index="0" unique_id=1188650274]
-material = SubResource("ShaderMaterial_a6585")
-texture = ExtResource("4_fc0sr")
-hframes = 2
