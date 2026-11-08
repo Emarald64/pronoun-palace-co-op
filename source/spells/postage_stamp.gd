@@ -58,7 +58,7 @@ func _use():
 		plastic=tile_save.type==TileType.DEFENSE
 	}
 	for status in tile_save.statuses:
-		var group: = EffectRegistry.get_data(status).get_string_group()
+		var group: = StatusRegistry.get_data(status).get_string_group()
 		if "shared" not in group.get_string("flags"):
 			notification_context.status=group.get_string("name")
 			break
@@ -66,7 +66,7 @@ func _use():
 		notification_context.face="?".repeat(tile_save.faces[0].length())
 	elif TileStatus.MONEY in tile_save.statuses:
 		notification_context.face=tile_save.faces[0].replace_char("*".unicode_at(0),"$".unicode_at(0))
-	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in EffectRegistry.get_data(status_id).get_string("flags").split(" ")):
+	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StatusRegistry.get_data(status_id).get_string("flags").split(" ")):
 		notification_context.face=tile_save.faces[0]
 	
 	if "face" in notification_context:

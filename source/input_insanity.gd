@@ -23,7 +23,7 @@ static func add_status_to_tile_data(tile_data:Dictionary,status:String):
 static func process_tile_data(tile_data:Dictionary):
 	if "statuses" in tile_data:
 		# remove non-existant statuses
-		tile_data.statuses=tile_data.statuses.filter(EffectRegistry.has_data)
+		tile_data.statuses=tile_data.statuses.filter(StatusRegistry.has_data)
 	if "faces" in tile_data:
 		if not tile_data.faces.all(is_valid_face):
 			add_status_to_tile_data(tile_data,Globals.TileStatus.ASH)

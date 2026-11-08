@@ -8,7 +8,7 @@ func _ready():
 	word_builder.updating_stats.connect(_on_start_updating_stats)
 	word_builder.post_tile_stats.connect(_on_post_tile_stats)
 
-func _add_tile_at(column, update = true, instant = false):
+func _add_tile_at(column, instant = false):
 	#print("using custom add tile function")
 	var queued_tile=queue.queue[Vector2i(column,0)]
 	if main.enemy!=null and main.enemy.id==Enemies.NOBODY:
@@ -33,7 +33,7 @@ func _add_tile_at(column, update = true, instant = false):
 		#elif InputSanity.data_has_status(queued_tile,TileStatus.PERIOD):
 			#Letters.get_random_period_letter(rng.bag)
 		#Letters.get_random_letter(get_letter_census(), rng.bag)
-	super(column, update, instant)
+	super(column, instant)
 
 func remove_tiles(tiles, parameters = {}):
 	var phone_tiles=[]
@@ -89,7 +89,7 @@ func swap_tiles(tile_a: Tile, tile_b: Tile, settle_duration: = 0.08, settle_grid
 	await tile_b.tile_board.wait_for_idle_tiles()
 
 	update_state()
-	tiles_changed.emit()
+	tiles_updated.emit()
 
 func get_tile_box_size():
 	if ripped:

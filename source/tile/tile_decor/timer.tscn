@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bt2b47qnpj7cp"]
+
+[ext_resource type="PackedScene" uid="uid://b2jgkg7nt20dr" path="res://source/tile/tile_decor.tscn" id="1_62b4j"]
+[ext_resource type="Script" uid="uid://cy1bupwmf6ey3" path="res://mods/co-op/source/tile/tile_decor/timer.gd" id="2_eeay7"]
+[ext_resource type="Script" uid="uid://g7fudaq16s40" path="res://source/ui/generic/deboss_label.gd" id="2_s5s0s"]
+[ext_resource type="FontFile" uid="uid://c7vkruvb0xnsn" path="res://fonts/RobotoSlab-Bold.ttf" id="3_eeay7"]
+
+[node name="TimerDecor" unique_id=585914715 instance=ExtResource("1_62b4j")]
+script = ExtResource("2_eeay7")
+
+[node name="TimerLabel" type="Control" parent="." index="0" unique_id=399632566]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -11.0
+offset_top = 2.125
+offset_right = -1.5912085
+offset_bottom = 10.085
+script = ExtResource("2_s5s0s")
+text = "60"
+font = ExtResource("3_eeay7")
+font_size = 5
+metadata/_custom_type_script = "uid://g7fudaq16s40"

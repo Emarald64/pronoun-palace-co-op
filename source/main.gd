@@ -113,6 +113,7 @@ func player_death():
 		candy_round=true
 		revive()
 
+
 func revive():
 	assert(candy_round,"tried to revive while not in candy round")
 	await CallbackManager.await_callbacks([CallbackManager.get_mod_callback_id(CoOp.CALLBACKS.REVIVE_EARLY)],null)

@@ -110,11 +110,11 @@ const SPELL_CATEGORIES:Dictionary[String,Array]={
 		
 		SPELLS.POSTAGE_STAMP,
 		SPELLS.BUG_SPRAY,
-		"proverbpalace:cold_case",
-		"proverbpalace:booster_shot",
-		"proverbpalace:discombobulator",
-		"proverbpalace:blt",
-		"proverbpalace:cat_tail",
+		#"proverbpalace:cold_case",
+		#"proverbpalace:booster_shot",
+		#"proverbpalace:discombobulator",
+		#"proverbpalace:blt",
+		#"proverbpalace:cat_tail",
 	],
 	SPELL_CATEGORY.COOP:[
 		SPELLS.PARTY_TELEPHONE,
@@ -136,11 +136,17 @@ const STATUS={
 	TIMED=NAMESPACE+"timed",
 }
 
+const TILE_DECOR={
+	STAMP=NAMESPACE+"stamp",
+	TIMER=NAMESPACE+"timer",
+}
+
 ## Callbacks
 const CALLBACKS={
 	REVIVE_EARLY=NAMESPACE+"player_pre_revived",
 	REVIVE_LATE=NAMESPACE+"player_post_revived",
 	
+	##not yet implemented
 	CONNECT_EARLY=NAMESPACE+"connect_early",
 	CONNECT_MAIN=NAMESPACE+"connect_main",
 	CONNECT_LATE=NAMESPACE+"connect_late",
@@ -262,7 +268,8 @@ func reserve_callbacks() -> void:
 
 func register_callbacks(helper: CallbackHelper) -> void:
 	helper.add_callback(Callbacks.REGISTER_SPELLS.MOD,register_spells,0)
-	helper.add_callback(Callbacks.REGISTER_EFFECTS.MOD,register_statuses,0)
+	helper.add_callback(Callbacks.REGISTER_STATUSES.MOD,register_statuses,0)
+	helper.add_callback(Callbacks.REGISTER_TILE_DECOR.MOD,register_tile_decor,0)
 
 
 func register_spells():
@@ -279,7 +286,11 @@ func register_spells():
 
 
 func register_statuses():
-	EffectRegistry.register(self,STATUS.values())
+	StatusRegistry.register(self,STATUS.values())
+
+
+func register_tile_decor() -> void:
+	TileDecorRegistry.register(self, TILE_DECOR.values())
 
 
 func get_spell_ids() -> Array[String]:

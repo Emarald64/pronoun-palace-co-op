@@ -1,29 +1,23 @@
 extends Status
 
 var time_left:=60000
-var timer_label:DebossLabel
+var timer_decor:TileDecor
+#var timer_label:DebossLabel
 var timer:=GameTimer.new()
 var stopped_timer:=false
 
 var removing:=false
 
+
 func _status_init() -> void:
 	timer.stopped.connect(_on_timer_stopped)
 
-func _status_connect():
-	timer_label=DebossLabel.new()
-	timer_label.text="60"
-	timer_label.font=preload("res://fonts/RobotoSlab-Bold.ttf")
-	timer_label.font_size=5
-	update_timer_color()
-	
-	tile.tile_sprite.add_child(timer_label)
-	timer_label.position=Vector2(-11,2.125)
-	#tile.updated.connect(_on_tile_updated)
-	#timer.stopped.connect(_on_timer_stopped)
+
+func setup_tile():
+	timer_decor=tile_sprite.add_decoration(CoOp.TILE_DECOR.TIMER)
+
 
 func update_visuals():
-	update_timer_color()
 	update_label()
 	if tile.is_indestructible() and not stopped_timer:
 		print("stopped timed timer")
@@ -34,25 +28,10 @@ func update_visuals():
 		timer.start()
 		stopped_timer=false
 
-func update_timer_color():
-	var set_color:=false
-	for status in tile.statuses:
-		if status in Globals.TILE_FACE_COLOR:
-			timer_label.color=Globals.TILE_FACE_COLOR[status][tile.type]
-			set_color=true
-	if not set_color:
-		for status in tile.statuses:
-			if status in Globals.TILE_VALUE_COLOR:
-				timer_label.color=Globals.TILE_VALUE_COLOR[status][tile.type]
-				set_color=true
-	
-	if not set_color:
-		timer_label.color=Color.BLACK
-	
-	timer_label.deboss_color=tile.get_deboss_color()
 
-func clear():
-	timer_label.queue_free()
+func cleanup_tile():
+	timer_decor.remove()
+
 
 func apply(time:=60000):
 	time_left=time
@@ -87,7 +66,7 @@ func get_time_text()->String:
 	return str(timer.get_remaining_time(time_left)/1000)
 
 func update_label():
-	timer_label.text=get_time_text()
+	timer_decor.set_text(get_time_text())
 
 func time_out():
 	if tile.is_preview or tile.is_projectile:

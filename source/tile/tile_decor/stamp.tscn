@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://6e67yda3rdjc"]
+
+[ext_resource type="PackedScene" uid="uid://b2jgkg7nt20dr" path="res://source/tile/tile_decor.tscn" id="1_qgoy2"]
+[ext_resource type="Texture2D" uid="uid://ch7dkeh088yrd" path="res://mods/co-op/arte/effects/tiny-postage-stamp.png" id="2_61k0e"]
+[ext_resource type="Script" uid="uid://d0h8gbxlbfyld" path="res://mods/co-op/source/tile/tile_decor/stamp.gd" id="2_bp46f"]
+
+[node name="Stamp" unique_id=585914715 node_paths=PackedStringArray("sprite") instance=ExtResource("1_qgoy2")]
+script = ExtResource("2_bp46f")
+sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0" unique_id=1697863580]
+texture = ExtResource("2_61k0e")
+hframes = 5

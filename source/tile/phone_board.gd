@@ -16,8 +16,8 @@ func _settle_column(_x, _base_duration = 0.08, _per_grid_duration = 0.16):
 func fill_board(_instant: = false, _ignore_lock: = false):
 	pass
 
-func create_tile() -> Tile:
-	var tile=super()
+func create_tile(create_info := true) -> Tile:
+	var tile=super(create_info)
 	tile.tile_board=self
 	return tile
 
