@@ -42,6 +42,7 @@ const SPELLS:Dictionary[StringName,String]={
 	SNEAKERNET=NAMESPACE+"sneakernet",
 	BUG_SPRAY=NAMESPACE+"bug_spray",
 	FISHING_REEL=NAMESPACE+"fishing_reel",
+	REMOTE_OBJECT_TROLL=NAMESPACE+"remote_object_troll",
 }
 
 const SPELL_WEIGHTS:Dictionary[String,float]={

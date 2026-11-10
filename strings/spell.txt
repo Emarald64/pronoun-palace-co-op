@@ -18,9 +18,9 @@
 		Select a player to send a charge to
 	
 	:effect_notification:
-		{:charged_spell_nofication: if spell}{:failed_notification: not spell}
+		{:charged_spell_notification: if spell}{:failed_notification: not spell}
 	
-	:charged_spell_nofication:
+	:charged_spell_notification:
 		recharged your {spell}
 	
 	:failed_notification:
@@ -317,3 +317,7 @@
 
 	:flags:
 		fisher removes_word
+
+:remote_object_troll: {inherits :remote_object:}
+	:name:
+		Troll Remote Object

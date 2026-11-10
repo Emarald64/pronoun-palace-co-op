@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 		time_until_advance+=1
 	if speed>0:
 		speed+=acceleration*delta
-	if speed>15:
+	if speed>8:
 		on_click()
 
 func advance():
