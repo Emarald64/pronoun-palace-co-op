@@ -191,20 +191,20 @@ func increment_floor():
 	print("incrementing floor")
 	await super()
 
-func spawn_enemy(enemy_name):
-	if enemy_name==Enemies.NOBODY:
-		var enemy_scene=load("res://mods/co-op/source/enemies/nobody_coop.tscn")
-		enemy = enemy_scene.instantiate()
-
-		Game.enemy = enemy
-		last_enemy_id = enemy.id
-
-		enemy.action_finished.connect(_on_enemy_action_finished)
-		enemy_marker.add_child(enemy)
-		enemy_info_bar.set_battle_unit(enemy)
-		enemy.set_intent_container( %EnemyIntentContainer)
-	else:
-		super(enemy_name)
+#func spawn_enemy(enemy_name):
+	#if enemy_name==Enemies.NOBODY:
+		#var enemy_scene=load("res://mods/co-op/source/enemies/nobody_coop.tscn")
+		#enemy = enemy_scene.instantiate()
+#
+		#Game.enemy = enemy
+		#last_enemy_id = enemy.id
+#
+		#enemy.action_finished.connect(_on_enemy_action_finished)
+		#enemy_marker.add_child(enemy)
+		#enemy_info_bar.set_battle_unit(enemy)
+		#enemy.set_intent_container( %EnemyIntentContainer)
+	#else:
+		#super(enemy_name)
 
 
 func is_game_actionable(include_spell_select: = false, include_summary_continue: = false, include_tutorial: = false):

@@ -326,8 +326,9 @@ func swap_big():
 			var tile=tile_board.create_tile()
 			ripped_board_projectile.add_child(tile)
 			var tile_data=recived_board_piece[coord]
-			InputSanity.process_tile_data(tile_data)
+			InputSanity.preprocess_tile_data(tile_data)
 			tile.load_save_data(tile_data)
+			InputSanity.process_tile_info(tile.tile_info)
 			tile.sway_handler.disabled=true
 			tile.z_index=1-coord.y
 			tile.position=Vector2(-44,3)+(coord*22.0*Vector2(1,-1))
@@ -630,8 +631,9 @@ func phone_a_friend_recive():
 		var tile=tile_board.create_tile()
 		main.add_child(tile)
 		var tile_data=recived_phone_a_friend_data[i]
-		InputSanity.process_tile_data(tile_data)
+		InputSanity.preprocess_tile_data(tile_data)
 		tile.load_save_data(tile_data)
+		InputSanity.process_spell_data(tile.tile_info)
 		#if tile in cursed_tiles:
 			#tile.add_status(Globals.TileStatus.CURSED)
 		tile.launch(PHONE_POS,tile_board.get_coord_position(cord),randf_range(80,100),cord)

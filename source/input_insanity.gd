@@ -16,24 +16,26 @@ static func is_valid_face(face:String)->bool:
 	return true
 
 
-static func add_status_to_tile_data(tile_data:Dictionary,status:String):
-	tile_data.get_or_add("statuses",[]).append(status)
+#static func add_status_to_tile_data(tile_data:Dictionary,status:String):
+	#tile_data.get_or_add("statuses",[]).append(status)
 
 
-static func process_tile_data(tile_data:Dictionary):
+static func preprocess_tile_data(tile_data:Dictionary):
 	if "statuses" in tile_data:
 		# remove non-existant statuses
-		tile_data.statuses=tile_data.statuses.filter(StatusRegistry.has_data)
-	if "faces" in tile_data:
+		for status in tile_data.statuses.keys():
+			if not StatusRegistry.has_data(status):
+				tile_data.statuses.erase(status)
+
+static func process_tile_info(tile_data:TileInfo):
+	if tile_data.face_info.slashed_faces.is_empty():
 		if not tile_data.faces.all(is_valid_face):
-			add_status_to_tile_data(tile_data,Globals.TileStatus.ASH)
-	elif "slashed_faces" in tile_data:
-		if tile_data.slashed_faces.is_empty():
-			add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
-		if not tile_data.slashed_faces.any(is_valid_face):
-			add_status_to_tile_data(tile_data,Globals.TileStatus.ASH)
+			tile_data.add_status(Globals.TileStatus.ASH)
 	else:
-		add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
+		if not Array(tile_data.face_info.slashed_faces).any(is_valid_face):
+			tile_data.add_status(Globals.TileStatus.ASH)
+	#else:
+		#add_status_to_tile_data(tile_data,Globals.TileStatus.COAL)
 
 
 static func process_spell_data(spell_data:Dictionary):

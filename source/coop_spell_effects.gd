@@ -46,12 +46,13 @@ func recive_word(tiles:Array,word:String)->void:
 	for i in mini(height*width,tiles.size()):
 		var coord=Vector2i(i%width,height-(i/width)-1)
 		var existing_tile=phone_board.get_tile_at(coord)
-		var tile_data =tiles[i]
+		var tile_data:Dictionary =tiles[i]
 		if existing_tile==null or not existing_tile.is_indestructible():
-			InputSanity.process_tile_data(tile_data)
+			InputSanity.preprocess_tile_data(tile_data)
 			var new_tile=phone_board.create_tile()
 			main.add_child(new_tile)
 			new_tile.load_save_data(tile_data)
+			InputSanity.process_tile_info(new_tile.tile_info)
 			var tile=phone_board.insert_tile(new_tile,coord,false)
 			tile.tile_board=phone_board
 			tile.update_z_index()
@@ -130,9 +131,10 @@ func set_spell_and_send_data(spell:Dictionary,recive_index:int,reply_index:=-1):
 
 @rpc("any_peer")
 func queue_tile(tile_data:Dictionary):
-	var queued_tile:Dictionary=main.rng.mod.pick_random(tile_board.get_preview_tiles())
-	InputSanity.process_tile_data(tile_data)
-	queued_tile.assign(tile_data)
+	var queued_tile:TileInfo=main.rng.mod.pick_random(tile_board.get_preview_tiles())
+	InputSanity.preprocess_tile_data(tile_data)
+	queued_tile.load_save_data(tile_data)
+	InputSanity.process_tile_info(queued_tile)
 	tile_board.update_previews()
 
 const default_tile_parameters={amount=1,effect_priority=Globals.EFFECT_PRIORITY.SPELL.STATUS_ONLY}

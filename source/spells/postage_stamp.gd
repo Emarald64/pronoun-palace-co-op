@@ -43,37 +43,35 @@ func _use():
 	}
 	
 	# add stamp to sent tile data
-	var tile_save=tile.get_save_data()
-	tile_save.get_or_add("statuses",[]).append(CoOp.STATUS.STAMPED)
-	tile_save.get_or_add("status_data",{})[CoOp.STATUS.STAMPED]=stamped_save
-	tile_save.as_save=true
+	var tile_info=TileInfo.from_save(tile.tile_info.get_save_data())
+	#tile_save.get_or_add("statuses",[]).append(CoOp.STATUS.STAMPED)
+	tile_info.load_status(CoOp.STATUS.STAMPED,stamped_save)
+	#tile_save.as_save=true
 	#send tile
-	main.coop_spell_effects.queue_tile.rpc_id(player_id,tile_save)
+	main.coop_spell_effects.queue_tile.rpc_id(player_id,tile_info.get_save_data())
 	
 	# send notification
 	# get status to be named in the notification
 	# get face to be displayed in the notificaton
 	var notification_context={
-		wooden=tile_save.type==TileType.DAMAGE,
-		plastic=tile_save.type==TileType.DEFENSE
+		wooden=tile_info.is_type(TileType.DAMAGE),
+		plastic=tile_info.is_type(TileType.DEFENSE)
 	}
-	for status in tile_save.statuses:
+	for status in tile_info.statuses:
 		var group: = StatusRegistry.get_data(status).get_string_group()
 		if "shared" not in group.get_string("flags"):
 			notification_context.status=group.get_string("name")
 			break
-	if TileStatus.MYSTERY in tile_save.statuses:
-		notification_context.face="?".repeat(tile_save.faces[0].length())
-	elif TileStatus.MONEY in tile_save.statuses:
-		notification_context.face=tile_save.faces[0].replace_char("*".unicode_at(0),"$".unicode_at(0))
-	elif tile_save.statuses.all(func (status_id:String)->bool:return "faceless" not in StatusRegistry.get_data(status_id).get_string("flags").split(" ")):
-		notification_context.face=tile_save.faces[0]
 	
-	if "face" in notification_context:
-		if TileStatus.PERIOD in tile_save.statuses:
-			notification_context.face+="."
-		elif TileStatus.CAPITAL in tile_save.statuses:
-			notification_context.face=notification_context.face.to_upper()
+	notification_context.face=tile_info.face_info.get_face_text(0,true)
+	
+	print("notification face: ",notification_context.face)
+	
+	#if "face" in notification_context:
+		#if TileStatus.PERIOD in tile_save.statuses:
+			#notification_context.face+="."
+		#elif TileStatus.CAPITAL in tile_save.statuses:
+			#notification_context.face=notification_context.face.to_upper()
 	
 	# send notification
 	main.coop_notifications.add_spell_notification.rpc_id(player_id,id,notification_context)
